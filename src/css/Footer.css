@@ -1,0 +1,137 @@
+.footer__container{
+    /* height: 200px; */
+    /* margin-bottom: 0; */
+    background-color: rgb(20, 20, 50);
+    margin-top: 230px;
+    /* position: relative; */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding-top: 10px;
+    width: 100%;
+}
+.footer__copyright{
+    /* color: white; */
+    font-size: 10px;
+    bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-top: 1px solid rgb(175, 175, 190);
+    width: 90%;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    margin-top: 20px;
+    color: rgb(175, 175, 190);
+}
+.footer__top{
+    /* border: 1px solid white; */
+    height: 170px;
+    width: 95%;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+.footer__logo, .footer__company, .footer__follow{
+    /* border: 1px solid white; */
+    /* min-width: 50px; */
+    height: 95%;
+    flex: 0.28;
+}
+.footer__logo{
+    background-color: rgb(31, 31, 74);
+    color: rgb(131, 131, 164);
+    font-weight: 600;
+    font-size: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 5px;
+    /* margin-bottom: 10px; */
+}
+.footer__company{
+    color: white;
+    padding-left: 80px;
+}
+.title{
+    margin-top: 15px;
+    font-weight: 500;
+    color: rgb(137, 137, 200);;
+}
+.about, .history, .contact{
+    font-weight: 400;
+    font-size: 14px;
+    cursor: pointer;
+    margin-left: 10px;
+    margin-top: 5px;
+    color: rgb(175, 175, 190);;
+}
+.about, .history{
+    display: block;
+    text-decoration: none;
+}
+.about:hover, .history:hover{
+    color: white;
+}
+.contact__email, .contact__phone{
+    font-weight: 400;
+    font-size: 14px;
+    margin-left: 12px;
+    color: rgb(175, 175, 190);
+}
+.contact__email{
+    margin-top: 5px;
+}
+
+.follow{
+    font-size: 18px;
+    margin-left: 20px;
+    margin-top: 20px;
+}
+.icon{
+    /* margin-top: 10px; */
+    margin: 6px;
+    font-size: 15px;
+    color: rgb(175, 175, 190);
+    cursor: pointer;
+    text-decoration: none;
+}
+.facebook{
+    margin-left: 25px;
+}
+@media (max-width: 500px){
+    .footer__container{
+        width: 100%;
+        margin-top: 100px;
+    }
+    
+    .footer__logo, .footer__follow,.footer__company,.footer__top,.footer__copyright{
+        flex: 100%;
+    }
+    .footer__logo{
+        height: 150px;
+        margin-top: 20px;
+    }
+    .footer__top{
+        justify-content: center;
+        align-items: center;
+    }
+    .footer__company{
+        display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding-left: 0;
+    }
+    .footer__follow{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 15px;
+    }
+}
+
+

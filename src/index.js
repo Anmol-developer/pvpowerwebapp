@@ -2,12 +2,67 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
+// import 'leaflet/dist/leafelt.css'
 import reportWebVitals from './reportWebVitals';
+import {
+  createBrowserRouter,
+  RouterProvider,
+} from "react-router-dom";
+import Hero from './components/Hero';
+import Support from './components/Support';
+import Signup from '../src/components/Signup'
+import Pricing from '../src/components/Pricing'
+import About from '../src/components/About'
+import History from '../src/components/History'
+import Login from '../src/components/Login'
+import Dashboard from './components/Dashboard/Dashboard';
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <App/>,
+    children: [
+      
+      {
+        path: "/",
+        element: <Hero />,
+      },
+      {
+        path: "/pricing",
+        element: <Pricing />,
+      },
+      {
+        path: "/signup",
+        element: <Signup />,
+      },
+      {
+        path: "/support",
+        element: <Support />,
+      },
+      {
+        path: "/history",
+        element: <History />,
+      },
+      {
+        path: "/about",
+        element: <About />,
+      },
+      {
+        path: "/login",
+        element: <Login />,
+      },
+      {
+        path: "/dashboard",
+        element: <Dashboard />,
+      }
+    ]
+  }
+]);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+    <RouterProvider router={router} />
   </React.StrictMode>
 );
 
