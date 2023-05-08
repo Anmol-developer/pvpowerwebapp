@@ -15,6 +15,7 @@
 }
 .nav__container{
     /* border: 1px solid black; */
+    width: 100%;
     display: flex;
     align-items: center;
     padding: 8px;
