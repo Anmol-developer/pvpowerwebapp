@@ -1,10 +1,14 @@
 import React from 'react'
-import Map from './Map'
+import Main from './Main'
 import '../../css/Dashboard/Dashboard.css'
+import Sidebar from './Sidebar'
 
 function Dashboard() {
   return (
-    <div><Map/></div>
+    <div className='container'>
+      <Sidebar/>
+      <Main/>
+    </div>
   )
 }
 
