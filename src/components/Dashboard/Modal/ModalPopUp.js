@@ -1,22 +1,23 @@
 import React, { useState } from 'react'
 import ShowModal from './ShowModal';
+import '../../../css/Dashboard/Modal/Modal.css'
 
-function ModalPopUp() {
+function ModalPopUp({lat,lon}) {
     const [showModal, setShowModal] = useState(false);
 
     const closeModal = () => setShowModal(false);
 
     return (
         <div className='modal__container'>
-            <button className="model-btn" onClick={() => setShowModal(true)}>
-                Open Modal
+            <button className="modal-btn" onClick={() => setShowModal(true)}>
+                set this location
             </button>
             <ShowModal open={showModal} closeModal={closeModal}>
                 <h2>STAY TUNED</h2>
                 <p>
-                    Subscribe to our newsletter and never miss our designs ,latest news.etc.
-                    Our newsletter is sent once a week, every Monday
+                    {lat}
                 </p>
+                <p>{lon}</p>
                 
             </ShowModal>
         </div>

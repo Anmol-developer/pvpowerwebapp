@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react'
 import '../../../css/Dashboard/Modal/ShowModal.css'
 import ReactDom from "react-dom";
-// import { useEffect } from "react";
 
 function ShowModal({  open, closeModal, children  }) {
 

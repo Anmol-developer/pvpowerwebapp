@@ -1,0 +1,9 @@
+.modal-btn{
+    background-color: rgb(61, 61, 194);
+    border-radius: 8px;
+    color: white;
+    transition: background-color 200ms ease-in;
+}
+.modal-btn:hover{
+    background-color: #4a4a89;
+}
