@@ -30,9 +30,11 @@
 }
 
 .map__location{
-    padding: 7px;
+    padding: 10px;
+    padding-left: 20px;
     margin-bottom: 15px;
     outline: none;
+    width: 20rem;
     border-radius: 20px;
     border: 1px solid #e2e0e0;
 }
