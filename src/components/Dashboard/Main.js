@@ -1,6 +1,7 @@
 import React, {useState} from 'react'
 import Map from './Map'
 import '../../css/Dashboard/Main.css'
+import { ModalPopUp } from './Modal/ModalPopUp';
 
 function Main() {
   const [searchInput, setSearchInput] = useState("");
@@ -14,13 +15,13 @@ function Main() {
     <div className='main__container'>
       <div className='main__header'>
         <p className='dheader__title'>DASHBOARD</p>
+        <ModalPopUp/>
         <p className='dheader__greet'>welcome back User</p>
       </div>
       <div className='main__map'>
         <input type="text" value={searchInput} onChange={handleSearchInputChange} className='map__location' placeholder='Search location'/>
         <Map/>
       </div>
-        {/* abc */}
     </div>
   )
 }
