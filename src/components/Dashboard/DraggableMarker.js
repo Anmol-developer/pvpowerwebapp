@@ -19,6 +19,7 @@ function DraggableMarker() {
       [position],
     )
     
+    //just for test run whether it is showing lat and lon or not
     const showLatLan = ()=>{
       alert(position)
     }
