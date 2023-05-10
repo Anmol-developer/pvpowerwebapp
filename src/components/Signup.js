@@ -14,11 +14,14 @@ function Signup() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [email, setEmail] = useState("");
   const [agreement, setAgreement] = useState(false);
+  const [passwordEqual, setPasswordEqual] = useState('')
 
   const handleSubmit = (event) => {
     event.preventDefault();
     // Handle form submission here
     if (agreement) {
+      if(confirmPassword !== password) setPasswordEqual(<p className="pls-upload">Password and confirm password unequal</p>);
+    else setPasswordEqual('');
       alert('clicked')
     }else{
       alert('please check the box!')
@@ -28,6 +31,11 @@ function Signup() {
   const handleChange = (event) => {
     setAgreement(event.target.checked)
     agreement ? setBtn({backgroundColor:'rgb(106, 106, 210)',color:'rgb(198, 198, 218)', cursor:'not-allowed'}) : setBtn({})
+  }
+  
+  const handlePasswordCheck = (event)=>{
+    setConfirmPassword(event.target.value)
+    
   }
 
   return (
@@ -75,12 +83,14 @@ function Signup() {
         <input
           type="password"
           value={confirmPassword}
-          onChange={(event) => setConfirmPassword(event.target.value)}
+          onChange={handlePasswordCheck}
           className="cpassword input"
           placeholder="Conform password"
         />
       </label>
-      
+
+      {/* className = "pls-upload" is given so that same css styles are applied to this element as in p element of ModalPopUp with same className */}
+      {passwordEqual}
       <p className="or">or</p>
       <div className="0auth__signup"></div>
       <label>

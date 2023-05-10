@@ -5,7 +5,7 @@ import { AiOutlineWarning } from 'react-icons/ai'
 
 function ModalPopUp({ lat, lon }) {
     const [showModal, setShowModal] = useState(false);
-    const [dataType, setDataType] = useState('simple');
+    const [dataType, setDataType] = useState('pv__data');
     const [selectedFile, setSelectedFile] = useState(null);
 
     const handleFileChange = (event) => {
@@ -44,14 +44,14 @@ function ModalPopUp({ lat, lon }) {
                 <form className='data-type-form'>
                     <label htmlFor='data-type'><b>Select Data type: </b></label>
                     <select id='data-type' name='data-type' onChange={(e) => setDataType(e.target.value)}>
-                        <option value='simple'>Simple</option>
-                        <option value='complex'>Complex</option>
+                        <option value='pv__data'>pv data</option>
+                        <option value='both'>pv data + weather data</option>
                     </select>
                     {/* <input type='submit' value='Submit' /> */}
                 </form>
 
                 <div className='sample__table'>
-                    {dataType === 'simple' ? (<p>Table1</p>) : (<p>Table2</p>)}
+                    {dataType === 'pv__data' ? (<p>Table1</p>) : (<p>Table2</p>)}
                 </div>
 
                 <div className='file__upload'>
