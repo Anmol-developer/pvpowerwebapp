@@ -51,7 +51,8 @@ function ModalPopUp({ lat, lon }) {
                 </form>
 
                 <div className='sample__table'>
-                    {dataType === 'pv__data' ? (<p>Table1</p>) : (<p>Table2</p>)}
+                    <p className='pls-upload'>Format of your data sheet should be same as in sample table</p>
+                    {dataType === 'pv__data' ? (<a href={'https://docs.google.com/spreadsheets/d/1gUmeH_IQ8DKPmq1_UxcVWg4ws-LUgo4C9yO7qSUho_c/edit?usp=sharing'} rel="noreferrer" target="_blank">Sample table for pv data</a>) : (<a href={'https://docs.google.com/spreadsheets/d/12V6K4fs46bQihzyUmSWe54kf2x-bvJcLHLonCgqthsk/edit?usp=sharing'} rel="noreferrer" target="_blank">Sample table for pv data + weather</a>)}
                 </div>
 
                 <div className='file__upload'>

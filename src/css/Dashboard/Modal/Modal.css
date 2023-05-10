@@ -32,8 +32,14 @@
     border-bottom: 1px solid grey;
     margin-bottom: 15px;
 }
-.modal__lat, .modal__lng,.modal__adrs, .data-type-form,.sample__table,.file__upload,.upload-text{
+.modal__lat, .modal__lng,.modal__adrs,.sample__table,.file__upload{
     margin-bottom: 10px;
+}
+.data-type-form{
+    margin-top: 30px;
+}
+.upload-text{
+    margin-top: 30px;
 }
 .upload-warn{
     border: 1px solid orange;
@@ -42,6 +48,7 @@
     background-color: #f7edd1;
     color: orange;
     margin-bottom: 10px;
+    margin-top: 8px;
 }
 .file__upload > input[type='file']{
     margin-bottom: 3px;
@@ -49,4 +56,15 @@
 .pls-upload{
     font-size: 13px;
     color: red;
+    margin-bottom: 15px;
+}
+.sample__table > a{
+    text-decoration: none;
+    padding: 8px;
+    border-radius: 5px;
+    background-color: rgb(61, 61, 194);
+    color: white;
+    cursor: pointer;
+    /* margin-top: 15px;
+    margin-bottom: 8px; */
 }
