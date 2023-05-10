@@ -24,6 +24,11 @@ function DraggableMarker() {
     // const showLatLan = ()=>{
     //   console.log(position)
     // }
+
+    //setting current lat , long 
+    let lat,lng;
+    position.lat ? (lat=position.lat) : (lat = position[0])
+    position.lng ? (lng=position.lng) : (lng = position[1])
   
     return (
       <Marker
@@ -35,7 +40,7 @@ function DraggableMarker() {
         <Popup minWidth={90}>
           <span>
             'Marker is draggable. Drag to desired location'<br/>
-            <ModalPopUp lat={position.lat} lon={position.lng}/>
+            <ModalPopUp lat={lat} lon={lng}/>
           </span>
         </Popup>
       </Marker>

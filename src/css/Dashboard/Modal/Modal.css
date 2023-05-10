@@ -3,7 +3,50 @@
     border-radius: 8px;
     color: white;
     transition: background-color 200ms ease-in;
+    border: 0;
+    padding: 8px;
+    margin-top: 8px;
+    cursor: pointer;
 }
 .modal-btn:hover{
     background-color: #4a4a89;
+}
+.sb-active{
+    background-color: rgb(61, 61, 194);
+    color: white;
+    padding: 10px;
+    border: 0;
+    cursor: pointer;
+    border-radius: 8px;
+}
+.sb-disabled{
+    background-color: rgba(61, 61, 194, 0.7);
+    color: rgb(220, 239, 248);
+    padding: 10px;
+    border: 0;
+    cursor: not-allowed;
+    border-radius: 8px;
+}
+
+.modal__heading{
+    border-bottom: 1px solid grey;
+    margin-bottom: 15px;
+}
+.modal__lat, .modal__lng,.modal__adrs, .data-type-form,.sample__table,.file__upload,.upload-text{
+    margin-bottom: 10px;
+}
+.upload-warn{
+    border: 1px solid orange;
+    padding: 5px 8px;
+    font-size: 12px;
+    background-color: #f7edd1;
+    color: orange;
+    margin-bottom: 10px;
+}
+.file__upload > input[type='file']{
+    margin-bottom: 3px;
+}
+.pls-upload{
+    font-size: 13px;
+    color: red;
 }

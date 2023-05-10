@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import '../../../css/Dashboard/Modal/ShowModal.css'
 import ReactDom from "react-dom";
+import {AiOutlineClose} from 'react-icons/ai';
 
 function ShowModal({  open, closeModal, children  }) {
 
@@ -17,10 +18,8 @@ function ShowModal({  open, closeModal, children  }) {
         <>
             <div className="showmodal-wrapper" onClick={closeModal}></div>
             <div className='showmodal__container'>
+                <AiOutlineClose className='close-btn' onClick={closeModal}/>
                 {children}
-                <button className="model-btn" onClick={closeModal}>
-                    Accept It
-                </button>
             </div>
         </>,
         document.getElementById("modal")
