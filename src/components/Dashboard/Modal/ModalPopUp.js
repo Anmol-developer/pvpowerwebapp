@@ -55,7 +55,7 @@ function ModalPopUp({ lat, lon }) {
                 </div>
 
                 <div className='file__upload'>
-                    <p className='upload-text'><b>Upload your excel file: </b></p>
+                    <p className='upload-text'><b>Upload your .xlsx or .xls file: </b></p>
                     <p className='upload-warn'>
                         <AiOutlineWarning className='warn-icon' /> Format of your file must be same as the sample table shown above
                     </p>
