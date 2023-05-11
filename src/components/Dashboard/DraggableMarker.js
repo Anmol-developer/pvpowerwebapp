@@ -1,4 +1,5 @@
-import React, {useRef,useState,useMemo, useReducer} from 'react'
+import React, {useRef,useMemo, useReducer, useEffect, useContext} from 'react'
+import MyContext from '../../context/Context';
 import '../../css/Dashboard/DraggableMarker.css'
 import { Marker, Popup } from 'react-leaflet'
 import { ModalPopUp } from './Modal/ModalPopUp';
@@ -7,7 +8,7 @@ import { reducer,InitialState } from '../../reducer/Reducer';
 function DraggableMarker() {
     const [state,dispatch] = useReducer(reducer,InitialState);
     const draggable = true;
-    // const [position, setPosition] = useState([ 28.7041, 77.1025])
+    const contextValue = useContext(MyContext);
     const markerRef = useRef(null)
     const eventHandlers = useMemo(
       () => ({
@@ -22,10 +23,20 @@ function DraggableMarker() {
       [state.position],
     )
 
+    useEffect(()=>{
+      console.log(contextValue[0])
+      if (contextValue[0]!==undefined) {
+        dispatch({type:'SET_POSITION',payload:[contextValue[0],contextValue[1]]})
+      }
+    },[contextValue])
+    
+
+    const handleClick = ()=>{
+      console.log(state.position);
+    }
+
     //setting current lat , long 
     let lat,lng;
-    // state.position.lat ? (lat=state.position.lat) : (lat = state.position[0])
-    // state.position.lng ? (lng=state.position.lng) : (lng = state.position[1])
     lat = state.position[0]
     lng = state.position[1]
   
@@ -37,7 +48,7 @@ function DraggableMarker() {
         ref={markerRef}
         >
         <Popup minWidth={90}>
-          <span>
+          <span onClick={handleClick}>
             'Marker is draggable. Drag to desired location'<br/>
             <ModalPopUp lat={lat} lon={lng}/>
           </span>

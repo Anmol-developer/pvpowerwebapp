@@ -5,7 +5,7 @@ const InitialState = {
 const reducer = (state,action)=>{
     switch (action.type) {
         case "SET_POSITION":
-            console.log('position set')
+            console.log(action.payload)
             return { ...state, position: [...action.payload] };
     
         default:

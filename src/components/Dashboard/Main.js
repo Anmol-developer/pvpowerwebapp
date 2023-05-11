@@ -1,38 +1,39 @@
-import React, { useState,useReducer } from 'react'
+import React, { useState } from 'react'
 import Map from './Map'
 import '../../css/Dashboard/Main.css'
 import axios from 'axios';
-import { reducer,InitialState } from '../../reducer/Reducer';
-
+import MyContext from '../../context/Context';
 
 function Main() {
   const [searchInput, setSearchInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [location, setLocation] = useState([])
-  const [state,dispatch] = useReducer(reducer,InitialState);
-    
-
+  
   function handleSearchInputChange(event) {
     setSearchInput(event.target.value);
   }
 
   const forwardGeocode = async (e) => {
     e.preventDefault()
-    let lat ,lon;
+    let lat, lon;
     try {
       setIsLoading(true)
       const result = await axios.get(`https://api.opencagedata.com/geocode/v1/json?key=9ab902a1269a44849e0d0200437bac80&q=${encodeURIComponent(searchInput)}&pretty=1`);
       lat = result.data.results[0].geometry.lat;
       lon = result.data.results[0].geometry.lng;
       setLocation([lat, lon])
-      dispatch({type:'SET_POSITION',payload:location})
     } catch (error) {
-      if(searchInput === "" || !lat) alert('please fill correct address')
+      if (searchInput === "" || !lat) alert('please fill correct address')
       else alert(error)
     } finally {
       setIsLoading(false); // Set isLoading state back to false after the request is completed
     }
   }
+
+  // const contextValue = {
+  //   // Define the values you want to provide
+  //   location: location
+  // };
 
 
   return (
@@ -47,7 +48,9 @@ function Main() {
           <input type="text" value={searchInput} onChange={handleSearchInputChange} className='map__location' placeholder='Search location' />
           <button type='submit' style={{ display: 'none' }}></button>
         </form>
-        <Map />
+        <MyContext.Provider value={location}>
+          <Map />
+        </MyContext.Provider>
       </div>
     </div>
   )
