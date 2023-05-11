@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import Map from './Map'
 import '../../css/Dashboard/Main.css'
-import ShowModal from '../Dashboard/Modal/ShowModal';
-import { AiOutlineWarning } from 'react-icons/ai'
+// import ShowModal from '../Dashboard/Modal/ShowModal';
+// import { AiOutlineWarning } from 'react-icons/ai'
 import axios from 'axios';
 
 
@@ -10,25 +10,25 @@ import axios from 'axios';
 function Main() {
   const [searchInput, setSearchInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [showModal, setShowModal] = useState(false);
+  // const [showModal, setShowModal] = useState(false);
   const [location, setLocation] = useState([])
-  const [selectedFile, setSelectedFile] = useState(null);
-  const [dataType, setDataType] = useState('pv__data');
+  // const [selectedFile, setSelectedFile] = useState(null);
+  // const [dataType, setDataType] = useState('pv__data');
 
 
-  const handleFileChange = (event) => {
-    const file = event.target.files[0];
-    setSelectedFile(file);
-  };
+  // const handleFileChange = (event) => {
+  //   const file = event.target.files[0];
+  //   setSelectedFile(file);
+  // };
 
   function handleSearchInputChange(event) {
     setSearchInput(event.target.value);
   }
 
-  const closeModal = () => {
-    setShowModal(false)
-    setSelectedFile(null)
-  };
+  // const closeModal = () => {
+  //   setShowModal(false)
+  //   setSelectedFile(null)
+  // };
 
   const forwardGeocode = async (e) => {
     e.preventDefault()
@@ -44,13 +44,13 @@ function Main() {
       else alert(error)
     } finally {
       setIsLoading(false); // Set isLoading state back to false after the request is completed
-      setShowModal(true)
+      // setShowModal(true)
     }
   }
 
-  const handleInfoSubmit = () => {
-    alert('submited')
-  }
+  // const handleInfoSubmit = () => {
+  //   alert('submited')
+  // }
 
 
   return (
@@ -67,7 +67,7 @@ function Main() {
         </form>
         <Map />
       </div>
-      <ShowModal open={showModal} closeModal={closeModal}>
+      {/* <ShowModal open={showModal} closeModal={closeModal}>
         <h2 className='modal__heading'>Fill the information</h2>
         <p className='modal__lat'>
           <b>Latitude: </b>{isLoading && (<p>Loading...</p>)}{(!isLoading && location[0]) && (location[0])}
@@ -103,7 +103,7 @@ function Main() {
 
         {selectedFile === null ? (<button className='sb-disabled'>Submit</button>) : (<button className='sb-active' onClick={handleInfoSubmit}>Submit</button>)}
 
-      </ShowModal>
+      </ShowModal> */}
     </div>
   )
 }
