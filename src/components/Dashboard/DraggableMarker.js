@@ -1,35 +1,39 @@
-import React, {useRef,useState,useMemo} from 'react'
+import React, {useRef,useState,useMemo, useReducer} from 'react'
 import '../../css/Dashboard/DraggableMarker.css'
 import { Marker, Popup } from 'react-leaflet'
 import { ModalPopUp } from './Modal/ModalPopUp';
+import { reducer,InitialState } from '../../reducer/Reducer';
 
 function DraggableMarker() {
-  
+    const [state,dispatch] = useReducer(reducer,InitialState);
     const draggable = true;
-    const [position, setPosition] = useState([ 28.7041, 77.1025])
+    // const [position, setPosition] = useState([ 28.7041, 77.1025])
     const markerRef = useRef(null)
     const eventHandlers = useMemo(
       () => ({
         dragend() {
           const marker = markerRef.current
           if (marker != null) {
-            setPosition(marker.getLatLng())
+            // console.log(marker.getLatLng().lng)
+            dispatch({type:'SET_POSITION',payload: [marker.getLatLng().lat,marker.getLatLng().lng]})
           }
         }
       }),
-      [position],
+      [state.position],
     )
 
     //setting current lat , long 
     let lat,lng;
-    position.lat ? (lat=position.lat) : (lat = position[0])
-    position.lng ? (lng=position.lng) : (lng = position[1])
+    // state.position.lat ? (lat=state.position.lat) : (lat = state.position[0])
+    // state.position.lng ? (lng=state.position.lng) : (lng = state.position[1])
+    lat = state.position[0]
+    lng = state.position[1]
   
     return (
       <Marker
         draggable={draggable}
         eventHandlers={eventHandlers}
-        position={position}
+        position={state.position}
         ref={markerRef}
         >
         <Popup minWidth={90}>

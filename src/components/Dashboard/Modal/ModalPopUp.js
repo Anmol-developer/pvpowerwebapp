@@ -63,7 +63,7 @@ function ModalPopUp({ lat, lon }) {
                     <b>Longitude: </b>{lon}
                 </p>
                 <p className='modal__adrs'>
-                    <b>Address: </b>{isLoading && (<p>Loading...</p>)}{(!isLoading && address) && (address)}
+                    <b>Address: </b>{isLoading && (<span>Loading...</span>)}{(!isLoading && address) && (address)}
                 </p>
 
                 <form className='data-type-form'>
