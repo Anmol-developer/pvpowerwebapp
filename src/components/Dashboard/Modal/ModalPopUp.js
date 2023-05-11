@@ -3,9 +3,11 @@ import ShowModal from './ShowModal';
 import '../../../css/Dashboard/Modal/Modal.css'
 import { AiOutlineWarning } from 'react-icons/ai'
 import axios from 'axios';
+import SubmitModal from './SubmitModal';
 
 function ModalPopUp({ lat, lon }) {
     const [showModal, setShowModal] = useState(false);
+    const [showSubmitModal, setSubModal] = useState(false);
     const [dataType, setDataType] = useState('pv__data');
     const [selectedFile, setSelectedFile] = useState(null);
     const [address, setAddress] = useState('');
@@ -36,7 +38,8 @@ function ModalPopUp({ lat, lon }) {
     };
 
     const handleInfoSubmit = () => {
-        alert('submited')
+        setShowModal(false)
+        setSubModal(true)
     }
 
 
@@ -44,6 +47,9 @@ function ModalPopUp({ lat, lon }) {
         setShowModal(false)
         setSelectedFile(null)
     };
+    const closeSubmitModal = ()=>{
+        setSubModal(false);
+    }
 
     const setLocation = async () => {
         setShowModal(true);
@@ -54,6 +60,7 @@ function ModalPopUp({ lat, lon }) {
             <button className="modal-btn" onClick={setLocation}>
                 set this location
             </button>
+
             <ShowModal open={showModal} closeModal={closeModal}>
                 <h2 className='modal__heading'>Fill the information</h2>
                 <p className='modal__lat'>
@@ -91,6 +98,10 @@ function ModalPopUp({ lat, lon }) {
                 {selectedFile === null ? (<button className='sb-disabled'>Submit</button>) : (<button className='sb-active' onClick={handleInfoSubmit}>Submit</button>)}
 
             </ShowModal>
+
+            <SubmitModal open={showSubmitModal} closeModal={closeSubmitModal}>
+                <p>Submitted</p>
+            </SubmitModal>
         </div>
     )
 }

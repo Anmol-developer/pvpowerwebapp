@@ -30,12 +30,6 @@ function Main() {
     }
   }
 
-  // const contextValue = {
-  //   // Define the values you want to provide
-  //   location: location
-  // };
-
-
   return (
     <div className='main__container'>
       <div className='main__header'>
