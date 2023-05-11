@@ -16,11 +16,13 @@ import About from '../src/components/About'
 import History from '../src/components/History'
 import Login from '../src/components/Login'
 import Dashboard from './components/Dashboard/Dashboard';
+import {Error} from './components/Error'
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <App/>,
+    errorElement:<Error/>,
     children: [
       
       {
