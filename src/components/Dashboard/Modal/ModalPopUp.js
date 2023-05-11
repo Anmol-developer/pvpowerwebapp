@@ -46,6 +46,7 @@ function ModalPopUp({ lat, lon }) {
     const closeModal = () => {
         setShowModal(false)
         setSelectedFile(null)
+        setDataType('pv__data')
     };
     const closeSubmitModal = ()=>{
         setSubModal(false);
