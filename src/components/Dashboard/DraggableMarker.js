@@ -19,11 +19,6 @@ function DraggableMarker() {
       }),
       [position],
     )
-    
-    //just for test run whether it is showing lat and lon or not
-    // const showLatLan = ()=>{
-    //   console.log(position)
-    // }
 
     //setting current lat , long 
     let lat,lng;
