@@ -153,7 +153,7 @@ function ModalPopUp({ lat, lon }) {
     const handleDataType = (e) => {
         setDataType(e.target.value)
         isFormat?setIsFormat(false):setIsFormat(true)
-        !isFormat ? setDisabled(false):setDisabled(true)
+        !isFormat && selectedFile!==null ? setDisabled(false):setDisabled(true)
     }
 
     return (
