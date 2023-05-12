@@ -7,9 +7,9 @@ function Error (){
     console.error(error)
     return(
         <div className="error__container">
-            <h1>OOPs!</h1>
-            <p>An Error occured</p>
-            <p>{error.statusText || error.message}</p>
+            <p className="error__heading">OOPs!</p>
+            <p className="error__subheading">An Error occured</p>
+            <p className="error__info">{error.statusText || error.message}</p>
         </div>
     )
 }
