@@ -17,6 +17,9 @@ function ModalPopUp({ lat, lon }) {
     const [address, setAddress] = useState(''); //for address from lat and lon
     const [isLoading, setIsLoading] = useState(false);
     const [isFormat, setIsFormat] = useState(true) // for checking if the format of uploaded file is correct or not
+    //for progress bar
+    const [value, setValue] = useState(10);
+    const [isIncrementing, setIsIncrementing] = useState(false);
 
     //getting input address's lat and lon using forward geocoding and loading functionality
     useEffect(() => {
@@ -34,13 +37,40 @@ function ModalPopUp({ lat, lon }) {
         }
 
         location__adrs()
-
+        setValue(10)
+        setIsIncrementing(false)
     }, [lat, lon])
 
+    //for progress bar
+    useEffect(() => {
+        let interval;
     
+        if (isIncrementing) {
+          interval = setInterval(() => {
+            setValue((prevValue) => {
+              if (prevValue >= 100) {
+                clearInterval(interval);
+                setIsIncrementing(false);
+                return prevValue;
+              } else {
+                return prevValue + 5;
+              }
+            });
+          }, 1000);
+        }
+    
+        return () => {
+          clearInterval(interval);
+        };
+      }, [isIncrementing]);
+    
+    
+      
     const handleFileChange = async (event) => {
         //initializing state so that it is default every time file changes
         setIsFormat(true);
+        setValue(10)
+        setIsIncrementing(false)
         
         //declaring an array to check format with
         const format1 = ['Date', 'PV Power (kW)', 'Solar Irradiation', 'Ambient Temperature', 'Wind Speed', 'Relative Humidity', 'Cloud Cover', 'Rainfall']
@@ -95,7 +125,7 @@ function ModalPopUp({ lat, lon }) {
     const handleInfoSubmit = () => {
         setShowModal(false)
         setSubModal(true)
-
+        setIsIncrementing(true);
     }
 
 
@@ -109,6 +139,11 @@ function ModalPopUp({ lat, lon }) {
     };
     const closeSubmitModal = () => {
         setSubModal(false);
+        //setting everything back to default
+        setDisabled(true)
+        setDataType('pv__data')
+        setIsFormat(true)
+        setSelectedFile(null)
     }
 
     const setLocation = async () => {
@@ -168,7 +203,7 @@ function ModalPopUp({ lat, lon }) {
 
             <SubmitModal open={showSubmitModal} closeModal={closeSubmitModal}>
                 <p style={{marginBottom:'5px'}}>Calculating</p>
-                <ProgressBar completed={60} className='progress__bar'/>
+                <ProgressBar completed={value} className='progress__bar'/>
             </SubmitModal>
         </div>
     )
