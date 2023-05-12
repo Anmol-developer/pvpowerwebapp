@@ -115,6 +115,12 @@ function ModalPopUp({ lat, lon }) {
         setShowModal(true);
     }
 
+    const handleDataType = (e) => {
+        setDataType(e.target.value)
+        isFormat?setIsFormat(false):setIsFormat(true)
+        !isFormat ? setDisabled(false):setDisabled(true)
+    }
+
     return (
         <div className='modal__container'>
             <button className="modal-btn" onClick={setLocation}>
@@ -135,7 +141,7 @@ function ModalPopUp({ lat, lon }) {
 
                 <form className='data-type-form'>
                     <label htmlFor='data-type'><b>Select Data type: </b></label>
-                    <select id='data-type' name='data-type' onChange={(e) => setDataType(e.target.value)}>
+                    <select id='data-type' name='data-type' onChange={handleDataType}>
                         <option value='pv__data'>pv data</option>
                         <option value='both'>pv data + weather data</option>
                     </select>
