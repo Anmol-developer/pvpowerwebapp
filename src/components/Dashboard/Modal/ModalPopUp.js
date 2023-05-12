@@ -4,17 +4,21 @@ import '../../../css/Dashboard/Modal/Modal.css'
 import { AiOutlineWarning } from 'react-icons/ai'
 import axios from 'axios';
 import SubmitModal from './SubmitModal';
+import { read } from 'xlsx';
+import {utils} from 'xlsx';
 
 function ModalPopUp({ lat, lon }) {
     const [showModal, setShowModal] = useState(false);
     const [showSubmitModal, setSubModal] = useState(false);
+    const [disabled, setDisabled] = useState(true) //for submit btn disabled feature
     const [dataType, setDataType] = useState('pv__data');
     const [selectedFile, setSelectedFile] = useState(null);
-    const [address, setAddress] = useState('');
+    const [address, setAddress] = useState(''); //for address from lat and lon
     const [isLoading, setIsLoading] = useState(false);
+    const [isFormat, setIsFormat] = useState(true) // for checking if the format of uploaded file is correct or not
 
-    useEffect( () => {
-        const location__adrs = async()=>{
+    useEffect(() => {
+        const location__adrs = async () => {
             try {
                 setIsLoading(true)
                 const result = await axios.get(`https://api.opencagedata.com/geocode/v1/json?key=9ab902a1269a44849e0d0200437bac80&q=${lat},${lon}&pretty=1`);
@@ -22,33 +26,86 @@ function ModalPopUp({ lat, lon }) {
                 setAddress(location)
             } catch (error) {
                 alert(error)
-            }finally {
+            } finally {
                 setIsLoading(false); // Set isLoading state back to false after the request is completed
-              }
+            }
         }
 
         location__adrs()
-        
+
     }, [lat, lon])
 
-
-    const handleFileChange = (event) => {
+    
+    const handleFileChange = async (event) => {
+        //initializing state so that it is default every time file changes
+        setIsFormat(true);
+        
+        //declaring an array to check format with
+        const format1 = ['Date', 'PV Power (kW)', 'Solar Irradiation', 'Ambient Temperature', 'Wind Speed', 'Relative Humidity', 'Cloud Cover', 'Rainfall']
+        const format2 = ['Date', 'PV Power (kW)']
+        const data_format = (dataType === 'pv__data' ? format2 : format1);
+        
+        //handling file
         const file = event.target.files[0];
         setSelectedFile(file);
+        setDisabled(false)
+
+        //converting file to array buffer
+        const data = await file.arrayBuffer();
+        const workbook = read(data);
+
+        // Access the user-input sheet
+        const userInputSheetName = workbook.SheetNames[0];
+        const userInputSheet = workbook.Sheets[userInputSheetName];
+
+        // Get all values of a specific row
+        const rowNum = 1; // Assuming row number 2 (index starts at 1)
+        const rowValues = [];
+
+        // Iterate over each column in the row
+        for (let colNum = 1; ; colNum++) {
+            const cellAddress = utils.encode_cell({ r: rowNum - 1, c: colNum - 1 }); //look in docs of 'npm xlsx' 
+            const cell = userInputSheet[cellAddress];
+
+            if (!cell || !cell.v) { //.v signifies .value
+                break; // Exit loop if cell is empty or does not exist
+            }
+
+            rowValues.push(cell.v);
+        }
+
+        console.log('Row Values:', rowValues);
+
+        //checking for file format
+        for (let i = 0; i < rowValues.length; i++) {
+            const element = rowValues[i];
+            // console.log(element)
+            if (element !== data_format[i] || rowValues.length !== data_format.length) {
+                setIsFormat(false);
+                setDisabled(true)
+                break;
+            }
+        }
+
+
     };
 
     const handleInfoSubmit = () => {
         setShowModal(false)
         setSubModal(true)
+
     }
 
 
     const closeModal = () => {
         setShowModal(false)
+        //setting everything back to default
+        setIsFormat(true)
         setSelectedFile(null)
+        setDisabled(true)
         setDataType('pv__data')
     };
-    const closeSubmitModal = ()=>{
+    const closeSubmitModal = () => {
         setSubModal(false);
     }
 
@@ -94,9 +151,10 @@ function ModalPopUp({ lat, lon }) {
                     </p>
                     <input type='file' id="fileInput" onChange={handleFileChange} accept=".xlsx, .xls" />
                     {selectedFile === null && (<p className='pls-upload'>pls upload file</p>)}
+                    {isFormat === false  && (<p className='pls-upload'>Format not correct</p>)}
                 </div>
 
-                {selectedFile === null ? (<button className='sb-disabled'>Submit</button>) : (<button className='sb-active' onClick={handleInfoSubmit}>Submit</button>)}
+                {disabled ? (<button className='sb-disabled'>Submit</button>) : (<button className='sb-active' onClick={handleInfoSubmit}>Submit</button>)}
 
             </ShowModal>
 
