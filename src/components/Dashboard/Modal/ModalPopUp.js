@@ -17,6 +17,7 @@ function ModalPopUp({ lat, lon }) {
     const [isLoading, setIsLoading] = useState(false);
     const [isFormat, setIsFormat] = useState(true) // for checking if the format of uploaded file is correct or not
 
+    //getting input address's lat and lon using forward geocoding and loading functionality
     useEffect(() => {
         const location__adrs = async () => {
             try {
