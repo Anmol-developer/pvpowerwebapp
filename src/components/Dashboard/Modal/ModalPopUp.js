@@ -194,7 +194,7 @@ function ModalPopUp({ lat, lon }) {
                     </p>
                     <input type='file' id="fileInput" onChange={handleFileChange} accept=".xlsx, .xls" />
                     {selectedFile === null && (<p className='pls-upload'>pls upload file</p>)}
-                    {isFormat === false  && (<p className='pls-upload'>Format not correct</p>)}
+                    {isFormat === false && selectedFile != null  && (<p className='pls-upload'>Format not correct</p>)}
                 </div>
 
                 {disabled ? (<button className='sb-disabled'>Submit</button>) : (<button className='sb-active' onClick={handleInfoSubmit}>Submit</button>)}
