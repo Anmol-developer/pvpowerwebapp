@@ -71,3 +71,6 @@
 #data-type{
     margin-left: 5px;
 }
+.progress__bar{
+    width: 15em;
+}

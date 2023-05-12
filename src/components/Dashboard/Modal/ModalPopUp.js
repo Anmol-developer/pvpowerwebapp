@@ -4,6 +4,7 @@ import '../../../css/Dashboard/Modal/Modal.css'
 import { AiOutlineWarning } from 'react-icons/ai'
 import axios from 'axios';
 import SubmitModal from './SubmitModal';
+import ProgressBar from "@ramonak/react-progress-bar";
 import { read } from 'xlsx';
 import {utils} from 'xlsx';
 
@@ -160,7 +161,8 @@ function ModalPopUp({ lat, lon }) {
             </ShowModal>
 
             <SubmitModal open={showSubmitModal} closeModal={closeSubmitModal}>
-                <p>Submitted</p>
+                <p style={{marginBottom:'5px'}}>Calculating</p>
+                <ProgressBar completed={60} className='progress__bar'/>
             </SubmitModal>
         </div>
     )
