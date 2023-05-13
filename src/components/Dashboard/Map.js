@@ -1,5 +1,4 @@
 import { MapContainer, TileLayer } from 'react-leaflet'
-// import { Marker, Popup } from 'react-leaflet'
 import React from 'react'
 import '../../css/Dashboard/Map.css'
 import DraggableMarker from './DraggableMarker'
