@@ -87,9 +87,12 @@ function ModalPopUp({ lat, lon }) {
         const data = await file.arrayBuffer();
         const workbook = read(data);
 
+
         // Access the user-input sheet
         const userInputSheetName = workbook.SheetNames[0];
         const userInputSheet = workbook.Sheets[userInputSheetName];
+        // const data__sheet = utils.sheet_to_json(userInputSheet, { header: 1 });
+        // console.log(data__sheet)
 
         // Get all values of a specific row
         const rowNum = 1; // Assuming row number 2 (index starts at 1)
@@ -107,7 +110,6 @@ function ModalPopUp({ lat, lon }) {
             rowValues.push(cell.v);
         }
 
-        console.log('Row Values:', rowValues);
 
         //checking for file format
         for (let i = 0; i < rowValues.length; i++) {

@@ -9,4 +9,33 @@
 .link-to-graph{
     color: white;
     text-decoration: none;
+    border: 1px solid white;
+}
+.user-sideInfo{
+    border-bottom: 1px solid #b1bbc8;
+    margin-bottom: 5px;
+    height: 2.8rem;
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+.username-icon{
+    font-size: 15px;
+    margin-right: 8px;
+    margin-left: 8px;
+}
+.account-info{
+    position: absolute;
+    right: 5px;
+    border: 1px solid white;
+    height: 100%;
+    padding: 0 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 200ms ease;
+}
+.account-info:hover{
+    background-color: #576a83;
 }
