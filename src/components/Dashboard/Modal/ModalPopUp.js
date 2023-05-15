@@ -17,6 +17,7 @@ function ModalPopUp({ lat, lon }) {
     const [address, setAddress] = useState(''); //for address from lat and lon
     const [isLoading, setIsLoading] = useState(false);
     const [isFormat, setIsFormat] = useState(true) // for checking if the format of uploaded file is correct or not
+    
     //for progress bar
     const [value, setValue] = useState(10);
     const [isIncrementing, setIsIncrementing] = useState(false);
@@ -53,10 +54,10 @@ function ModalPopUp({ lat, lon }) {
                 setIsIncrementing(false);
                 return prevValue;
               } else {
-                return prevValue + 5;
+                return prevValue + 2;
               }
             });
-          }, 1000);
+          }, 5000);
         }
     
         return () => {
@@ -204,7 +205,10 @@ function ModalPopUp({ lat, lon }) {
             <SubmitModal open={showSubmitModal} closeModal={closeSubmitModal}>
                 <p style={{marginBottom:'5px'}}>Calculating</p>
                 <ProgressBar completed={value} className='progress__bar'/>
+                <button className='sample-graph'>Sample graph</button>
+                <button className='cancel-sbmt' onClick={closeSubmitModal}>cancel</button>
             </SubmitModal>
+
         </div>
     )
 }
