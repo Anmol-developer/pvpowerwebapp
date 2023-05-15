@@ -81,6 +81,7 @@
     background-color: green;
     border: none;
     border-radius: 6px;
+    margin: 8px 8px 8px 0;
 }
 .cancel-sbmt{
     padding: 8px;
@@ -88,4 +89,5 @@
     background-color: red;
     border: none;
     border-radius: 6px;
+    margin: 8px;
 }
