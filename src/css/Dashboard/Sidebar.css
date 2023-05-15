@@ -5,12 +5,27 @@
     color: #b1bbc8;
     display: flex;
     flex-direction: column;
+    position: relative;
 }
-.link-to-graph{
+
+.link-to-graph, .link-to-logout{
     color: white;
     text-decoration: none;
-    border: 1px solid white;
+    height: 2.8rem;
+    display: flex;
+    align-items: center;
+    cursor: pointer; 
+    transition: background-color 200ms ease;
 }
+.link-to-graph:hover, .link-to-logout:hover{
+    background-color: #576a83;
+}
+.link-to-logout{
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}
+
 .user-sideInfo{
     border-bottom: 1px solid #b1bbc8;
     margin-bottom: 5px;
@@ -19,15 +34,14 @@
     align-items: center;
     position: relative;
 }
-.username-icon{
+.username-icon, .graph-icon, .logout-icon{
     font-size: 15px;
     margin-right: 8px;
     margin-left: 8px;
 }
 .account-info{
     position: absolute;
-    right: 5px;
-    border: 1px solid white;
+    right: 0;
     height: 100%;
     padding: 0 8px;
     display: flex;
