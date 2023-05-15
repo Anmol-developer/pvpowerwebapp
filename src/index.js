@@ -16,15 +16,17 @@ import About from '../src/components/About'
 import History from '../src/components/History'
 import Login from '../src/components/Login'
 import Dashboard from './components/Dashboard/Dashboard';
-import {Error} from './components/Error'
+import { Error } from './components/Error'
+import Main from './components/Dashboard/Main';
+import ShowGraph from './components/Dashboard/ShowGraph';
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <App/>,
-    errorElement:<Error/>,
+    element: <App />,
+    errorElement: <Error />,
     children: [
-      
+
       {
         path: "/",
         element: <Hero />,
@@ -56,6 +58,16 @@ const router = createBrowserRouter([
       {
         path: "/dashboard",
         element: <Dashboard />,
+        children: [
+          {
+            path: "/",
+            element: <Main />,
+          },
+          {
+            path: "graph/:userId",
+            element: <ShowGraph />,
+          }
+        ]
       }
     ]
   }
