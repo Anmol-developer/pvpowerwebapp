@@ -1,12 +1,12 @@
 import './App.css';
 import Navigation from './components/Navigation';
 import Footer from './components/Footer';
-import { Outlet, useLocation } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 
 function App() {
-  const location = useLocation()
+  // const location = useLocation()
   
-  if(location.pathname!=='/dashboard'){
+  // if(location.pathname!=='/dashboard'){
     return (
       <div className='app__container'>
         <Navigation/>
@@ -15,13 +15,13 @@ function App() {
         <Footer/>
       </div>
     );
-  } else{
-    return (
-      <div className='app__container'>
-        <Outlet/>
-      </div>
-    );
-  }
+  // } else{
+  //   return (
+  //     <div className='app__container'>
+  //       <Outlet/>
+  //     </div>
+  //   );
+  // }
   
 }
 

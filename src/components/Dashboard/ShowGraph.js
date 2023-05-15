@@ -6,20 +6,29 @@ function ShowGraph() {
 
     return (
         <>
-            <div className="graph__container">
+            <div className='main__container'>
+                <div className='main__header'>
+                    <p className='dheader__title'>DASHBOARD</p>
+                    {/* <ModalPopUp/> */}
+                    <p className='dheader__greet'>welcome back User</p>
+                </div>
+                <div className='main__plot'>
+                    <button className="params-btn">Select Parameters</button>
                 <Plot
+                    className="plot"
                     data={[
                         {
                             x: [1, 2, 3],
                             y: [2, 6, 3],
                             type: 'scatter',
-                            mode: 'lines+markers',
+                            mode: 'lines',
                             marker: { color: 'red' },
                         },
-                        { type: 'bar', x: [1, 2, 3], y: [2, 5, 3] },
+                        { type: 'lines', x: [1, 2, 3], y: [2, 5, 3] },
                     ]}
-                    layout={{ width: 320, height: 240, title: 'A Fancy Plot' }}
+                    layout={{ title: 'A Fancy Plot' }}
                 />
+                </div>
             </div>
         </>
     )

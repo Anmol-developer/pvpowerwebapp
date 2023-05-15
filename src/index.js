@@ -54,21 +54,22 @@ const router = createBrowserRouter([
       {
         path: "/login",
         element: <Login />,
+      }
+    ]
+  },
+  {
+    path: "/dashboard",
+    element: <Dashboard />,
+    children: [
+      {
+        path: 'main/:userId',
+        element: <Main/>
       },
       {
-        path: "/dashboard",
-        element: <Dashboard />,
-        children: [
-          {
-            path: "/",
-            element: <Main />,
-          },
-          {
-            path: "graph/:userId",
-            element: <ShowGraph />,
-          }
-        ]
-      }
+        path: 'graph/:userId',
+        element: <ShowGraph/>
+      },
+
     ]
   }
 ]);

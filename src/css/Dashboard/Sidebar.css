@@ -3,4 +3,10 @@
     height: 100vh;
     background-color: #364354;
     color: #b1bbc8;
+    display: flex;
+    flex-direction: column;
+}
+.link-to-graph{
+    color: white;
+    text-decoration: none;
 }

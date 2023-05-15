@@ -1,0 +1,22 @@
+.main__plot{
+    border: 1px solid black;
+    height: 90%;
+    width: 100%;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    padding: 5px;
+}
+.params-btn{
+    width: fit-content;
+    border-radius: 9px;
+    border: none;
+    background-color: rgb(61, 61, 194);
+    color: white;
+    padding: 8px;
+    cursor:pointer;
+    margin-bottom: 8px;
+}
+.params-btn:hover{
+    background-color: rgb(47, 47, 145);
+}

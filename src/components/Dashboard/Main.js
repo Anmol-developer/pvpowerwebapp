@@ -35,7 +35,7 @@ function Main() {
       <div className='main__header'>
         <p className='dheader__title'>DASHBOARD</p>
         {/* <ModalPopUp/> */}
-        <p className='dheader__greet'>welcome back User</p>
+        <p className='dheader__greet'>welcome User</p>
       </div>
       <div className='main__map'>
         <form onSubmit={forwardGeocode}>
