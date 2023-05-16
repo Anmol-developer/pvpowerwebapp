@@ -1,8 +1,15 @@
-import React from "react";
+import React, { useReducer } from "react";
 import Plot from 'react-plotly.js';
 import '../../css/Dashboard/ShowGraph.css'
+import { InitialState, reducer } from "../../reducer/DataReducer";
 
 function ShowGraph() {
+    const [state,dispatch] = useReducer(reducer,InitialState)
+
+    const handleData = ()=>{
+        dispatch({type:'give_data'})
+        console.log(state)
+    }
 
     return (
         <>
@@ -13,7 +20,7 @@ function ShowGraph() {
                     <p className='dheader__greet'>welcome back User</p>
                 </div>
                 <div className='main__plot'>
-                    <button className="params-btn">Select Parameters</button>
+                    <button className="params-btn" onClick={handleData}>Select Parameters</button>
                     <Plot
                         className="plot"
                         data={[

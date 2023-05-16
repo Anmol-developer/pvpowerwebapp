@@ -15,7 +15,6 @@ function DraggableMarker() {
         dragend() {
           const marker = markerRef.current
           if (marker != null) {
-            // console.log(marker.getLatLng().lng)
             dispatch({type:'SET_POSITION',payload: [marker.getLatLng().lat,marker.getLatLng().lng]})
           }
         }
@@ -24,7 +23,7 @@ function DraggableMarker() {
     )
 
     useEffect(()=>{
-      console.log(contextValue[0])
+      // console.log(contextValue[0])
       if (contextValue[0]!==undefined) {
         dispatch({type:'SET_POSITION',payload:[contextValue[0],contextValue[1]]})
       }

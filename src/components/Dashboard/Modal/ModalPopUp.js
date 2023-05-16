@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useReducer, useState } from 'react'
 import ShowModal from './ShowModal';
 import '../../../css/Dashboard/Modal/Modal.css'
 import { AiOutlineWarning } from 'react-icons/ai'
@@ -6,9 +6,12 @@ import axios from 'axios';
 import SubmitModal from './SubmitModal';
 import ProgressBar from "@ramonak/react-progress-bar";
 import { read } from 'xlsx';
-import {utils} from 'xlsx';
+import {utils, SSF} from 'xlsx';
+import {reducer,InitialState} from '../../../reducer/DataReducer'
+import { useNavigate } from 'react-router-dom';
 
 function ModalPopUp({ lat, lon }) {
+    const navigate = useNavigate();
     const [showModal, setShowModal] = useState(false);
     const [showSubmitModal, setSubModal] = useState(false);
     const [disabled, setDisabled] = useState(true) //for submit btn disabled feature
@@ -17,8 +20,8 @@ function ModalPopUp({ lat, lon }) {
     const [address, setAddress] = useState(''); //for address from lat and lon
     const [isLoading, setIsLoading] = useState(false);
     const [isFormat, setIsFormat] = useState(true) // for checking if the format of uploaded file is correct or not
-    const [data_for_ex, setData] = useState([]);
-
+    const [state, dispatch] = useReducer(reducer,InitialState)
+    
     //for progress bar
     const [value, setValue] = useState(10);
     const [isIncrementing, setIsIncrementing] = useState(false);
@@ -95,18 +98,18 @@ function ModalPopUp({ lat, lon }) {
 
         //extracting data for graph plotting
         const excelData = utils.sheet_to_json(userInputSheet, { header: 1 });
-        // console.log(excelData)
         const extractedData = excelData.slice(1).map((row) => {
-            const dateValue = new Date(Date.parse(row[0]));
-            const formattedDate = dateValue;
+            const numericValue = parseFloat(row[0]);
+            const dateObject = SSF.parse_date_code(numericValue);
     
             return {
-              date: formattedDate,
+              date: dateObject.m  + '/' + dateObject.d + '/' + dateObject.y,
+              time: dateObject.H + ':' + dateObject.M + ':' + dateObject.S,
               pv: row[1],
             };
-          });
-        setData(extractedData)
-        console.log('data: ',extractedData)
+          })
+
+        dispatch({type:'SET_DATA', payload:extractedData})
 
         // Getting the names of headers to check for format
         const rowNum = 1; // Assuming row number 2 (index starts at 1)
@@ -129,7 +132,7 @@ function ModalPopUp({ lat, lon }) {
         for (let i = 0; i < rowValues.length; i++) {
             const element = rowValues[i];
             // console.log(element)
-            if (element !== data_format[i] || rowValues.length !== data_format.length) {
+            if ((element !== data_format[i] || rowValues.length !== data_format.length)&&state.data.length===0) {
                 setIsFormat(false);
                 setDisabled(true)
                 break;
@@ -143,6 +146,7 @@ function ModalPopUp({ lat, lon }) {
         setShowModal(false)
         setSubModal(true)
         setIsIncrementing(true);
+        console.log('data: ',state.data.length)
     }
 
 
@@ -171,6 +175,10 @@ function ModalPopUp({ lat, lon }) {
         setDataType(e.target.value)
         isFormat?setIsFormat(false):setIsFormat(true)
         !isFormat && selectedFile!==null ? setDisabled(false):setDisabled(true)
+    }
+
+    const redirectToGraph = ()=>{
+        navigate('/dashboard/graph/1')
     }
 
     return (
@@ -221,7 +229,7 @@ function ModalPopUp({ lat, lon }) {
             <SubmitModal open={showSubmitModal} closeModal={closeSubmitModal}>
                 <p style={{marginBottom:'5px'}}>Calculating</p>
                 <ProgressBar completed={value} className='progress__bar'/>
-                <button className='sample-graph'>Sample graph</button>
+                <button className='sample-graph' onClick={redirectToGraph}>Sample graph</button>
                 <button className='cancel-sbmt' onClick={closeSubmitModal}>cancel</button>
             </SubmitModal>
 

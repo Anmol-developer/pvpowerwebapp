@@ -15,13 +15,6 @@ function App() {
         <Footer/>
       </div>
     );
-  // } else{
-  //   return (
-  //     <div className='app__container'>
-  //       <Outlet/>
-  //     </div>
-  //   );
-  // }
   
 }
 

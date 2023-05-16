@@ -3,7 +3,7 @@ import React from "react";
 import ReactDom from "react-dom";
 import '../../../css/Dashboard/Modal/SubmitModal.css'
 
-function SubmitModal({open, closeModal, children}) {
+function SubmitModal({open, children}) {
     
     if(!open) return null;
 
@@ -11,7 +11,6 @@ function SubmitModal({open, closeModal, children}) {
         <>
         <div className="submitmodal-wrapper"></div>
             <div className='submitmodal__container'>
-                {/* <AiOutlineClose className='close-btn' onClick={closeModal}/> */}
                 {children}
             </div>
         </>,
