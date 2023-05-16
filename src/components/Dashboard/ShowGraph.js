@@ -15,8 +15,7 @@ function ShowGraph() {
             <div className='main__container'>
                 <div className='main__header'>
                     <p className='dheader__title'>DASHBOARD &gt; Graph</p>
-                    {/* <ModalPopUp/> */}
-                    <p className='dheader__greet'>welcome back User</p>
+                    <p className='dheader__greet'>welcome User</p>
                 </div>
                 <div className='main__plot'>
                     <button className="params-btn" onClick={handleData}>Select Parameters</button>
