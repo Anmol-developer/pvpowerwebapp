@@ -5,6 +5,38 @@ import DataContext from "../../context/Data";
 
 function ShowGraph() {
     const {dataEx} = useContext(DataContext)
+    // Extract the data and time from the Excel sheet columns
+    const selectedDate = '12/5/2022';
+  const dates = dataEx.map((row) => row.date);
+  const pvValues = dataEx.map((row) => row.pv);
+  const time = dataEx.map((row) => row.time);
+
+  // Filter the data for the selected date
+     const filteredPVValues = pvValues.filter((_, index) => dates[index].startsWith(selectedDate));
+  const filteredTime = time.filter((_, index) => dates[index].startsWith(selectedDate));
+
+  // Prepare the plot data
+  const plotData = [
+    {
+      y: filteredTime,
+      x: filteredPVValues,
+      type: 'scatter',
+      mode: 'lines+markers',
+      marker: { color: 'blue' },
+    },
+  ];
+
+  // Set the layout options for the plot
+  const layout = {
+    title: `PV Data for ${selectedDate}`,
+    yaxis: {
+      title: 'Time'
+    },
+    xaxis: {
+      title: 'PV Data',
+    },
+  };
+
 
     const handleData = ()=>{
         console.log(dataEx)
@@ -21,11 +53,8 @@ function ShowGraph() {
                     <button className="params-btn" onClick={handleData}>Select Parameters</button>
                     <Plot
                         className="plot"
-                        data={[
-
-                            { type: 'lines', x: [1, 2, 3], y: [2, 5, 3] },
-                        ]}
-                        layout={{ title: 'A Fancy Plot' }}
+                        data={plotData}
+                        layout={layout}
                     />
                 </div>
             </div>

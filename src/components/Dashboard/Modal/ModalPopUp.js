@@ -30,6 +30,7 @@ function ModalPopUp({ lat, lon }) {
     const {setdata} = useContext(DataContext);
 
     //getting input address's lat and lon using forward geocoding and loading functionality
+    
     useEffect(() => {
         const location__adrs = async () => {
             try {
@@ -78,6 +79,7 @@ function ModalPopUp({ lat, lon }) {
         //initializing state so that it is default every time file changes
         setIsFormat(true);
         setValue(10)
+        
         setIsIncrementing(false)
         
         //declaring an array to check format with
@@ -112,7 +114,7 @@ function ModalPopUp({ lat, lon }) {
             };
           })
 
-        dispatch({type:'SET_DATA', payload:extractedData})
+        dispatch({ type: 'SET_DATA', payload: extractedData })
 
         // Getting the names of headers to check for format
         const rowNum = 1; // Assuming row number 2 (index starts at 1)
@@ -135,7 +137,7 @@ function ModalPopUp({ lat, lon }) {
         for (let i = 0; i < rowValues.length; i++) {
             const element = rowValues[i];
             // console.log(element)
-            if ((element !== data_format[i] || rowValues.length !== data_format.length)&&state.data.length===0) {
+            if (element !== data_format[i] || rowValues.length !== data_format.length) {
                 setIsFormat(false);
                 setDisabled(true)
                 break;
@@ -150,7 +152,6 @@ function ModalPopUp({ lat, lon }) {
         setSubModal(true)
         setIsIncrementing(true);
         setdata(state.data);
-        console.log('data: ',state.data.length)
     }
 
 
