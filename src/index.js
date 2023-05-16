@@ -19,6 +19,8 @@ import Dashboard from './components/Dashboard/Dashboard';
 import { Error } from './components/Error'
 import Main from './components/Dashboard/Main';
 import ShowGraph from './components/Dashboard/ShowGraph';
+import UserHistory from '../src/components/Dashboard/UserHistoy';
+import UserAccount from '../src/components/Dashboard/UserAccount';
 
 const router = createBrowserRouter([
   {
@@ -68,6 +70,14 @@ const router = createBrowserRouter([
       {
         path: 'graph/:userId',
         element: <ShowGraph/>
+      },
+      {
+        path: 'history/:userId',
+        element: <UserHistory/>
+      },
+      {
+        path: 'account/:userId',
+        element: <UserAccount/>
       },
 
     ]

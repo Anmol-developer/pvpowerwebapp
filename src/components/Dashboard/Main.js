@@ -33,7 +33,7 @@ function Main() {
   return (
     <div className='main__container'>
       <div className='main__header'>
-        <p className='dheader__title'>DASHBOARD</p>
+        <p className='dheader__title'>DASHBOARD &gt; Home</p>
         {/* <ModalPopUp/> */}
         <p className='dheader__greet'>welcome User</p>
       </div>

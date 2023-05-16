@@ -8,7 +8,7 @@
     position: relative;
 }
 
-.link-to-graph, .link-to-logout{
+.link-to-graph, .link-to-logout, .link-to-history, .link-to-home{
     color: white;
     text-decoration: none;
     height: 2.8rem;
@@ -17,7 +17,7 @@
     cursor: pointer; 
     transition: background-color 200ms ease;
 }
-.link-to-graph:hover, .link-to-logout:hover{
+.link-to-graph:hover, .link-to-logout:hover, .link-to-history:hover, .link-to-home:hover{
     background-color: #576a83;
 }
 .link-to-logout{
@@ -34,12 +34,14 @@
     align-items: center;
     position: relative;
 }
-.username-icon, .graph-icon, .logout-icon{
+.username-icon, .graph-icon, .logout-icon, .history-icon, .home-icon{
     font-size: 15px;
     margin-right: 8px;
     margin-left: 8px;
 }
 .account-info{
+    color: #b1bbc8;
+    text-decoration: none;
     position: absolute;
     right: 0;
     height: 100%;

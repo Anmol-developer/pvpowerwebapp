@@ -8,7 +8,7 @@ function ShowGraph() {
         <>
             <div className='main__container'>
                 <div className='main__header'>
-                    <p className='dheader__title'>DASHBOARD</p>
+                    <p className='dheader__title'>DASHBOARD &gt; Graph</p>
                     {/* <ModalPopUp/> */}
                     <p className='dheader__greet'>welcome back User</p>
                 </div>
