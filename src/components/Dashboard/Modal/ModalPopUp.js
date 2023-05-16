@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useReducer, useState } from 'react'
+import React, { useContext, useEffect, useReducer } from 'react'
 import ShowModal from './ShowModal';
 import '../../../css/Dashboard/Modal/Modal.css'
 import { AiOutlineWarning } from 'react-icons/ai'
@@ -13,84 +13,80 @@ import DataContext from '../../../context/Data';
 
 function ModalPopUp({ lat, lon }) {
     const navigate = useNavigate();
-    const [showModal, setShowModal] = useState(false);
-    const [showSubmitModal, setSubModal] = useState(false);
-    const [disabled, setDisabled] = useState(true) //for submit btn disabled feature
-    const [dataType, setDataType] = useState('pv__data');
-    const [selectedFile, setSelectedFile] = useState(null);
-    const [address, setAddress] = useState(''); //for address from lat and lon
-    const [isLoading, setIsLoading] = useState(false);
-    const [isFormat, setIsFormat] = useState(true) // for checking if the format of uploaded file is correct or not
     const [state, dispatch] = useReducer(reducer,InitialState)
     
-    //for progress bar
-    const [value, setValue] = useState(10);
-    const [isIncrementing, setIsIncrementing] = useState(false);
-
     const {setdata} = useContext(DataContext);
 
-    //getting input address's lat and lon using forward geocoding and loading functionality
-    
+    //getting input address's lat and lon using forward geocoding and loading functionality    
     useEffect(() => {
         const location__adrs = async () => {
             try {
-                setIsLoading(true)
+                // setIsLoading(true)
+                dispatch({type:'SET_LOADING', payload:true})
                 const result = await axios.get(`https://api.opencagedata.com/geocode/v1/json?key=9ab902a1269a44849e0d0200437bac80&q=${lat},${lon}&pretty=1`);
                 const location = result.data.results[0].formatted;
-                setAddress(location)
+                // setAddress(location)
+                dispatch({type:'SET_ADDRESS', payload:location})
             } catch (error) {
                 alert(error)
             } finally {
-                setIsLoading(false); // Set isLoading state back to false after the request is completed
+                // setIsLoading(false); // Set isLoading state back to false after the request is completed
+                dispatch({type:'SET_LOADING', payload:false})
             }
         }
 
         location__adrs()
-        setValue(10)
-        setIsIncrementing(false)
+        // setValue(10)
+        dispatch({type:'SET_VALUE',payload:10})
+        // setIsIncrementing(false)
+        dispatch({type:'SET_INCREMENT', payload:false})
     }, [lat, lon])
 
     //for progress bar
     useEffect(() => {
         let interval;
     
-        if (isIncrementing) {
+        if (state.isIncrementing) {
           interval = setInterval(() => {
-            setValue((prevValue) => {
-              if (prevValue >= 100) {
+           if (state.value >= 100) {
                 clearInterval(interval);
-                setIsIncrementing(false);
-                return prevValue;
+                // setIsIncrementing(false);
+                // return prevValue;
+                dispatch({type:'SET_INCREMENT',payload:false})
               } else {
-                return prevValue + 2;
+                  dispatch({type:'SET_VALUE',payload: state.value + 2})
               }
-            });
           }, 5000);
         }
     
         return () => {
           clearInterval(interval);
         };
-      }, [isIncrementing]);
+      }, [state.isIncrementing]);
     
     
       
     const handleFileChange = async (event) => {
         //initializing state so that it is default every time file changes
-        setIsFormat(true);
-        setValue(10)
+        // setIsFormat(true);
+        dispatch({type:'SET_FORMAT',payload:true})
+        // setValue(10)
+        dispatch({type:'SET_VALUE',payload:10})
         
-        setIsIncrementing(false)
+        // setIsIncrementing(false)
+        dispatch({type:'SET_INCREMENT',payload:false})
         
         //declaring an array to check format with
         const format1 = ['Date', 'PV Power (kW)', 'Solar Irradiation', 'Ambient Temperature', 'Wind Speed', 'Relative Humidity', 'Cloud Cover', 'Rainfall']
         const format2 = ['Date', 'PV Power (kW)']
-        const data_format = (dataType === 'pv__data' ? format2 : format1);
+        const data_format = (state.dataType === 'pv__data' ? format2 : format1);
         
         //handling file
         const file = event.target.files[0];
-        setSelectedFile(file);
-        setDisabled(false)
+        // setSelectedFile(file);
+        dispatch({type:'SET_FILE',payload:file})
+        // setDisabled(false)
+        dispatch({type:'SET_DISABLED',payload:false})
 
         //converting file to array buffer
         const data = await file.arrayBuffer();
@@ -138,8 +134,10 @@ function ModalPopUp({ lat, lon }) {
             const element = rowValues[i];
             // console.log(element)
             if (element !== data_format[i] || rowValues.length !== data_format.length) {
-                setIsFormat(false);
-                setDisabled(true)
+                // setIsFormat(false);
+                dispatch({type:'SET_FORMAT',payload:false})
+                // setDisabled(true)
+                dispatch({type:'SET_DISABLED',payload:true})
                 break;
             }
         }
@@ -148,38 +146,60 @@ function ModalPopUp({ lat, lon }) {
     };
 
     const handleInfoSubmit = () => {
-        setShowModal(false)
-        setSubModal(true)
-        setIsIncrementing(true);
+        // setShowModal(false)
+        dispatch({type:'SET_SHOWMODAL',payload:false})
+        // setSubModal(true)
+        dispatch({type:'SET_SUBMODAL', payload:true})
+        // setIsIncrementing(true);
+        dispatch({type:'SET_INCREMENT', payload:true})
         setdata(state.data);
     }
 
 
     const closeModal = () => {
-        setShowModal(false)
+        // setShowModal(false)
+        dispatch({type:'SET_SHOWMODAL',payload:false})
         //setting everything back to default
-        setIsFormat(true)
-        setSelectedFile(null)
-        setDisabled(true)
-        setDataType('pv__data')
+        // setIsFormat(true)
+        dispatch({type:'SET_FORMAT',payload:true})
+        // setSelectedFile(null)
+        dispatch({type:'SET_FILE',payload:null})
+        // setDisabled(true)
+        dispatch({type:'SET_DISABLED',payload:true})
+        // setDataType('pv__data')
+        dispatch({type:'SET_DATATYPE',payload:'pv__data'})
     };
     const closeSubmitModal = () => {
-        setSubModal(false);
+        // setSubModal(false);
+        dispatch({type:'SET_SUBMODAL',payload:false})
+
         //setting everything back to default
-        setDisabled(true)
-        setDataType('pv__data')
-        setIsFormat(true)
-        setSelectedFile(null)
+        // setDisabled(true)
+        dispatch({type:'SET_DISABLED',payload:true})
+
+        // setDataType('pv__data')
+        dispatch({type:'SET_DATATYPE',payload:'pv__data'})
+
+        // setIsFormat(true)
+        dispatch({type:'SET_FORMAT',payload:true})
+
+        // setSelectedFile(null)
+        dispatch({type:'SET_FILE',payload:null})
+
     }
 
     const setLocation = async () => {
-        setShowModal(true);
+        // setShowModal(true);
+        dispatch({type:'SET_SHOWMODAL',payload:true})
     }
 
     const handleDataType = (e) => {
-        setDataType(e.target.value)
-        isFormat?setIsFormat(false):setIsFormat(true)
-        !isFormat && selectedFile!==null ? setDisabled(false):setDisabled(true)
+        // setDataType(e.target.value)
+        dispatch({type:'SET_DATATYPE',payload: e.target.value})
+
+        state.isFormat? dispatch({type:'SET_FORMAT',payload:false}) : dispatch({type:'SET_FORMAT',payload:true})
+
+        !state.isFormat && state.selectedFile!==null ? dispatch({type:'SET_DISABLED',payload:false}):dispatch({type:'SET_DISABLED',payload:true})
     }
 
     const redirectToGraph = ()=>{
@@ -192,7 +212,7 @@ function ModalPopUp({ lat, lon }) {
                 set this location
             </button>
 
-            <ShowModal open={showModal} closeModal={closeModal}>
+            <ShowModal open={state.showModal} closeModal={closeModal}>
                 <h2 className='modal__heading'>Fill the information</h2>
                 <p className='modal__lat'>
                     <b>Latitude: </b>{lat}
@@ -201,7 +221,7 @@ function ModalPopUp({ lat, lon }) {
                     <b>Longitude: </b>{lon}
                 </p>
                 <p className='modal__adrs'>
-                    <b>Address: </b>{isLoading && (<span>Loading...</span>)}{(!isLoading && address) && (address)}
+                    <b>Address: </b>{state.isLoading && (<span>Loading...</span>)}{(!state.isLoading && state.address) && (state.address)}
                 </p>
 
                 <form className='data-type-form'>
@@ -214,7 +234,7 @@ function ModalPopUp({ lat, lon }) {
 
                 <div className='sample__table'>
                     <p className='pls-upload'>Format of your data sheet should be same as in sample table</p>
-                    {dataType === 'pv__data' ? (<a href={'https://docs.google.com/spreadsheets/d/1gUmeH_IQ8DKPmq1_UxcVWg4ws-LUgo4C9yO7qSUho_c/edit?usp=sharing'} rel="noreferrer" target="_blank">Sample table for pv data</a>) : (<a href={'https://docs.google.com/spreadsheets/d/12V6K4fs46bQihzyUmSWe54kf2x-bvJcLHLonCgqthsk/edit?usp=sharing'} rel="noreferrer" target="_blank">Sample table for pv data + weather</a>)}
+                    {state.dataType === 'pv__data' ? (<a href={'https://docs.google.com/spreadsheets/d/1gUmeH_IQ8DKPmq1_UxcVWg4ws-LUgo4C9yO7qSUho_c/edit?usp=sharing'} rel="noreferrer" target="_blank">Sample table for pv data</a>) : (<a href={'https://docs.google.com/spreadsheets/d/12V6K4fs46bQihzyUmSWe54kf2x-bvJcLHLonCgqthsk/edit?usp=sharing'} rel="noreferrer" target="_blank">Sample table for pv data + weather</a>)}
                 </div>
 
                 <div className='file__upload'>
@@ -223,17 +243,17 @@ function ModalPopUp({ lat, lon }) {
                         <AiOutlineWarning className='warn-icon' /> Format of your file must be same as the sample table shown above
                     </p>
                     <input type='file' id="fileInput" onChange={handleFileChange} accept=".xlsx, .xls" />
-                    {selectedFile === null && (<p className='pls-upload'>pls upload file</p>)}
-                    {isFormat === false && selectedFile != null  && (<p className='pls-upload'>Format not correct</p>)}
+                    {state.selectedFile === null && (<p className='pls-upload'>pls upload file</p>)}
+                    {state.isFormat === false && state.selectedFile != null  && (<p className='pls-upload'>Format not correct</p>)}
                 </div>
 
-                {disabled ? (<button className='sb-disabled'>Submit</button>) : (<button className='sb-active' onClick={handleInfoSubmit}>Submit</button>)}
+                {state.disabled ? (<button className='sb-disabled'>Submit</button>) : (<button className='sb-active' onClick={handleInfoSubmit}>Submit</button>)}
 
             </ShowModal>
 
-            <SubmitModal open={showSubmitModal} closeModal={closeSubmitModal}>
+            <SubmitModal open={state.showSubmitModal} closeModal={closeSubmitModal}>
                 <p style={{marginBottom:'5px'}}>Calculating</p>
-                <ProgressBar completed={value} className='progress__bar'/>
+                <ProgressBar completed={state.value} className='progress__bar'/>
                 <button className='sample-graph' onClick={redirectToGraph}>Sample graph</button>
                 <button className='cancel-sbmt' onClick={closeSubmitModal}>cancel</button>
             </SubmitModal>
