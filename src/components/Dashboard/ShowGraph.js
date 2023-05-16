@@ -1,14 +1,13 @@
-import React, { useReducer } from "react";
+import React, { useContext } from "react";
 import Plot from 'react-plotly.js';
 import '../../css/Dashboard/ShowGraph.css'
-import { InitialState, reducer } from "../../reducer/DataReducer";
+import DataContext from "../../context/Data";
 
 function ShowGraph() {
-    const [state,dispatch] = useReducer(reducer,InitialState)
+    const {dataEx} = useContext(DataContext)
 
     const handleData = ()=>{
-        dispatch({type:'give_data'})
-        console.log(state)
+        console.log(dataEx)
     }
 
     return (

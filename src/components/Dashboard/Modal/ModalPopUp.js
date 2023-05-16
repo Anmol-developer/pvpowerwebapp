@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer, useState } from 'react'
+import React, { useContext, useEffect, useReducer, useState } from 'react'
 import ShowModal from './ShowModal';
 import '../../../css/Dashboard/Modal/Modal.css'
 import { AiOutlineWarning } from 'react-icons/ai'
@@ -9,6 +9,7 @@ import { read } from 'xlsx';
 import {utils, SSF} from 'xlsx';
 import {reducer,InitialState} from '../../../reducer/DataReducer'
 import { useNavigate } from 'react-router-dom';
+import DataContext from '../../../context/Data';
 
 function ModalPopUp({ lat, lon }) {
     const navigate = useNavigate();
@@ -25,6 +26,8 @@ function ModalPopUp({ lat, lon }) {
     //for progress bar
     const [value, setValue] = useState(10);
     const [isIncrementing, setIsIncrementing] = useState(false);
+
+    const {setdata} = useContext(DataContext);
 
     //getting input address's lat and lon using forward geocoding and loading functionality
     useEffect(() => {
@@ -146,6 +149,7 @@ function ModalPopUp({ lat, lon }) {
         setShowModal(false)
         setSubModal(true)
         setIsIncrementing(true);
+        setdata(state.data);
         console.log('data: ',state.data.length)
     }
 
