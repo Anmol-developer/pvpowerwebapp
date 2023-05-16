@@ -14,20 +14,14 @@ function ShowGraph() {
                 </div>
                 <div className='main__plot'>
                     <button className="params-btn">Select Parameters</button>
-                <Plot
-                    className="plot"
-                    data={[
-                        {
-                            x: [1, 2, 3],
-                            y: [2, 6, 3],
-                            type: 'scatter',
-                            mode: 'lines',
-                            marker: { color: 'red' },
-                        },
-                        { type: 'lines', x: [1, 2, 3], y: [2, 5, 3] },
-                    ]}
-                    layout={{ title: 'A Fancy Plot' }}
-                />
+                    <Plot
+                        className="plot"
+                        data={[
+
+                            { type: 'lines', x: [1, 2, 3], y: [2, 5, 3] },
+                        ]}
+                        layout={{ title: 'A Fancy Plot' }}
+                    />
                 </div>
             </div>
         </>

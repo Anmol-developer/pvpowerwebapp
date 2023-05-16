@@ -17,7 +17,8 @@ function ModalPopUp({ lat, lon }) {
     const [address, setAddress] = useState(''); //for address from lat and lon
     const [isLoading, setIsLoading] = useState(false);
     const [isFormat, setIsFormat] = useState(true) // for checking if the format of uploaded file is correct or not
-    
+    const [data_for_ex, setData] = useState([]);
+
     //for progress bar
     const [value, setValue] = useState(10);
     const [isIncrementing, setIsIncrementing] = useState(false);
@@ -91,10 +92,23 @@ function ModalPopUp({ lat, lon }) {
         // Access the user-input sheet
         const userInputSheetName = workbook.SheetNames[0];
         const userInputSheet = workbook.Sheets[userInputSheetName];
-        // const data__sheet = utils.sheet_to_json(userInputSheet, { header: 1 });
-        // console.log(data__sheet)
 
-        // Get all values of a specific row
+        //extracting data for graph plotting
+        const excelData = utils.sheet_to_json(userInputSheet, { header: 1 });
+        // console.log(excelData)
+        const extractedData = excelData.slice(1).map((row) => {
+            const dateValue = new Date(Date.parse(row[0]));
+            const formattedDate = dateValue;
+    
+            return {
+              date: formattedDate,
+              pv: row[1],
+            };
+          });
+        setData(extractedData)
+        console.log('data: ',extractedData)
+
+        // Getting the names of headers to check for format
         const rowNum = 1; // Assuming row number 2 (index starts at 1)
         const rowValues = [];
 
