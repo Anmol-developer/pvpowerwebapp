@@ -10,23 +10,23 @@ function ShowGraph() {
   const { dataEx, dataType } = useContext(DataContext)
   const [showModal, setShowModal] = useState(false)
   const [selectedOption, setSelectedOption] = useState('');
-  const [startDate, setStartDate] = useState(new Date());
-
+  
   // Extract the data and time from the Excel sheet columns
-  const selectedDate = '12/5/2022';
+  // const selectedDate = '12/5/2022'; // format - MM/d/yyyy
   const dates = dataEx.map((row) => row.date);
+  const [startDate, setStartDate] = useState(new Date(dates[0]));
   const pvValues = dataEx.map((row) => row.pv);
   const time = dataEx.map((row) => row.time);
 
   // Filter the data for the selected date
-  const filteredPVValues = pvValues.filter((_, index) => dates[index].startsWith(selectedDate));
-  const filteredTime = time.filter((_, index) => dates[index].startsWith(selectedDate));
+  const filteredPVValues = pvValues.filter((_, index) => dates[index].startsWith(`${startDate.getMonth()+1}/${startDate.getDay()+4}/${startDate.getFullYear()}`));
+  const filteredTime = time.filter((_, index) => dates[index].startsWith(`${startDate.getMonth()+1}/${startDate.getDay()+4}/${startDate.getFullYear()}`));
 
   // Prepare the plot data
   const plotData = [
     {
-      y: filteredTime,
-      x: filteredPVValues,
+      y: filteredPVValues,
+      x: filteredTime,
       type: 'scatter',
       mode: 'lines+markers',
       marker: { color: 'blue' },
@@ -35,7 +35,7 @@ function ShowGraph() {
 
   // Set the layout options for the plot
   const layout = {
-    title: `PV Data for ${selectedDate}`,
+    title: `PV Data for ${startDate.getMonth()+1}/${startDate.getDay()+4}/${startDate.getFullYear()}`,
     yaxis: {
       title: 'Time'
     },
@@ -45,11 +45,11 @@ function ShowGraph() {
   };
 
   const handleData = () => {
-    // console.log(dataEx)
+    console.log(dates)
     setShowModal(true)
   }
 
-  const closeGraphModal = ()=>{
+  const closeGraphModal = () => {
     setShowModal(false)
   }
 
@@ -70,22 +70,25 @@ function ShowGraph() {
           <Plot
             className="plot"
             data={plotData}
-            config={{responsive:true}}
+            config={{ responsive: true }}
             layout={layout}
           />
         </div>
       </div>
+
       <ShowGraphModal closeGraphModal={closeGraphModal} open={showModal}>
         <h2 className='modal__heading'>Select Parameters</h2>
-        <DatePicker selected={startDate} onChange={date => setStartDate(date)}/>
-        {dataType.map((type)=>{
-          return(
-            <label className="radio__label">
-              <input className="radio" type="radio" value={type} onChange={handleOptionChange} checked={selectedOption === `${type}`} />
-              <p className="radio__txt">{type}</p>
-            </label>
-          )
-        })}
+        <DatePicker selected={startDate} onChange={date => setStartDate(date)}  dateFormat={'M/d/yyyy'}/>
+        <div className="radio-opt">
+          {dataType.map((type) => {
+            return (
+              <label className="radio__label">
+                <input className="radio" type="radio" value={type} onChange={handleOptionChange} checked={selectedOption === `${type}`} />
+                <p className="radio__txt">{type}</p>
+              </label>
+            )
+          })}
+        </div>
       </ShowGraphModal>
     </>
   )

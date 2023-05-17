@@ -82,6 +82,7 @@
     border: none;
     border-radius: 6px;
     margin: 8px 8px 8px 0;
+    cursor: pointer;
 }
 .cancel-sbmt{
     padding: 8px;
@@ -90,4 +91,5 @@
     border: none;
     border-radius: 6px;
     margin: 8px;
+    cursor: pointer;
 }
