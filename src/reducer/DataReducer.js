@@ -46,6 +46,9 @@ const reducer = (state, action) => {
 
         case 'SET_SUBMODAL':
             return { ...state, showSubmitModal: action.payload };
+        
+        case 'SET_INCVALUE':
+            return {...state, value: state.value + 2}
 
         default:
             return state;

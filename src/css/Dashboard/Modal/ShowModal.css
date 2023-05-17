@@ -1,5 +1,5 @@
-.showmodal-wrapper{
-    position: fixed;
+.showmodal-wrapper {
+  position: fixed;
   top: 0;
   left: 0;
   right: 0;
@@ -8,18 +8,18 @@
   z-index: 1000
 }
 
-.showmodal__container{
-    position: fixed;
+.showmodal__container {
+  position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   background-color: #FFF;
   padding: 50px;
   z-index: 1000;
-  
+
 }
 
-.close-btn{
+.close-btn {
   font-weight: 15px;
   cursor: pointer;
   position: absolute;

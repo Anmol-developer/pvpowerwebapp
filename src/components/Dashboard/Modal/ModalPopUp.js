@@ -21,24 +21,19 @@ function ModalPopUp({ lat, lon }) {
     useEffect(() => {
         const location__adrs = async () => {
             try {
-                // setIsLoading(true)
                 dispatch({type:'SET_LOADING', payload:true})
                 const result = await axios.get(`https://api.opencagedata.com/geocode/v1/json?key=9ab902a1269a44849e0d0200437bac80&q=${lat},${lon}&pretty=1`);
                 const location = result.data.results[0].formatted;
-                // setAddress(location)
                 dispatch({type:'SET_ADDRESS', payload:location})
             } catch (error) {
                 alert(error)
             } finally {
-                // setIsLoading(false); // Set isLoading state back to false after the request is completed
-                dispatch({type:'SET_LOADING', payload:false})
+                dispatch({type:'SET_LOADING', payload:false})// Set isLoading state back to false after the request is completed
             }
         }
 
         location__adrs()
-        // setValue(10)
         dispatch({type:'SET_VALUE',payload:10})
-        // setIsIncrementing(false)
         dispatch({type:'SET_INCREMENT', payload:false})
     }, [lat, lon])
 
@@ -50,11 +45,9 @@ function ModalPopUp({ lat, lon }) {
           interval = setInterval(() => {
            if (state.value >= 100) {
                 clearInterval(interval);
-                // setIsIncrementing(false);
-                // return prevValue;
                 dispatch({type:'SET_INCREMENT',payload:false})
               } else {
-                  dispatch({type:'SET_VALUE',payload: state.value + 2})
+                  dispatch({type:'SET_INCVALUE'})
               }
           }, 5000);
         }
@@ -68,12 +61,7 @@ function ModalPopUp({ lat, lon }) {
       
     const handleFileChange = async (event) => {
         //initializing state so that it is default every time file changes
-        // setIsFormat(true);
-        dispatch({type:'SET_FORMAT',payload:true})
-        // setValue(10)
         dispatch({type:'SET_VALUE',payload:10})
-        
-        // setIsIncrementing(false)
         dispatch({type:'SET_INCREMENT',payload:false})
         
         //declaring an array to check format with
@@ -83,11 +71,8 @@ function ModalPopUp({ lat, lon }) {
         
         //handling file
         const file = event.target.files[0];
-        // setSelectedFile(file);
         dispatch({type:'SET_FILE',payload:file})
-        // setDisabled(false)
-        dispatch({type:'SET_DISABLED',payload:false})
-
+        
         //converting file to array buffer
         const data = await file.arrayBuffer();
         const workbook = read(data);
@@ -111,7 +96,8 @@ function ModalPopUp({ lat, lon }) {
           })
 
         dispatch({ type: 'SET_DATA', payload: extractedData })
-
+        dispatch({type:'SET_DISABLED',payload:false})
+        
         // Getting the names of headers to check for format
         const rowNum = 1; // Assuming row number 2 (index starts at 1)
         const rowValues = [];
@@ -133,68 +119,47 @@ function ModalPopUp({ lat, lon }) {
         for (let i = 0; i < rowValues.length; i++) {
             const element = rowValues[i];
             // console.log(element)
-            if (element !== data_format[i] || rowValues.length !== data_format.length) {
-                // setIsFormat(false);
+            if (element !== data_format[i]) {
                 dispatch({type:'SET_FORMAT',payload:false})
-                // setDisabled(true)
                 dispatch({type:'SET_DISABLED',payload:true})
                 break;
             }
         }
 
-
     };
 
     const handleInfoSubmit = () => {
-        // setShowModal(false)
         dispatch({type:'SET_SHOWMODAL',payload:false})
-        // setSubModal(true)
         dispatch({type:'SET_SUBMODAL', payload:true})
-        // setIsIncrementing(true);
         dispatch({type:'SET_INCREMENT', payload:true})
         setdata(state.data);
     }
 
 
     const closeModal = () => {
-        // setShowModal(false)
         dispatch({type:'SET_SHOWMODAL',payload:false})
         //setting everything back to default
-        // setIsFormat(true)
         dispatch({type:'SET_FORMAT',payload:true})
-        // setSelectedFile(null)
         dispatch({type:'SET_FILE',payload:null})
-        // setDisabled(true)
         dispatch({type:'SET_DISABLED',payload:true})
-        // setDataType('pv__data')
         dispatch({type:'SET_DATATYPE',payload:'pv__data'})
     };
     const closeSubmitModal = () => {
-        // setSubModal(false);
         dispatch({type:'SET_SUBMODAL',payload:false})
 
         //setting everything back to default
-        // setDisabled(true)
         dispatch({type:'SET_DISABLED',payload:true})
-
-        // setDataType('pv__data')
         dispatch({type:'SET_DATATYPE',payload:'pv__data'})
-
-        // setIsFormat(true)
         dispatch({type:'SET_FORMAT',payload:true})
-
-        // setSelectedFile(null)
         dispatch({type:'SET_FILE',payload:null})
 
     }
 
     const setLocation = async () => {
-        // setShowModal(true);
         dispatch({type:'SET_SHOWMODAL',payload:true})
     }
 
     const handleDataType = (e) => {
-        // setDataType(e.target.value)
         dispatch({type:'SET_DATATYPE',payload: e.target.value})
 
         state.isFormat? dispatch({type:'SET_FORMAT',payload:false}) : dispatch({type:'SET_FORMAT',payload:true})
