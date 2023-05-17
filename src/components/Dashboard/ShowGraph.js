@@ -3,11 +3,14 @@ import Plot from 'react-plotly.js';
 import '../../css/Dashboard/ShowGraph.css'
 import DataContext from "../../context/Data";
 import ShowGraphModal from "./Modal/ShowGraphModal";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 function ShowGraph() {
   const { dataEx, dataType } = useContext(DataContext)
   const [showModal, setShowModal] = useState(false)
   const [selectedOption, setSelectedOption] = useState('');
+  const [startDate, setStartDate] = useState(new Date());
 
   // Extract the data and time from the Excel sheet columns
   const selectedDate = '12/5/2022';
@@ -74,6 +77,7 @@ function ShowGraph() {
       </div>
       <ShowGraphModal closeGraphModal={closeGraphModal} open={showModal}>
         <h2 className='modal__heading'>Select Parameters</h2>
+        <DatePicker selected={startDate} onChange={date => setStartDate(date)}/>
         {dataType.map((type)=>{
           return(
             <label className="radio__label">
