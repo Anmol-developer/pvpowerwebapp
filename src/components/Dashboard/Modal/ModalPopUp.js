@@ -62,12 +62,14 @@ function ModalPopUp({ lat, lon }) {
     const handleFileChange = async (event) => {
         //initializing state so that it is default every time file changes
         dispatch({type:'SET_VALUE',payload:10})
+        dispatch({type:'SET_FORMAT', payload:true})
         dispatch({type:'SET_INCREMENT',payload:false})
         
         //declaring an array to check format with
         const format1 = ['Date', 'PV Power (kW)', 'Solar Irradiation', 'Ambient Temperature', 'Wind Speed', 'Relative Humidity', 'Cloud Cover', 'Rainfall']
         const format2 = ['Date', 'PV Power (kW)']
         const data_format = (state.dataType === 'pv__data' ? format2 : format1);
+        dispatch({type:'SET_DATAFORMAT', payload: data_format})
         
         //handling file
         const file = event.target.files[0];
@@ -119,7 +121,12 @@ function ModalPopUp({ lat, lon }) {
         for (let i = 0; i < rowValues.length; i++) {
             const element = rowValues[i];
             // console.log(element)
-            if (element !== data_format[i]) {
+            if (rowValues.length !== data_format.length) {
+                dispatch({type:'SET_FORMAT',payload:false})
+                dispatch({type:'SET_DISABLED',payload:true})
+                break;
+            }
+            else if (element !== data_format[i]) {
                 dispatch({type:'SET_FORMAT',payload:false})
                 dispatch({type:'SET_DISABLED',payload:true})
                 break;
@@ -132,7 +139,7 @@ function ModalPopUp({ lat, lon }) {
         dispatch({type:'SET_SHOWMODAL',payload:false})
         dispatch({type:'SET_SUBMODAL', payload:true})
         dispatch({type:'SET_INCREMENT', payload:true})
-        setdata(state.data);
+        setdata([state.data,state.dataFormat]);
     }
 
 
@@ -209,7 +216,8 @@ function ModalPopUp({ lat, lon }) {
                     </p>
                     <input type='file' id="fileInput" onChange={handleFileChange} accept=".xlsx, .xls" />
                     {state.selectedFile === null && (<p className='pls-upload'>pls upload file</p>)}
-                    {state.isFormat === false && state.selectedFile != null  && (<p className='pls-upload'>Format not correct</p>)}
+                    {(state.isFormat && state.disabled && state.selectedFile !== null) && (<p style={{marginTop:'5px', fontSize:'13px'}}>checking pls wait...</p>)}
+                    {state.isFormat === false && state.selectedFile !== null  && (<p className='pls-upload'>Format not correct</p>)}
                 </div>
 
                 {state.disabled ? (<button className='sb-disabled'>Submit</button>) : (<button className='sb-active' onClick={handleInfoSubmit}>Submit</button>)}

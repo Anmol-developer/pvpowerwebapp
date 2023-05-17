@@ -5,8 +5,10 @@ import DataContext from "../../context/Data";
 import ShowGraphModal from "./Modal/ShowGraphModal";
 
 function ShowGraph() {
-  const { dataEx } = useContext(DataContext)
+  const { dataEx, dataType } = useContext(DataContext)
   const [showModal, setShowModal] = useState(false)
+  const [selectedOption, setSelectedOption] = useState('');
+
   // Extract the data and time from the Excel sheet columns
   const selectedDate = '12/5/2022';
   const dates = dataEx.map((row) => row.date);
@@ -39,7 +41,6 @@ function ShowGraph() {
     }
   };
 
-
   const handleData = () => {
     // console.log(dataEx)
     setShowModal(true)
@@ -48,6 +49,11 @@ function ShowGraph() {
   const closeGraphModal = ()=>{
     setShowModal(false)
   }
+
+  const handleOptionChange = (event) => {
+    setSelectedOption(event.target.value);
+  };
+
 
   return (
     <>
@@ -61,12 +67,21 @@ function ShowGraph() {
           <Plot
             className="plot"
             data={plotData}
+            config={{responsive:true}}
             layout={layout}
           />
         </div>
       </div>
       <ShowGraphModal closeGraphModal={closeGraphModal} open={showModal}>
-        <p>Hello Modal</p>
+        <h2 className='modal__heading'>Select Parameters</h2>
+        {dataType.map((type)=>{
+          return(
+            <label className="radio__label">
+              <input className="radio" type="radio" value={type} onChange={handleOptionChange} checked={selectedOption === `${type}`} />
+              <p className="radio__txt">{type}</p>
+            </label>
+          )
+        })}
       </ShowGraphModal>
     </>
   )

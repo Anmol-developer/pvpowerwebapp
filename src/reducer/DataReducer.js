@@ -9,7 +9,8 @@ const InitialState = {
     isLoading: false,
     isFormat: true,
     value: 10,
-    isIncrementing: false
+    isIncrementing: false,
+    dataFormat: 'pv__data'
 }
 
 const reducer = (state, action) => {
@@ -48,7 +49,10 @@ const reducer = (state, action) => {
             return { ...state, showSubmitModal: action.payload };
         
         case 'SET_INCVALUE':
-            return {...state, value: state.value + 2}
+            return {...state, value: state.value + 2};
+
+        case 'SET_DATAFORMAT':
+            return {...state, dataFormat: action.payload}
 
         default:
             return state;
