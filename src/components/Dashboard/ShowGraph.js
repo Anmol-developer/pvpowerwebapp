@@ -1,15 +1,15 @@
 import React, { useContext, useState } from "react";
-import Plot from 'react-plotly.js';
-import '../../css/Dashboard/ShowGraph.css'
+import Plot from "react-plotly.js";
+import "../../css/Dashboard/ShowGraph.css";
 import DataContext from "../../context/Data";
 import ShowGraphModal from "./Modal/ShowGraphModal";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
 function ShowGraph() {
-  const { dataEx, dataType } = useContext(DataContext)
-  const [showModal, setShowModal] = useState(false)
-  const [selectedOption, setSelectedOption] = useState('PV Power (kW)');
+  const { dataEx, dataType } = useContext(DataContext);
+  const [showModal, setShowModal] = useState(false);
+  const [selectedOption, setSelectedOption] = useState("PV Power (kW)");
   // Extract the data and time from the Excel sheet columns
   // const selectedDate = '12/5/2022'; // format - MM/d/yyyy
   const dates = dataEx.map((row) => row.date);
@@ -18,58 +18,74 @@ function ShowGraph() {
   const time = dataEx.map((row) => row.time);
 
   // Filter the data for the selected date
-  const filteredPVValues = pvValues.filter((_, index) => dates[index].startsWith(`${startDate.getMonth()+1}/${startDate.getDay()+4}/${startDate.getFullYear()}`));
-  const filteredTime = time.filter((_, index) => dates[index].startsWith(`${startDate.getMonth()+1}/${startDate.getDay()+4}/${startDate.getFullYear()}`));
+  const filteredPVValues = pvValues.filter((_, index) =>
+    dates[index].startsWith(
+      `${startDate.getMonth() + 1}/${
+        startDate.getDay() + 4
+      }/${startDate.getFullYear()}`
+    )
+  );
+  const filteredTime = time.filter((_, index) =>
+    dates[index].startsWith(
+      `${startDate.getMonth() + 1}/${
+        startDate.getDay() + 4
+      }/${startDate.getFullYear()}`
+    )
+  );
 
   // Prepare the plot data
   const plotData = [
     {
       y: filteredPVValues,
       x: filteredTime,
-      type: 'scatter',
-      mode: 'lines+markers',
-      marker: { color: 'blue' },
+      type: "scatter",
+      mode: "lines+markers",
+      marker: { color: "blue" },
     },
   ];
 
   // Set the layout options for the plot
   const layout = {
-    title: `PV Data for ${startDate.getMonth()+1}/${startDate.getDay()+4}/${startDate.getFullYear()}`,
+    title: `PV Data for ${startDate.getMonth() + 1}/${
+      startDate.getDay() + 4
+    }/${startDate.getFullYear()}`,
     yaxis: {
-      title: 'Time'
+      title: "Time",
     },
     xaxis: {
       title: selectedOption,
-    }
+    },
   };
 
   const handleData = () => {
-    console.log(dates)
-    setShowModal(true)
-  }
+      setShowModal(true);
+  };
 
   const closeGraphModal = () => {
-    setShowModal(false)
-  }
+    setShowModal(false);
+  };
 
   const handleOptionChange = (value, isChecked) => {
     if (isChecked) {
-      setSelectedOption((prevValues) => prevValues !== value ? prevValues + ', ' + value : value);
+      setSelectedOption((prevValues) =>
+        prevValues !== value ? prevValues + ", " + value : value
+      );
     } else {
-      setSelectedOption((prevValues) => prevValues.replace(value, ''));
+      setSelectedOption((prevValues) => prevValues.replace(value, ""));
     }
   };
 
-
   return (
     <>
-      <div className='plot__container'>
-        <div className='main__header'>
-          <p className='dheader__title'>DASHBOARD &gt; Graph</p>
-          <p className='dheader__greet'>welcome User</p>
+      <div className="plot__container">
+        <div className="main__header">
+          <p className="dheader__title">DASHBOARD &gt; Graph</p>
+          <p className="dheader__greet">welcome User</p>
         </div>
-        <div className='main__plot'>
-          <button className="params-btn" onClick={handleData}>Select Parameters</button>
+        <div className="main__plot">
+          <button className='params-btn' onClick={handleData}>
+            Select Parameters
+          </button>
           <Plot
             className="plot"
             data={plotData}
@@ -79,22 +95,36 @@ function ShowGraph() {
         </div>
       </div>
 
-      <ShowGraphModal closeGraphModal={closeGraphModal} open={showModal}>
-        <h2 className='modal__heading'>Select Parameters</h2>
-        <span>Date: </span><DatePicker selected={startDate} onChange={date => setStartDate(date)}  dateFormat={'M/d/yyyy'}/>
+      {dataEx ? (<ShowGraphModal closeGraphModal={closeGraphModal} open={showModal}>
+        <h2 className="modal__heading">Select Parameters</h2>
+        <span>Date: </span>
+        <DatePicker
+          selected={startDate}
+          onChange={(date) => setStartDate(date)}
+          dateFormat={"M/d/yyyy"}
+        />
         <div className="radio-opt">
           {dataType.map((type) => {
-            if(type === 'Date'){return null}
+            if (type === "Date") {
+              return null;
+            }
             return (
               <label className="radio__label">
-                <input className="radio" type="checkbox" value={type} onChange={(e)=>handleOptionChange(e.target.value,e.target.checked)}/>
+                <input
+                  className="radio"
+                  type="checkbox"
+                  value={type}
+                  onChange={(e) =>
+                    handleOptionChange(e.target.value, e.target.checked)
+                  }
+                />
                 <span className="radio__txt">{type}</span>
               </label>
-            )
+            );
           })}
         </div>
-      </ShowGraphModal>
+      </ShowGraphModal>):(<ShowGraphModal>Please upload data</ShowGraphModal>)}
     </>
-  )
+  );
 }
 export default ShowGraph;
