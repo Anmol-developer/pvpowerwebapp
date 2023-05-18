@@ -9,6 +9,7 @@
 
 .main__plot {
     height: 90%;
+    position: relative;
     width: 100%;
     margin: auto;
     display: flex;
@@ -33,6 +34,7 @@
 
 .plot {
     width: 99%;
+    position: absolute;
     height: 90%;
 }
 

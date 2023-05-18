@@ -10,7 +10,7 @@ const InitialState = {
     isFormat: true,
     value: 10,
     isIncrementing: false,
-    dataFormat: 'pv__data'
+    dataFormat:  ['Date', 'PV Power (kW)']
 }
 
 const reducer = (state, action) => {
@@ -37,7 +37,7 @@ const reducer = (state, action) => {
             return { ...state, isIncrementing: action.payload };
 
         case 'SET_DATATYPE':
-            return { ...state, dataType: action.payload };
+            return { ...state, dataType: action.payload, dataFormat: (action.payload === 'pv__data' ? ['Date', 'PV Power (kW)'] : ['Date', 'PV Power (kW)', 'Solar Irradiation', 'Ambient Temperature', 'Wind Speed', 'Relative Humidity', 'Cloud Cover', 'Rainfall']) };
 
         case 'SET_LOADING':
             return { ...state, isLoading: action.payload };

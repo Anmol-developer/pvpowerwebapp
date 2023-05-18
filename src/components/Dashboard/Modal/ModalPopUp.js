@@ -69,7 +69,6 @@ function ModalPopUp({ lat, lon }) {
         const format1 = ['Date', 'PV Power (kW)', 'Solar Irradiation', 'Ambient Temperature', 'Wind Speed', 'Relative Humidity', 'Cloud Cover', 'Rainfall']
         const format2 = ['Date', 'PV Power (kW)']
         const data_format = (state.dataType === 'pv__data' ? format2 : format1);
-        dispatch({type:'SET_DATAFORMAT', payload: data_format})
         
         //handling file
         const file = event.target.files[0];
@@ -89,6 +88,7 @@ function ModalPopUp({ lat, lon }) {
         const extractedData = excelData.slice(1).map((row) => {
             const numericValue = parseFloat(row[0]);
             const dateObject = SSF.parse_date_code(numericValue);
+            console.log('dateobj', dateObject)
     
             return {
               date: dateObject.m  + '/' + dateObject.d + '/' + dateObject.y,
@@ -133,15 +133,9 @@ function ModalPopUp({ lat, lon }) {
             }
         }
 
+        dispatch({type:'SET_DATAFORMAT', payload: data_format})
+
     };
-
-    const handleInfoSubmit = () => {
-        dispatch({type:'SET_SHOWMODAL',payload:false})
-        dispatch({type:'SET_SUBMODAL', payload:true})
-        dispatch({type:'SET_INCREMENT', payload:true})
-        setdata([state.data,state.dataFormat]);
-    }
-
 
     const closeModal = () => {
         dispatch({type:'SET_SHOWMODAL',payload:false})
@@ -162,15 +156,14 @@ function ModalPopUp({ lat, lon }) {
 
     }
 
-    const setLocation = async () => {
+    const setLocation = () => {
         dispatch({type:'SET_SHOWMODAL',payload:true})
     }
 
     const handleDataType = (e) => {
         dispatch({type:'SET_DATATYPE',payload: e.target.value})
 
-        state.isFormat? dispatch({type:'SET_FORMAT',payload:false}) : dispatch({type:'SET_FORMAT',payload:true})
-
+        state.isFormat ? dispatch({type:'SET_FORMAT',payload:false}) : dispatch({type:'SET_FORMAT',payload:true})
         !state.isFormat && state.selectedFile!==null ? dispatch({type:'SET_DISABLED',payload:false}):dispatch({type:'SET_DISABLED',payload:true})
     }
 
@@ -178,6 +171,13 @@ function ModalPopUp({ lat, lon }) {
         navigate('/dashboard/graph/1')
     }
 
+
+    const handleInfoSubmit = () => {
+        dispatch({type:'SET_SHOWMODAL',payload:false})
+        dispatch({type:'SET_SUBMODAL', payload:true})
+        dispatch({type:'SET_INCREMENT', payload:true})
+        setdata([state.data,state.dataFormat]);
+    }
     return (
         <div className='modal__container'>
             <button className="modal-btn" onClick={setLocation}>

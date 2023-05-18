@@ -9,8 +9,7 @@ import "react-datepicker/dist/react-datepicker.css";
 function ShowGraph() {
   const { dataEx, dataType } = useContext(DataContext)
   const [showModal, setShowModal] = useState(false)
-  const [selectedOption, setSelectedOption] = useState('');
-  
+  const [selectedOption, setSelectedOption] = useState('PV Power (kW)');
   // Extract the data and time from the Excel sheet columns
   // const selectedDate = '12/5/2022'; // format - MM/d/yyyy
   const dates = dataEx.map((row) => row.date);
@@ -40,7 +39,7 @@ function ShowGraph() {
       title: 'Time'
     },
     xaxis: {
-      title: 'PV Data',
+      title: selectedOption,
     }
   };
 
@@ -53,8 +52,12 @@ function ShowGraph() {
     setShowModal(false)
   }
 
-  const handleOptionChange = (event) => {
-    setSelectedOption(event.target.value);
+  const handleOptionChange = (value, isChecked) => {
+    if (isChecked) {
+      setSelectedOption((prevValues) => prevValues !== value ? prevValues + ', ' + value : value);
+    } else {
+      setSelectedOption((prevValues) => prevValues.replace(value, ''));
+    }
   };
 
 
@@ -81,9 +84,10 @@ function ShowGraph() {
         <span>Date: </span><DatePicker selected={startDate} onChange={date => setStartDate(date)}  dateFormat={'M/d/yyyy'}/>
         <div className="radio-opt">
           {dataType.map((type) => {
+            if(type === 'Date'){return null}
             return (
               <label className="radio__label">
-                <input className="radio" type="radio" value={type} onChange={handleOptionChange} checked={selectedOption === `${type}`} />
+                <input className="radio" type="checkbox" value={type} onChange={(e)=>handleOptionChange(e.target.value,e.target.checked)}/>
                 <span className="radio__txt">{type}</span>
               </label>
             )
