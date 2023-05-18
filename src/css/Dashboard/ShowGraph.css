@@ -1,4 +1,4 @@
-.plot__container{
+.plot__container {
     height: 100%;
     padding: 10px;
     flex: 0.8;
@@ -6,7 +6,8 @@
     flex-direction: column;
     background-color: #f7f5f4;
 }
-.main__plot{
+
+.main__plot {
     height: 90%;
     width: 100%;
     margin: auto;
@@ -14,21 +15,37 @@
     flex-direction: column;
     padding: 5px;
 }
-.params-btn{
+
+.params-btn {
     width: fit-content;
     border-radius: 9px;
     border: none;
     background-color: rgb(61, 61, 194);
     color: white;
     padding: 8px;
-    cursor:pointer;
+    cursor: pointer;
     margin-bottom: 8px;
 }
-.params-btn:hover{
+
+.params-btn:hover {
     background-color: rgb(47, 47, 145);
 }
 
-.plot{
+.plot {
     width: 99%;
     height: 90%;
+}
+
+.radio-opt {
+    /* border: 1px solid red; */
+    margin-top: 8px;
+    padding: 5px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+}
+
+.radio__txt {
+    /* border: 1px solid green; */
+    margin-left: 4px;
 }

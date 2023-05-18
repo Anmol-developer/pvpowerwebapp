@@ -78,13 +78,13 @@ function ShowGraph() {
 
       <ShowGraphModal closeGraphModal={closeGraphModal} open={showModal}>
         <h2 className='modal__heading'>Select Parameters</h2>
-        <DatePicker selected={startDate} onChange={date => setStartDate(date)}  dateFormat={'M/d/yyyy'}/>
+        <span>Date: </span><DatePicker selected={startDate} onChange={date => setStartDate(date)}  dateFormat={'M/d/yyyy'}/>
         <div className="radio-opt">
           {dataType.map((type) => {
             return (
               <label className="radio__label">
                 <input className="radio" type="radio" value={type} onChange={handleOptionChange} checked={selectedOption === `${type}`} />
-                <p className="radio__txt">{type}</p>
+                <span className="radio__txt">{type}</span>
               </label>
             )
           })}
