@@ -88,10 +88,11 @@ function ModalPopUp({ lat, lon }) {
         const extractedData = excelData.slice(1).map((row) => {
             const numericValue = parseFloat(row[0]);
             const dateObject = SSF.parse_date_code(numericValue);
-            console.log('dateobj', dateObject)
+            // console.log('dateobj', dateObject)
+            // const formattedDate = new Date(dateObject.y, dateObject.m, dateObject.d)
     
             return {
-              date: dateObject.m  + '/' + dateObject.d + '/' + dateObject.y,
+              date: `${String(dateObject.m).padStart(2, '0')}/${String(dateObject.d).padStart(2, '0')}/${String(dateObject.y)}`,
               time: dateObject.H + ':' + dateObject.M + ':' + dateObject.S,
               pv: row[1],
             };

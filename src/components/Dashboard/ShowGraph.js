@@ -13,26 +13,22 @@ function ShowGraph() {
   // Extract the data and time from the Excel sheet columns
   // const selectedDate = '12/5/2022'; // format - MM/d/yyyy
   const dates = dataEx.map((row) => row.date);
-  const [startDate, setStartDate] = useState(new Date(dates[0]));
+  const [startDate, setStartDate] = useState(dates[0]);
   const pvValues = dataEx.map((row) => row.pv);
   const time = dataEx.map((row) => row.time);
-
+  
   // Filter the data for the selected date
   const filteredPVValues = pvValues.filter((_, index) =>
-    dates[index].startsWith(
-      `${startDate.getMonth() + 1}/${
-        startDate.getDay() + 4
-      }/${startDate.getFullYear()}`
+  dates[index].startsWith(
+    startDate
     )
-  );
-  const filteredTime = time.filter((_, index) =>
+    );
+    const filteredTime = time.filter((_, index) =>
     dates[index].startsWith(
-      `${startDate.getMonth() + 1}/${
-        startDate.getDay() + 4
-      }/${startDate.getFullYear()}`
-    )
-  );
-
+      startDate
+      )
+      );
+      
   // Prepare the plot data
   const plotData = [
     {
@@ -46,9 +42,7 @@ function ShowGraph() {
 
   // Set the layout options for the plot
   const layout = {
-    title: `PV Data for ${startDate.getMonth() + 1}/${
-      startDate.getDay() + 4
-    }/${startDate.getFullYear()}`,
+    title: `PV Data for ${startDate}`,
     yaxis: {
       title: "Time",
     },
@@ -58,6 +52,7 @@ function ShowGraph() {
   };
 
   const handleData = () => {
+    // console.log(dataEx)
       setShowModal(true);
   };
 
@@ -74,6 +69,13 @@ function ShowGraph() {
       setSelectedOption((prevValues) => prevValues.replace(value, ""));
     }
   };
+
+  const handleSetDate = (date)=>{
+    const month = String(date.getMonth() +1).padStart(2,'0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const year = date.getFullYear();
+    setStartDate(`${month}/${day}/${year}`);
+  }
 
   return (
     <>
@@ -95,13 +97,13 @@ function ShowGraph() {
         </div>
       </div>
 
-      {dataEx ? (<ShowGraphModal closeGraphModal={closeGraphModal} open={showModal}>
+      <ShowGraphModal closeGraphModal={closeGraphModal} open={showModal}>
         <h2 className="modal__heading">Select Parameters</h2>
         <span>Date: </span>
         <DatePicker
-          selected={startDate}
-          onChange={(date) => setStartDate(date)}
-          dateFormat={"M/d/yyyy"}
+          selected={new Date(startDate)}
+          onChange={handleSetDate}
+          dateFormat={"MM/dd/yyyy"}
         />
         <div className="radio-opt">
           {dataType.map((type) => {
@@ -123,7 +125,7 @@ function ShowGraph() {
             );
           })}
         </div>
-      </ShowGraphModal>):(<ShowGraphModal>Please upload data</ShowGraphModal>)}
+      </ShowGraphModal>
     </>
   );
 }
