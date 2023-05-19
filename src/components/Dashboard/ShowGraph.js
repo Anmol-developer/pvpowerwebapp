@@ -171,7 +171,8 @@ function ShowGraph() {
 
   const handleData = () => {
     // console.log(dataEx)
-    setShowModal(true);
+    if(startDate) setShowModal(true);
+    else alert('please upload data')
   };
 
   const closeGraphModal = () => {
