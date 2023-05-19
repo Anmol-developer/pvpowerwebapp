@@ -64,6 +64,7 @@ function ModalPopUp({ lat, lon }) {
     dispatch({ type: "SET_VALUE", payload: 10 });
     dispatch({ type: "SET_FORMAT", payload: true });
     dispatch({ type: "SET_INCREMENT", payload: false });
+    dispatch({type:'SET_DISABLED', payload: true})
 
     //declaring an array to check format with
     const format1 = [
