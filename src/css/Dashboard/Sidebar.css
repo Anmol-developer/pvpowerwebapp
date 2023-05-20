@@ -17,6 +17,9 @@
     cursor: pointer; 
     transition: background-color 200ms ease;
 }
+.link-to-graph.active-sb, .link-to-history.active-sb, .link-to-home.active-sb{
+    background-color: #576a83;
+}
 .link-to-graph:hover, .link-to-logout:hover, .link-to-history:hover, .link-to-home:hover{
     background-color: #576a83;
 }
@@ -51,6 +54,9 @@
     justify-content: center;
     cursor: pointer;
     transition: background-color 200ms ease;
+}
+.account-info.active-sb{
+    background-color: #576a83;
 }
 .account-info:hover{
     background-color: #576a83;
