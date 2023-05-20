@@ -90,13 +90,10 @@ function ShowGraph() {
   const filteredCloudCover = CloudCover.filter((_, index) =>
     dates[index].startsWith(startDate)
   );
-  // setFilteredData({...filteredData, ccover:{...filteredData.ccover,data:filteredCloudCover}})
-
+  
   const filteredRainfall = Rainfall.filter((_, index) =>
     dates[index].startsWith(startDate)
   );
-  // setFilteredData({...filteredData, rfall:{...filteredData.rfall,data:filteredRainfall}})
-
 
   // Prepare the plot data
   const plotData = [
@@ -107,6 +104,7 @@ function ShowGraph() {
       mode: "lines+markers",
       name: 'PV',
       marker: { color: 'blue' },
+      visible: (filteredPVValues[0] !== undefined ? true : false)
     },
     {
       y: filteredsolarRadiation,
@@ -115,6 +113,7 @@ function ShowGraph() {
       mode: "lines+markers",
       name: 'Solar radiation',
       marker: { color: 'red' },
+      visible: (filteredsolarRadiation[0] !== undefined ? 'legendonly' : false)
     },
     {
       y: filteredTemperature,
@@ -123,6 +122,7 @@ function ShowGraph() {
       mode: "lines+markers",
       name: 'Temperature',
       marker: { color: 'green' },
+      visible: (filteredTemperature[0] !== undefined ? 'legendonly' : false)
     },
     {
       y: filteredwindSpeed,
@@ -131,6 +131,7 @@ function ShowGraph() {
       mode: "lines+markers",
       name: 'Wind Speed',
       marker: { color: 'pink' },
+      visible: (filteredwindSpeed[0] !== undefined ? 'legendonly' : false)
     },
     {
       y: filteredRainfall,
@@ -138,7 +139,8 @@ function ShowGraph() {
       type: "scatter",
       mode: "lines+markers",
       marker: { color: 'black' },
-      name: 'rainfall'
+      name: 'rainfall',
+      visible: (filteredRainfall[0] !== undefined ? 'legendonly' : false)
     },
     {
       y: filteredRHumidity,
@@ -146,7 +148,8 @@ function ShowGraph() {
       type: "scatter",
       mode: "lines+markers",
       marker: { color: 'orange' },
-      name: 'relative humidity'
+      name: 'relative humidity',
+      visible: (filteredRHumidity[0] !== undefined ? 'legendonly' : false)
     },
     {
       y: filteredCloudCover,
@@ -154,7 +157,8 @@ function ShowGraph() {
       type: "scatter",
       mode: "lines+markers",
       marker: { color: 'grey' },
-      name: 'Cloud Cover'
+      name: 'Cloud Cover',
+      visible: (filteredCloudCover[0] !== undefined ? 'legendonly' : false)
     },
   ];
 
@@ -170,7 +174,7 @@ function ShowGraph() {
   };
 
   const handleData = () => {
-    // console.log(dataEx)
+    // console.log(filteredPVValues[0])
     if(startDate) setShowModal(true);
     else alert('please upload data')
   };

@@ -4,12 +4,12 @@ import "../../../css/Dashboard/Modal/Modal.css";
 import { AiOutlineWarning } from "react-icons/ai";
 import axios from "axios";
 import SubmitModal from "./SubmitModal";
-import ProgressBar from "@ramonak/react-progress-bar";
 import { read } from "xlsx";
 import { utils, SSF } from "xlsx";
 import { reducer, InitialState } from "../../../reducer/DataReducer";
 import { useNavigate } from "react-router-dom";
 import DataContext from "../../../context/Data";
+import ReactLoading from "react-loading";
 
 function ModalPopUp({ lat, lon }) {
   const navigate = useNavigate();
@@ -35,36 +35,12 @@ function ModalPopUp({ lat, lon }) {
     };
 
     location__adrs();
-    dispatch({ type: "SET_VALUE", payload: 10 });
-    dispatch({ type: "SET_INCREMENT", payload: false });
   }, [lat, lon]);
-
-  //for progress bar
-  useEffect(() => {
-    let interval;
-
-    if (state.isIncrementing) {
-      interval = setInterval(() => {
-        if (state.value >= 100) {
-          clearInterval(interval);
-          dispatch({ type: "SET_INCREMENT", payload: false });
-        } else {
-          dispatch({ type: "SET_INCVALUE" });
-        }
-      }, 5000);
-    }
-
-    return () => {
-      clearInterval(interval);
-    };
-  }, [state.isIncrementing]);
 
   const handleFileChange = async (event) => {
     //initializing state so that it is default every time file changes
-    dispatch({ type: "SET_VALUE", payload: 10 });
     dispatch({ type: "SET_FORMAT", payload: true });
-    dispatch({ type: "SET_INCREMENT", payload: false });
-    dispatch({type:'SET_DISABLED', payload: true})
+    dispatch({ type: "SET_DISABLED", payload: true });
 
     //declaring an array to check format with
     const format1 = [
@@ -98,15 +74,15 @@ function ModalPopUp({ lat, lon }) {
     const extractedData = excelData.slice(1).map((row) => {
       const numericValue = parseFloat(row[0]);
       const dateObject = SSF.parse_date_code(numericValue);
-      if (state.dataType === "pv__data") {
-        return {
-          date: `${String(dateObject.m).padStart(2, "0")}/${String(
-            dateObject.d
-          ).padStart(2, "0")}/${String(dateObject.y)}`,
-          time: dateObject.H + ":" + dateObject.M + ":" + dateObject.S,
-          pv: row[1],
-        };
-      }
+      // if (state.dataType === "pv__data") {
+      //   return {
+      //     date: `${String(dateObject.m).padStart(2, "0")}/${String(
+      //       dateObject.d
+      //     ).padStart(2, "0")}/${String(dateObject.y)}`,
+      //     time: dateObject.H + ":" + dateObject.M + ":" + dateObject.S,
+      //     pv: row[1],
+      //   };
+      // }
       return {
         date: `${String(dateObject.m).padStart(2, "0")}/${String(
           dateObject.d
@@ -200,7 +176,6 @@ function ModalPopUp({ lat, lon }) {
   const handleInfoSubmit = () => {
     dispatch({ type: "SET_SHOWMODAL", payload: false });
     dispatch({ type: "SET_SUBMODAL", payload: true });
-    dispatch({ type: "SET_INCREMENT", payload: true });
     setdata([state.data, state.dataFormat]);
   };
   return (
@@ -299,14 +274,33 @@ function ModalPopUp({ lat, lon }) {
       </ShowModal>
 
       <SubmitModal open={state.showSubmitModal} closeModal={closeSubmitModal}>
-        <p style={{ marginBottom: "5px" }}>Calculating</p>
-        <ProgressBar completed={state.value} className="progress__bar" />
-        <button className="sample-graph" onClick={redirectToGraph}>
-          Sample graph
-        </button>
-        <button className="cancel-sbmt" onClick={closeSubmitModal}>
-          cancel
-        </button>
+        <div className="sbmt-modal-childs">
+          <p
+            style={{ marginBottom: "5px", fontSize: "22px", fontWeight: "550" }}
+            className="calculating"
+          >
+            Calculating
+          </p>
+          {/* <ProgressBar completed={state.value} className="progress__bar" /> */}
+          <ReactLoading
+            type={"bars"}
+            color={"blue"}
+            height={"100px"}
+            width={"100px"}
+          />
+          <p className="desc-txt">
+            Calculation will take around 3 hours. You can close the window or
+            view forecast for next day
+          </p>
+          <div className="btns">
+            <button className="sample-graph" onClick={redirectToGraph}>
+              Sample graph
+            </button>
+            <button className="cancel-sbmt" onClick={closeSubmitModal}>
+              cancel
+            </button>
+          </div>
+        </div>
       </SubmitModal>
     </div>
   );
