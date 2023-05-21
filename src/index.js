@@ -21,6 +21,7 @@ import Main from './components/Dashboard/Main';
 import ShowGraph from './components/Dashboard/ShowGraph';
 import UserHistory from '../src/components/Dashboard/UserHistoy';
 import UserAccount from '../src/components/Dashboard/UserAccount';
+import UserForecast from '../src/components/Dashboard/UserForecast';
 
 const router = createBrowserRouter([
   {
@@ -78,6 +79,10 @@ const router = createBrowserRouter([
       {
         path: 'account/:userId',
         element: <UserAccount/>
+      },
+      {
+        path: 'forecast/:userId',
+        element: <UserForecast/>
       },
 
     ]

@@ -4,7 +4,7 @@ import {Link, useLocation, useNavigate, useParams} from 'react-router-dom'
 import {FaUserCircle} from 'react-icons/fa'
 import {BsFillFileBarGraphFill} from 'react-icons/bs'
 import {FiLogOut} from 'react-icons/fi'
-import {MdWorkHistory} from 'react-icons/md'
+import {MdWorkHistory,MdOnlinePrediction} from 'react-icons/md'
 import {AiFillHome} from 'react-icons/ai'
 
 function Sidebar() {
@@ -40,6 +40,11 @@ function Sidebar() {
           <MdWorkHistory className='history-icon'/>
           History
         </Link>
+        <Link to={`/dashboard/forecast/${userId}`} className={`link-to-forecast ${pathname===`/dashboard/forecast/${userId}` && 'active-sb'}`}>
+          <MdOnlinePrediction className='forecast-icon'/>
+          Forecast
+        </Link>
+        
     </div>
   )
 }

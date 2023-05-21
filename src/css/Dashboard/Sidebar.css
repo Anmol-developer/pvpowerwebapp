@@ -8,7 +8,7 @@
     position: relative;
 }
 
-.link-to-graph, .link-to-logout, .link-to-history, .link-to-home{
+.link-to-graph, .link-to-logout, .link-to-history, .link-to-home, .link-to-forecast{
     color: white;
     text-decoration: none;
     height: 2.8rem;
@@ -17,10 +17,10 @@
     cursor: pointer; 
     transition: background-color 200ms ease;
 }
-.link-to-graph.active-sb, .link-to-history.active-sb, .link-to-home.active-sb{
+.link-to-graph.active-sb, .link-to-history.active-sb, .link-to-home.active-sb, .link-to-forecast.active-sb{
     background-color: #576a83;
 }
-.link-to-graph:hover, .link-to-logout:hover, .link-to-history:hover, .link-to-home:hover{
+.link-to-forecast:hover,.link-to-graph:hover, .link-to-logout:hover, .link-to-history:hover, .link-to-home:hover{
     background-color: #576a83;
 }
 .link-to-logout{
@@ -37,7 +37,7 @@
     align-items: center;
     position: relative;
 }
-.username-icon, .graph-icon, .logout-icon, .history-icon, .home-icon{
+.username-icon, .graph-icon, .logout-icon, .history-icon, .home-icon,.forecast-icon{
     font-size: 15px;
     margin-right: 8px;
     margin-left: 8px;
