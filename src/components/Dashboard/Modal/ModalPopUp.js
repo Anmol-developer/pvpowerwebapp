@@ -74,15 +74,7 @@ function ModalPopUp({ lat, lon }) {
     const extractedData = excelData.slice(1).map((row) => {
       const numericValue = parseFloat(row[0]);
       const dateObject = SSF.parse_date_code(numericValue);
-      // if (state.dataType === "pv__data") {
-      //   return {
-      //     date: `${String(dateObject.m).padStart(2, "0")}/${String(
-      //       dateObject.d
-      //     ).padStart(2, "0")}/${String(dateObject.y)}`,
-      //     time: dateObject.H + ":" + dateObject.M + ":" + dateObject.S,
-      //     pv: row[1],
-      //   };
-      // }
+      
       return {
         date: `${String(dateObject.m).padStart(2, "0")}/${String(
           dateObject.d
