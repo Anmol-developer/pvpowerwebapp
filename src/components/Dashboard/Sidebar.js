@@ -1,6 +1,6 @@
 import React from 'react'
 import '../../css/Dashboard/Sidebar.css'
-import {Link, useLocation, useNavigate} from 'react-router-dom'
+import {Link, useLocation, useNavigate, useParams} from 'react-router-dom'
 import {FaUserCircle} from 'react-icons/fa'
 import {BsFillFileBarGraphFill} from 'react-icons/bs'
 import {FiLogOut} from 'react-icons/fi'
@@ -10,7 +10,8 @@ import {AiFillHome} from 'react-icons/ai'
 function Sidebar() {
   const navigate = useNavigate()
   const {pathname} = useLocation()
-  // console.log(pathname);
+  const {userId} = useParams()
+  // console.log(params);
   const navigateToSignup = ()=>{
     //destroy jwt and navigate
     navigate('/signup')
@@ -21,13 +22,13 @@ function Sidebar() {
         <div className='user-sideInfo'>
           <FaUserCircle className='username-icon'/>
           <p className={`user-account`}>Account</p>
-          <Link to={'/dashboard/account/1'} className={`account-info ${pathname===`/dashboard/account/1` && 'active-sb'}`}>&gt;</Link>
+          <Link to={`/dashboard/account/${userId}`} className={`account-info ${pathname===`/dashboard/account/${userId}` && 'active-sb'}`}>&gt;</Link>
         </div>
-        <Link className={`link-to-home ${pathname===`/dashboard/main/1` && 'active-sb'}`} to={'/dashboard/main/1'}>
+        <Link className={`link-to-home ${pathname===`/dashboard/main/${userId}` && 'active-sb'}`} to={`/dashboard/main/${userId}`}>
           <AiFillHome className='home-icon'/>
           Home
         </Link>
-        <Link className={`link-to-graph ${pathname===`/dashboard/graph/1` && 'active-sb'}`} to={'/dashboard/graph/1'}>
+        <Link className={`link-to-graph ${pathname===`/dashboard/graph/${userId}` && 'active-sb'}`} to={`/dashboard/graph/${userId}`}>
           <BsFillFileBarGraphFill className='graph-icon'/>
           Graph
         </Link>
@@ -35,7 +36,7 @@ function Sidebar() {
           <FiLogOut className='logout-icon'/>
           Log out
         </div>
-        <Link to={'/dashboard/history/1'} className={`link-to-history ${pathname===`/dashboard/history/1` && 'active-sb'}`}>
+        <Link to={`/dashboard/history/${userId}`} className={`link-to-history ${pathname===`/dashboard/history/${userId}` && 'active-sb'}`}>
           <MdWorkHistory className='history-icon'/>
           History
         </Link>

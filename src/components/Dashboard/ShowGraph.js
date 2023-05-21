@@ -55,6 +55,9 @@ function ShowGraph() {
   const RHumidity = dataEx.map((row)=> row.RHumidity)
   const CloudCover = dataEx.map((row)=> row.CloudCover)
   const Rainfall = dataEx.map((row)=> row.Rainfall)
+  //for frecast data
+  // const ActualPV = dataEx.map((row)=> row.ActualPV);
+  // const PredictedPV = dataEx.map((row)=> row.PredictedPV)
 
   // Filter the data for the selected date
   const filteredPVValues = pvValues.filter((_, index) =>
@@ -95,8 +98,34 @@ function ShowGraph() {
     dates[index].startsWith(startDate)
   );
 
+//   const filteredActualPV = ActualPV.filter((_, index) =>
+//   dates[index].startsWith(startDate)
+// );
+
+// const filteredPredictedPV = PredictedPV.filter((_, index) =>
+//   dates[index].startsWith(startDate)
+// );
+
   // Prepare the plot data
   const plotData = [
+    // {
+    //   y: filteredActualPV,
+    //   x: filteredTime,
+    //   type: "scatter",
+    //   mode: "lines+markers",
+    //   name: 'Actual PV',
+    //   marker: { color: 'grey' },
+    //   visible: (filteredActualPV[0] !== undefined ? true : false)
+    // },
+    // {
+    //   y: filteredPredictedPV,
+    //   x: filteredTime,
+    //   type: "scatter",
+    //   mode: "lines+markers",
+    //   name: 'Predicted PV',
+    //   marker: { color: 'violet' },
+    //   visible: (filteredPredictedPV[0] !== undefined ? true : false)
+    // },
     {
       y: filteredPVValues,
       x: filteredTime,

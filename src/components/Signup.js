@@ -5,36 +5,47 @@ import { BiUserCircle } from "react-icons/bi";
 import { RiLockPasswordLine } from "react-icons/ri";
 import { FaKey } from "react-icons/fa";
 import { AiOutlineMail } from "react-icons/ai";
-import { Link } from "react-router-dom";
-// import { GoogleLoginButton } from "react-social-login-buttons";
-// import { LoginSocialGoogle } from "reactjs-social-login";
-// import { initialState, reducer } from "../reducer/UserReducer";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 
 function Signup() {
-  // const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [email, setEmail] = useState("");
   const [agreement, setAgreement] = useState(false);
   const [passwordEqual, setPasswordEqual] = useState("");
-  // const [state,dispatch] = useReducer(reducer,initialState)
+  const [user, setUser] = useState([]);
+  const navigate = useNavigate();
 
-  // const onLoginStart = useCallback(() => {
-  //   alert('login start')
-  // }, [])
-
-
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    // Handle form submission here
     if (agreement) {
       if (confirmPassword !== password)
         setPasswordEqual(
           <p className="pls-upload">Password and confirm password unequal</p>
         );
       else setPasswordEqual("");
-      alert("clicked");
+      try {
+        const result = await axios.post("http://localhost:5000/signup", {
+          username,
+          email,
+          password,
+        });
+        if (result.data) {
+          if (result.data !== "user already exists") {
+            setUser(result.data);
+            navigate(`/dashboard/main/${result.data._id}`);
+          } else {
+            alert(result.data);
+            navigate("/signup");
+          }
+        } else {
+          navigate("/signup");
+        }
+      } catch (error) {
+        console.log(error);
+      }
     } else {
       alert("please check the box!");
     }
@@ -99,35 +110,21 @@ function Signup() {
           />
         </label>
 
-        {/* className = "pls-upload" is given so that same css styles are applied to this element as in p element of ModalPopUp with same className */}
         {passwordEqual}
-        {/* <p className="or">or</p>
-        <div className="google__signup">
-          <LoginSocialGoogle
-            client_id="272131417205-oa55svk2q1gfcue7i4qioade22fpbs8c.apps.googleusercontent.com"
-            onLoginStart={onLoginStart}
-            onResolve={({ provider, data }) => {
-              dispatch({type: 'SET_PROVIDER',payload :provider});
-              dispatch({type: 'SET_PROFILE',payload :data});
-              console.log('data: ', data);
-              navigate('/dashboard/main/1')
-            }}
-            cookie_policy = 'single_host_origin'
-            onReject={(err) => {
-              console.log(err);
-            }}
-          >
-            <GoogleLoginButton>
-            Sign up with Google
-            </GoogleLoginButton>
-          </LoginSocialGoogle>
-        </div> */}
-        <label style={{marginTop:'10px'}}>
-          <input type="checkbox" checked={agreement} onChange={handleChange} style={{marginRight:'5px'}}/>I
-          accept Terms and services
+        <label style={{ marginTop: "10px" }}>
+          <input
+            type="checkbox"
+            checked={agreement}
+            onChange={handleChange}
+            style={{ marginRight: "5px" }}
+          />
+          I accept Terms and services
         </label>
         <br />
-        <button className={`signup__btn ${!agreement && 'disabled'}`} type="submit">
+        <button
+          className={`signup__btn ${!agreement && "disabled"}`}
+          type="submit"
+        >
           Register
         </button>
         <Link to={"/login"}>Already a member? Login</Link>

@@ -8,7 +8,7 @@ function Hero() {
         <div className='hero__text'>
             <p className='hero__header'>Power up your day with PV forecasts!</p>
             <p className='hero__desc'>Get real-time predictions for your solar power output with our PV power forecast website. Never miss a beat with accurate and reliable forecasting technology.</p>
-            <Link to={'/dashboard/main/1'} className='hero__btn'>Dashboard</Link> 
+            <Link to={'/signup'} className='hero__btn'>Dashboard</Link> 
         </div>
         <img src={imagex} alt='a hero' className='hero__img'/>
     </div>
