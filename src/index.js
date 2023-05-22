@@ -23,6 +23,7 @@ import UserHistory from '../src/components/Dashboard/UserHistoy';
 import UserAccount from '../src/components/Dashboard/UserAccount';
 import UserForecast from '../src/components/Dashboard/UserForecast';
 import GraphError from '../src/components/GraphError'
+import Validate from './components/Dashboard/Validate';
 
 const router = createBrowserRouter([
   {
@@ -85,6 +86,10 @@ const router = createBrowserRouter([
       {
         path: 'forecast/:userId',
         element: <UserForecast/>
+      },
+      {
+        path: 'validateData/:userId',
+        element: <Validate/>
       },
 
     ]

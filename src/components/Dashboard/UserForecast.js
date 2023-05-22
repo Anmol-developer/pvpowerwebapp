@@ -4,20 +4,17 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import axios from "axios";
 import '../../css/Dashboard/UserForecast.css'
-import { read } from "xlsx";
-import { utils, SSF } from "xlsx";
 
 function ShowGraph() {
   const [data, setData] = useState([]);
-  const [Acdata, setAcData] = useState([]);
   const [startDate, setStartDate] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get("http://localhost:5000/forecast");
-        console.log(response.data[response.data.length - 1]);
-        setStartDate(response.data[response.data.length - 1].date);
+        console.log(response.data[response.data.length - 2]);
+        setStartDate(response.data[response.data.length - 2].date);
         setData(response.data);
       } catch (error) {
         console.log(error);
@@ -28,16 +25,13 @@ function ShowGraph() {
   }, []);
 
   const predicted = data.map((row) => row.Predictedpv);
-  const actual = Acdata.map((row) => row.Actualpv);
   const time = data.map((row) => row.time);
   const dates = data.map((row) => row.date);
 
   const filteredPredictedpv = predicted.filter((_, index) =>
     dates[index].startsWith(startDate)
   );
-  const filteredActualpv = actual.filter((_, index) =>
-    dates[index].startsWith(startDate)
-  );
+  
   const filteredTime = time.filter((_, index) =>
     dates[index].startsWith(startDate)
   );
@@ -52,24 +46,15 @@ function ShowGraph() {
       name: "Predicted",
       marker: { color: "blue" },
       visible: filteredPredictedpv[0] !== undefined ? true : false,
-    },
-    {
-      y: filteredActualpv,
-      x: filteredTime,
-      type: "scatter",
-      mode: "lines+markers",
-      name: "Actual",
-      marker: { color: "red" },
-      visible: filteredActualpv[0] !== undefined ? true : false,
-    },
+    }
   ];
   const layout = {
     title: `PV Data for ${startDate}`,
     yaxis: {
-      title: "Time",
+      title: `Predicted Data`,
     },
     xaxis: {
-      title: `Predicted Data ${Acdata.length!==0?(' & Actual Data'):('')}`,
+      title: "Time",
     },
   };
 
@@ -97,33 +82,6 @@ function ShowGraph() {
     }
   };
 
-  const handleFileChange= async(e)=>{
-    const file = e.target.files[0];
-    const data = await file.arrayBuffer();
-
-    const workbook = read(data);
-
-    const SheetName = workbook.SheetNames[0];
-    const Sheet = workbook.Sheets[SheetName];
-
-    const excelData = utils.sheet_to_json(Sheet, {header:1})
-
-    const extractedData = excelData.slice(1).map((row) => {
-      const numericValue = parseFloat(row[2]);
-      const dateObject = SSF.parse_date_code(numericValue);
-      
-      return {
-        date: `${String(dateObject.m).padStart(2, "0")}/${String(
-          dateObject.d
-        ).padStart(2, "0")}/${String(dateObject.y)}`,
-        time: dateObject.H + ":" + dateObject.M + ":" + dateObject.S,
-        Actualpv: row[0]
-      };
-    });
-
-    setAcData(extractedData)
-  }
-
   return (
     <>
       <div className="plot__container">
@@ -139,12 +97,6 @@ function ShowGraph() {
               onChange={handleSetDate}
               dateFormat={"MM/dd/yyyy"}
             />
-            <input
-            type="file"
-            id="fileInput"
-            onChange={handleFileChange}
-            accept=".xlsx, .xls, .csv"
-          />
           </div>
           <Plot
             className="plot"
