@@ -30,7 +30,7 @@ function Sidebar() {
         </Link>
         <Link className={`link-to-graph ${pathname===`/dashboard/graph/${userId}` && 'active-sb'}`} to={`/dashboard/graph/${userId}`}>
           <BsFillFileBarGraphFill className='graph-icon'/>
-          Graph
+          Visualize
         </Link>
         <div className='link-to-logout' onClick={navigateToSignup}>
           <FiLogOut className='logout-icon'/>

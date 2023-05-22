@@ -18,10 +18,13 @@
     transition: background-color 200ms ease;
 }
 .link-to-graph.active-sb, .link-to-history.active-sb, .link-to-home.active-sb, .link-to-forecast.active-sb{
-    background-color: #576a83;
+    background-color: #f7f5f4;
+    color: gray;
+    border-radius: 10px 0 0 10px;
 }
 .link-to-forecast:hover,.link-to-graph:hover, .link-to-logout:hover, .link-to-history:hover, .link-to-home:hover{
     background-color: #576a83;
+    color: white;
 }
 .link-to-logout{
     position: absolute;

@@ -22,6 +22,7 @@ import ShowGraph from './components/Dashboard/ShowGraph';
 import UserHistory from '../src/components/Dashboard/UserHistoy';
 import UserAccount from '../src/components/Dashboard/UserAccount';
 import UserForecast from '../src/components/Dashboard/UserForecast';
+import GraphError from '../src/components/GraphError'
 
 const router = createBrowserRouter([
   {
@@ -70,7 +71,8 @@ const router = createBrowserRouter([
       },
       {
         path: 'graph/:userId',
-        element: <ShowGraph/>
+        element: <ShowGraph/>,
+        errorElement: <GraphError/>
       },
       {
         path: 'history/:userId',

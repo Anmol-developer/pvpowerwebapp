@@ -1,0 +1,13 @@
+.download-btn{
+    border:none;
+    padding: 8px;
+    border-radius: 8px;
+    cursor: pointer;
+    background-color: green;
+    color: white;
+    width: fit-content;
+    transition: background-color 200ms ease;
+}
+.download-btn:hover{
+    background-color: rgb(2, 92, 2);
+}

@@ -56,10 +56,6 @@ function ModalPopUp({ lat, lon }) {
     const format2 = ["Date", "PV Power (kW)"];
     const data_format = state.dataType === "pv__data" ? format2 : format1;
 
-    // if(data_format === 'pv__data'){
-    //   const result = await axios.get('http://localhost:5000/log');
-    //   dispatch({ type: "SET_DATA", payload: result });
-    // } 
     //handling file
     const file = event.target.files[0];
     dispatch({ type: "SET_FILE", payload: file });
@@ -245,7 +241,7 @@ function ModalPopUp({ lat, lon }) {
             type="file"
             id="fileInput"
             onChange={handleFileChange}
-            accept=".xlsx, .xls"
+            accept=".xlsx, .xls, .csv"
           />
           {state.selectedFile === null && (
             <p className="pls-upload">pls upload file</p>
