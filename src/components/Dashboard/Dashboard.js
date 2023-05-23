@@ -9,6 +9,26 @@ function Dashboard() {
   const navigate = useNavigate();
   const [dataEx, setData] = useState([])
   const [dataType, setDataType] = useState([])
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+
+  useEffect(() => {
+    // Update windowWidth state on initial load
+    setWindowWidth(window.innerWidth);
+
+    // Add event listener to update windowWidth state on window resize
+    window.addEventListener('resize', handleResize);
+
+    // Cleanup the event listener on component unmount
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, [window.innerWidth]); // Empty dependency array to run the effect only once on mount
+
+  // Event handler for window resize
+  const handleResize = () => {
+    setWindowWidth(window.innerWidth);
+  };
+
 
   const isLoggedIn = async()=>{
     const user = await axios.get('http://localhost:5000/dashboard');
@@ -27,13 +47,14 @@ function Dashboard() {
     console.log('data ',data);
   }
   return (
-    <div className='container'>
-      <Sidebar />
-      {/* <Main/> */}
-      <DataContext.Provider value={{setdata, dataEx, dataType}}>
-        <Outlet />
-      </DataContext.Provider>
-    </div>
+    <>
+    {windowWidth > 610 ? (<div className='container'>
+    <Sidebar />
+    <DataContext.Provider value={{setdata, dataEx, dataType}}>
+      <Outlet />
+    </DataContext.Provider>
+  </div>):(<div className='use-big-screen'><p>Please Use bigger screen</p></div>)}
+  </>
   )
 }
 

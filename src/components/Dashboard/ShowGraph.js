@@ -9,25 +9,26 @@ function ShowGraph() {
   const { dataEx } = useContext(DataContext);
   // Extract the data and time from the Excel sheet columns
   // const selectedDate = '12/5/2022'; // format - MM/d/yyyy
-  const dates = dataEx && dataEx.map((row) => row.date);
+  const dates = dataEx.map((row) => row.date);
   const [startDate, setStartDate] = useState(dates[0]);
 
+  const time = dataEx[0] && dataEx.map((row) => row.time);
   const pvValues = dataEx.map((row) => row.pv);
-  const time = dataEx && dataEx.map((row) => row.time);
   const solarRadiation = dataEx.map((row) => row.solarRadiation);
   const Temperature = dataEx.map((row) => row.Temperature);
   const windSpeed = dataEx.map((row) => row.windSpeed);
   const RHumidity = dataEx.map((row) => row.RHumidity);
   const CloudCover = dataEx.map((row) => row.CloudCover);
   const Rainfall = dataEx.map((row) => row.Rainfall);
-
+  console.log(time);
+  
   // Filter the data for the selected date
   const filteredPVValues = pvValues.filter((_, index) =>
     dates[index].startsWith(startDate)
   );
   // setFilteredData({...filteredData, pv:{...filteredData.pv,data:filteredPVValues}})
 
-  const filteredTime = time.filter((_, index) =>
+  const filteredTime = dataEx[0] && time.filter((_, index) =>
     dates[index].startsWith(startDate)
   );
   // setFilteredData({...filteredData, time:{data:filteredTime}})
@@ -152,7 +153,7 @@ function ShowGraph() {
           <p className="dheader__title">DASHBOARD &gt; Graph</p>
           <p className="dheader__greet">welcome User</p>
         </div>
-        <div className="main__plot">
+        {dataEx[0]?(<div className="main__plot">
           <div>
             <span>Date: </span>
             <DatePicker
@@ -167,7 +168,7 @@ function ShowGraph() {
             config={{ responsive: true }}
             layout={layout}
           />
-        </div>
+        </div>):(<div className="main__plot">Please Upload data</div>)}
       </div>
     </>
   );
