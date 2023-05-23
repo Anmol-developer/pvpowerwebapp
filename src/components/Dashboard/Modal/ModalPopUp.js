@@ -10,6 +10,8 @@ import { reducer, InitialState } from "../../../reducer/DataReducer";
 import { useNavigate } from "react-router-dom";
 import DataContext from "../../../context/Data";
 import ReactLoading from "react-loading";
+import donegif from '../../../41793-correct.gif'
+import AfterCalcModal from "./AfterCalcModal";
 
 function ModalPopUp({ lat, lon }) {
   const navigate = useNavigate();
@@ -62,6 +64,8 @@ function ModalPopUp({ lat, lon }) {
 
     //converting file to array buffer
     const data = await file.arrayBuffer();
+    // const data = (await axios.post("http://localhost:5000/data",dataBuffer)).data;
+    // console.log('data from db', data);
     const workbook = read(data);
 
     // Access the user-input sheet
@@ -294,6 +298,30 @@ function ModalPopUp({ lat, lon }) {
           </div>
         </div>
       </SubmitModal>
+
+      <AfterCalcModal open={state.showAfterCalcModal} closeModal={closeAfterCalcModal}>
+      <div className="sbmt-modal-childs">
+          <p
+            style={{ marginBottom: "5px", fontSize: "22px", fontWeight: "550" }}
+            className="calculating"
+          >
+            Calculating Done!
+          </p>
+          {/* <ProgressBar completed={state.value} className="progress__bar" /> */}
+          <img src={donegif} alt="correct gif"/>
+          <p className="desc-txt">
+            You can view your today's calculation at any time in history tab
+          </p>
+          <div className="btns">
+            <button className="sample-graph" onClick={redirectToForecastResult}>
+              view results
+            </button>
+            <button className="cancel-sbmt" onClick={closeAfterCalctModal}>
+              cancel
+            </button>
+          </div>
+        </div>
+      </AfterCalcModal>
     </div>
   );
 }

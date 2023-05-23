@@ -2,6 +2,7 @@ const InitialState = {
     data: [],
     showModal: false,
     showSubmitModal: false,
+    showAfterCalcModal: false,
     disabled: true,
     dataType: 'pv__data',
     selectedFile: null,
