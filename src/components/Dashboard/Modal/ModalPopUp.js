@@ -10,7 +10,7 @@ import { reducer, InitialState } from "../../../reducer/DataReducer";
 import { useNavigate } from "react-router-dom";
 import DataContext from "../../../context/Data";
 import ReactLoading from "react-loading";
-import donegif from '../../../41793-correct.gif'
+import donegif from "../../../41793-correct.gif";
 import AfterCalcModal from "./AfterCalcModal";
 
 function ModalPopUp({ lat, lon }) {
@@ -18,6 +18,19 @@ function ModalPopUp({ lat, lon }) {
   const [state, dispatch] = useReducer(reducer, InitialState);
 
   const { setdata } = useContext(DataContext);
+
+  //testing show submit modal
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (state.showSubmitModal) {
+        dispatch({ type: "SET_AFTERCALCMODAL", payload: true });
+        dispatch({type:'SET_SHOWSUBMODAL', payload:false})
+      }else{
+        dispatch({type:'SET_AFTERCALCMODAL',payload:false})
+      }
+    }, 5000); // Delay in milliseconds before playing the GIF
+    return () => clearTimeout(timer);
+  }, [state.showSubmitModal]);
 
   //getting input address's lat and lon using forward geocoding and loading functionality
   useEffect(() => {
@@ -64,8 +77,6 @@ function ModalPopUp({ lat, lon }) {
 
     //converting file to array buffer
     const data = await file.arrayBuffer();
-    // const data = (await axios.post("http://localhost:5000/data",dataBuffer)).data;
-    // console.log('data from db', data);
     const workbook = read(data);
 
     // Access the user-input sheet
@@ -74,11 +85,10 @@ function ModalPopUp({ lat, lon }) {
 
     //extracting data for graph plotting
     const excelData = utils.sheet_to_json(userInputSheet, { header: 1 });
-    // console.log(excelData);
     const extractedData = excelData.slice(1).map((row) => {
       const numericValue = parseFloat(row[0]);
       const dateObject = SSF.parse_date_code(numericValue);
-      
+
       return {
         date: `${String(dateObject.m).padStart(2, "0")}/${String(
           dateObject.d
@@ -148,6 +158,19 @@ function ModalPopUp({ lat, lon }) {
     dispatch({ type: "SET_DATATYPE", payload: "pv__data" });
     dispatch({ type: "SET_FORMAT", payload: true });
     dispatch({ type: "SET_FILE", payload: null });
+
+    //testing after calc modal
+    dispatch({ type: "SET_AFTERCALCMODAL", payload: true });
+  };
+
+  const closeAfterCalcModal = () => {
+    dispatch({ type: "SET_AFTERCALCMODAL", payload: false });
+
+    //setting everything back to default
+    dispatch({ type: "SET_DISABLED", payload: true });
+    dispatch({ type: "SET_DATATYPE", payload: "pv__data" });
+    dispatch({ type: "SET_FORMAT", payload: true });
+    dispatch({ type: "SET_FILE", payload: null });
   };
 
   const setLocation = () => {
@@ -168,8 +191,13 @@ function ModalPopUp({ lat, lon }) {
   const redirectToGraph = () => {
     navigate("/dashboard/graph/1");
   };
+  const redirectToForecastResult = () => {
+    navigate("/dashboard/graph/1");
+  };
 
-  const handleInfoSubmit = () => {
+  const handleInfoSubmit = async () => {
+    const formData = new FormData();
+    formData.append("file", state.selectedFile);
     dispatch({ type: "SET_SHOWMODAL", payload: false });
     dispatch({ type: "SET_SUBMODAL", payload: true });
     setdata([state.data, state.dataFormat]);
@@ -299,8 +327,11 @@ function ModalPopUp({ lat, lon }) {
         </div>
       </SubmitModal>
 
-      <AfterCalcModal open={state.showAfterCalcModal} closeModal={closeAfterCalcModal}>
-      <div className="sbmt-modal-childs">
+      <AfterCalcModal
+        open={state.showAfterCalcModal}
+        closeModal={closeAfterCalcModal}
+      >
+        <div className="sbmt-modal-childs">
           <p
             style={{ marginBottom: "5px", fontSize: "22px", fontWeight: "550" }}
             className="calculating"
@@ -308,7 +339,7 @@ function ModalPopUp({ lat, lon }) {
             Calculating Done!
           </p>
           {/* <ProgressBar completed={state.value} className="progress__bar" /> */}
-          <img src={donegif} alt="correct gif"/>
+          <img src={donegif} alt="correct gif" />
           <p className="desc-txt">
             You can view your today's calculation at any time in history tab
           </p>
@@ -316,7 +347,7 @@ function ModalPopUp({ lat, lon }) {
             <button className="sample-graph" onClick={redirectToForecastResult}>
               view results
             </button>
-            <button className="cancel-sbmt" onClick={closeAfterCalctModal}>
+            <button className="cancel-sbmt" onClick={closeAfterCalcModal}>
               cancel
             </button>
           </div>
