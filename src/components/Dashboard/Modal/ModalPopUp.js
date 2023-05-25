@@ -12,12 +12,14 @@ import DataContext from "../../../context/Data";
 import ReactLoading from "react-loading";
 import donegif from "../../../41793-correct.gif";
 import AfterCalcModal from "./AfterCalcModal";
+import userContext from '../../../context/UserContext'
 
 function ModalPopUp({ lat, lon }) {
   const navigate = useNavigate();
   const [state, dispatch] = useReducer(reducer, InitialState);
 
   const { setdata } = useContext(DataContext);
+  const { user } = useContext(userContext);
 
   //testing show submit modal
   useEffect(() => {
@@ -189,10 +191,10 @@ function ModalPopUp({ lat, lon }) {
   };
 
   const redirectToGraph = () => {
-    navigate("/dashboard/graph/1");
+    navigate(`/dashboard/graph/${user._id}`);
   };
   const redirectToForecastResult = () => {
-    navigate("/dashboard/graph/1");
+    navigate(`/dashboard/forecast/${user._id}`);
   };
 
   const handleInfoSubmit = async () => {

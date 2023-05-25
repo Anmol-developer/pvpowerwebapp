@@ -48,6 +48,11 @@ function Dashboard() {
     console.log('dataEx: ',dataEx);
     console.log('data ',data);
   }
+  if(!user.email) return (
+    <>
+    <p>UnAuthorized</p>
+    </>
+  )
   return (
     <>
     {windowWidth > 610 ? (<div className='container'>
