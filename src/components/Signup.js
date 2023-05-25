@@ -15,7 +15,7 @@ function Signup() {
   const [email, setEmail] = useState("");
   const [agreement, setAgreement] = useState(false);
   const [passwordEqual, setPasswordEqual] = useState("");
-  const [user, setUser] = useState([]);
+  // const [user, setUser] = useState([]);
   const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
@@ -34,7 +34,6 @@ function Signup() {
         });
         if (result.data) {
           if (result.data !== "user already exists") {
-            setUser(result.data);
             navigate(`/dashboard/main/${result.data._id}`);
           } else {
             alert(result.data);

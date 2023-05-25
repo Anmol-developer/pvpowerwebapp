@@ -7,6 +7,7 @@ import axios from 'axios'
 
 function Dashboard() {
   const navigate = useNavigate();
+  // const param = useParams()
   const [dataEx, setData] = useState([])
   const [dataType, setDataType] = useState([])
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
@@ -17,6 +18,8 @@ function Dashboard() {
 
     // Add event listener to update windowWidth state on window resize
     window.addEventListener('resize', handleResize);
+
+    // isLoggedIn()
 
     // Cleanup the event listener on component unmount
     return () => {
@@ -30,15 +33,11 @@ function Dashboard() {
   };
 
 
-  const isLoggedIn = async()=>{
-    const user = await axios.get('http://localhost:5000/dashboard');
-    if(!user){navigate('/signup')}
-    console.log(user.data);
-  }
-
-  useEffect(() => {
-    isLoggedIn();
-  }, [])
+  // const isLoggedIn = async()=>{
+  //   const user = await axios.get('http://localhost:5000/dashboard');
+  //   if(!user){navigate('/signup')}
+  //   console.log(user.data);
+  // }
   
   const setdata = (data) => {
     setData(data[0])
