@@ -73,6 +73,7 @@ function Signup() {
             onChange={(event) => setUsername(event.target.value)}
             className="username input"
             placeholder="Username"
+            required
           />
         </label>
 
@@ -84,6 +85,7 @@ function Signup() {
             onChange={(event) => setEmail(event.target.value)}
             className="email input"
             placeholder="Email"
+            required
           />
         </label>
 
@@ -95,6 +97,7 @@ function Signup() {
             onChange={(event) => setPassword(event.target.value)}
             className="password input"
             placeholder="Password"
+            required
           />
         </label>
 
@@ -106,6 +109,7 @@ function Signup() {
             onChange={handlePasswordCheck}
             className="cpassword input"
             placeholder="Conform password"
+            required
           />
         </label>
 

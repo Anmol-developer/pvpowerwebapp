@@ -1,14 +1,16 @@
-import React, { useState,useEffect } from 'react'
+import React, { useState,useEffect, useContext } from 'react'
 import '../../css/Dashboard/Dashboard.css'
 import Sidebar from './Sidebar'
 import { Outlet, useNavigate } from 'react-router-dom'
 import DataContext from '../../context/Data'
+import userContext from '../../context/UserContext'
 import axios from 'axios'
 
 function Dashboard() {
   const navigate = useNavigate();
   // const param = useParams()
   const [dataEx, setData] = useState([])
+  const [user,setUser] = useState({})
   const [dataType, setDataType] = useState([])
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
@@ -19,7 +21,7 @@ function Dashboard() {
     // Add event listener to update windowWidth state on window resize
     window.addEventListener('resize', handleResize);
 
-    // isLoggedIn()
+    isLoggedIn()
 
     // Cleanup the event listener on component unmount
     return () => {
@@ -33,11 +35,12 @@ function Dashboard() {
   };
 
 
-  // const isLoggedIn = async()=>{
-  //   const user = await axios.get('http://localhost:5000/dashboard');
-  //   if(!user){navigate('/signup')}
-  //   console.log(user.data);
-  // }
+  const isLoggedIn = async()=>{
+    const user = await axios.get('/dashboard');
+    if(!user){navigate('/signup')}
+    setUser({...user.data})
+    console.log(user.data);
+  }
   
   const setdata = (data) => {
     setData(data[0])
@@ -50,7 +53,9 @@ function Dashboard() {
     {windowWidth > 610 ? (<div className='container'>
     <Sidebar />
     <DataContext.Provider value={{setdata, dataEx, dataType}}>
+      <userContext.Provider value={{user}}>
       <Outlet />
+      </userContext.Provider>
     </DataContext.Provider>
   </div>):(<div className='use-big-screen'><p>Please Use bigger screen</p></div>)}
   </>

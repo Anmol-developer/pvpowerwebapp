@@ -4,29 +4,33 @@ import "../css/Login.css";
 import { Link, useNavigate } from "react-router-dom";
 import { RiLockPasswordLine } from "react-icons/ri";
 import { AiOutlineMail } from "react-icons/ai";
-import axios from "axios";
 
 function Login() {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  // const [user, setUser] = useState([])
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     alert("clicked");
-    const result = await axios.post("http://localhost:5000/login", {
-      email,
-      password,
+    const result = await fetch("/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email, password }),
     });
     if (result) {
       if (result.data !== "user does not exists") {
-        const user = await axios.get("http://localhost:5000/dashboard",{
-          headers:{
-            "auth":`Bearer ${result.data.tokens[result.data.tokens.length-1].token}`
-          }
+        const user = await fetch("/dashboard", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
         });
-        navigate(`/dashboard/main/${user.data._id}`);
+        const data = await user.json()
+        console.log(data);
+        navigate(`/dashboard/main/${data._id}`);
       } else {
         alert(result.data);
         navigate("/login");
@@ -35,6 +39,8 @@ function Login() {
       navigate("/login");
       window.alert("Incorrect credentials");
     }
+
+    // const res =
   };
 
   return (
@@ -52,6 +58,7 @@ function Login() {
             onChange={(event) => setEmail(event.target.value)}
             className="email input"
             placeholder="Email"
+            required
           />
         </label>
 
@@ -63,6 +70,7 @@ function Login() {
             onChange={(event) => setPassword(event.target.value)}
             className="password input"
             placeholder="Password"
+            required
           />
         </label>
         <br />

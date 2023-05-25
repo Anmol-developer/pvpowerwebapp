@@ -4,9 +4,11 @@ import "../../css/Dashboard/ShowGraph.css";
 import DataContext from "../../context/Data";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import userContext from "../../context/UserContext";
 
 function ShowGraph() {
   const { dataEx } = useContext(DataContext);
+  const {user} = useContext(userContext)
   // Extract the data and time from the Excel sheet columns
   // const selectedDate = '12/5/2022'; // format - MM/d/yyyy
   const dates = dataEx.map((row) => row.date);
@@ -151,7 +153,7 @@ function ShowGraph() {
       <div className="plot__container">
         <div className="main__header">
           <p className="dheader__title">DASHBOARD &gt; Graph</p>
-          <p className="dheader__greet">welcome User</p>
+          <p className="dheader__greet">welcome {user.username}</p>
         </div>
         {dataEx[0]?(<div className="main__plot">
           <div>
