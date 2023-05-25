@@ -56,10 +56,12 @@ function Dashboard() {
   return (
     <>
     {windowWidth > 610 ? (<div className='container'>
+    <userContext.Provider value={{user}}>
     <Sidebar />
+    </userContext.Provider>
     <DataContext.Provider value={{setdata, dataEx, dataType}}>
       <userContext.Provider value={{user}}>
-      <Outlet />
+        <Outlet />
       </userContext.Provider>
     </DataContext.Provider>
   </div>):(<div className='use-big-screen'><p>Please Use bigger screen</p></div>)}
