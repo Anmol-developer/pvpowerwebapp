@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import "../../css/Dashboard/Sidebar.css";
-import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FaUserCircle } from "react-icons/fa";
 import { BsFillFileBarGraphFill } from "react-icons/bs";
 import { FiLogOut } from "react-icons/fi";
@@ -11,21 +11,24 @@ import {
 } from "react-icons/md";
 import { AiFillHome } from "react-icons/ai";
 import userContext from "../../context/UserContext";
-import axios from "../../axios";
 
 function Sidebar() {
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const { user } = useContext(userContext);
-  // console.log(params);
-  const navigateToSignup = async () => {
-    //destroy session and navigate
-    const destroy_session = await axios.get("/logout");
-    if (destroy_session.status === 200) {
-      navigate("/signup");
-    }else{
-      alert('logout failed. Please close the window')
-    }
+  const logout = async () => {
+    fetch('/logout', { method: 'GET', credentials: 'include' })
+      .then(response => {
+        if (response.ok) {
+          // Redirect to login page or perform other actions upon successful logout
+          navigate('/login')
+        } else {
+          console.error('Logout failed');
+        }
+      })
+      .catch(error => {
+        console.error('Error during logout:', error);
+      });
   };
 
   return (
@@ -60,7 +63,7 @@ function Sidebar() {
         <BsFillFileBarGraphFill className="graph-icon" />
         Visualize
       </Link>
-      <div className="link-to-logout" onClick={navigateToSignup}>
+      <div className="link-to-logout" onClick={logout}>
         <FiLogOut className="logout-icon" />
         Log out
       </div>
