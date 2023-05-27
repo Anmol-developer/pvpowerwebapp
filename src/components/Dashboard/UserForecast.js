@@ -96,6 +96,8 @@ function ShowGraph() {
               selected={new Date(startDate)}
               onChange={handleSetDate}
               dateFormat={"MM/dd/yyyy"}
+              minDate={new Date(dates[0])}
+              maxDate={new Date(dates[dates.length-1])}
             />
           </div>
           <Plot
