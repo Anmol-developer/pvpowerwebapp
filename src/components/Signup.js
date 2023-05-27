@@ -25,7 +25,7 @@ function Signup() {
         setPasswordEqual(
           <p className="pls-upload">Password and confirm password unequal</p>
         );
-      else setPasswordEqual("");
+      else{ setPasswordEqual("");
       try {
         const result = await axios.post("http://localhost:5000/signup", {
           username,
@@ -44,7 +44,7 @@ function Signup() {
         }
       } catch (error) {
         console.log(error);
-      }
+      }}
     } else {
       alert("please check the box!");
     }
