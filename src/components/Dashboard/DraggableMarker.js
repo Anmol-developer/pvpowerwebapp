@@ -30,9 +30,9 @@ function DraggableMarker() {
     },[contextValue])
     
 
-    const handleClick = ()=>{
-      console.log(state.position);
-    }
+    // const handleClick = ()=>{
+    //   console.log(state.position);
+    // }
 
     //setting current lat , long 
     let lat,lng;
@@ -47,7 +47,7 @@ function DraggableMarker() {
         ref={markerRef}
         >
         <Popup minWidth={90}>
-          <span onClick={handleClick}>
+          <span>
             'Marker is draggable. Drag to desired location'<br/>
             <ModalPopUp lat={lat} lon={lng}/>
           </span>

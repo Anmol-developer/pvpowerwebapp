@@ -59,19 +59,7 @@ function ModalPopUp({ lat, lon }) {
     dispatch({ type: "SET_FORMAT", payload: true });
     dispatch({ type: "SET_DISABLED", payload: true });
 
-    //declaring an array to check format with
-    const format1 = [
-      "Date",
-      "PV Power (kW)",
-      "Solar Irradiation",
-      "Ambient Temperature",
-      "Wind Speed",
-      "Relative Humidity",
-      "Cloud Cover",
-      "Rainfall",
-    ];
-    const format2 = ["Date", "PV Power (kW)"];
-    const data_format = state.dataType === "pv__data" ? format2 : format1;
+    const data_format = state.dataType === "pv__data" ? state.format2 : state.format1;
 
     //handling file
     const file = event.target.files[0];
@@ -147,32 +135,23 @@ function ModalPopUp({ lat, lon }) {
   const closeModal = () => {
     dispatch({ type: "SET_SHOWMODAL", payload: false });
     //setting everything back to default
-    dispatch({ type: "SET_FORMAT", payload: true });
-    dispatch({ type: "SET_FILE", payload: null });
-    dispatch({ type: "SET_DISABLED", payload: true });
-    dispatch({ type: "SET_DATATYPE", payload: "pv__data" });
+    dispatch({type:'SET_DEFAULT'})
+
   };
   const closeSubmitModal = () => {
     dispatch({ type: "SET_SUBMODAL", payload: false });
 
     //setting everything back to default
-    dispatch({ type: "SET_DISABLED", payload: true });
-    dispatch({ type: "SET_DATATYPE", payload: "pv__data" });
-    dispatch({ type: "SET_FORMAT", payload: true });
-    dispatch({ type: "SET_FILE", payload: null });
+    dispatch({type:'SET_DEFAULT'})
 
-    //testing after calc modal
-    dispatch({ type: "SET_AFTERCALCMODAL", payload: true });
+
   };
 
   const closeAfterCalcModal = () => {
     dispatch({ type: "SET_AFTERCALCMODAL", payload: false });
 
     //setting everything back to default
-    dispatch({ type: "SET_DISABLED", payload: true });
-    dispatch({ type: "SET_DATATYPE", payload: "pv__data" });
-    dispatch({ type: "SET_FORMAT", payload: true });
-    dispatch({ type: "SET_FILE", payload: null });
+    dispatch({type:'SET_DEFAULT'})
   };
 
   const setLocation = () => {
@@ -204,6 +183,7 @@ function ModalPopUp({ lat, lon }) {
     dispatch({ type: "SET_SUBMODAL", payload: true });
     setdata([state.data, state.dataFormat]);
   };
+
   return (
     <div className="modal__container">
       <button className="modal-btn" onClick={setLocation}>

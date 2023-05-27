@@ -22,39 +22,33 @@ function ShowGraph() {
   const RHumidity = dataEx.map((row) => row.RHumidity);
   const CloudCover = dataEx.map((row) => row.CloudCover);
   const Rainfall = dataEx.map((row) => row.Rainfall);
-  console.log(time);
+  // console.log(time);
   
   // Filter the data for the selected date
   const filteredPVValues = pvValues.filter((_, index) =>
     dates[index].startsWith(startDate)
   );
-  // setFilteredData({...filteredData, pv:{...filteredData.pv,data:filteredPVValues}})
-
+  
   const filteredTime = dataEx[0] && time.filter((_, index) =>
     dates[index].startsWith(startDate)
   );
-  // setFilteredData({...filteredData, time:{data:filteredTime}})
-
+  
   const filteredsolarRadiation = solarRadiation.filter((_, index) =>
     dates[index].startsWith(startDate)
   );
-  // setFilteredData({...filteredData, radiation:{...filteredData.radiation,data:filteredsolarRadiation}})
-
+  
   const filteredTemperature = Temperature.filter((_, index) =>
     dates[index].startsWith(startDate)
   );
-  // setFilteredData({...filteredData, temperature:{...filteredData.temperature,data:filteredTemperature}})
-
+  
   const filteredwindSpeed = windSpeed.filter((_, index) =>
     dates[index].startsWith(startDate)
   );
-  // setFilteredData({...filteredData, wspeed:{...filteredData.wspeed,data:filteredwindSpeed}})
-
+  
   const filteredRHumidity = RHumidity.filter((_, index) =>
     dates[index].startsWith(startDate)
   );
-  // setFilteredData({...filteredData, rhumidity:{...filteredData.rhumidity,data:filteredRHumidity}})
-
+  
   const filteredCloudCover = CloudCover.filter((_, index) =>
     dates[index].startsWith(startDate)
   );

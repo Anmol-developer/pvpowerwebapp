@@ -6,7 +6,7 @@ import { RiLockPasswordLine } from "react-icons/ri";
 import { FaKey } from "react-icons/fa";
 import { AiOutlineMail } from "react-icons/ai";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
+import axios from "../axios";
 
 function Signup() {
   const [username, setUsername] = useState("");
@@ -27,7 +27,7 @@ function Signup() {
         );
       else{ setPasswordEqual("");
       try {
-        const result = await axios.post("http://localhost:5000/signup", {
+        const result = await axios.post("/signup", {
           username,
           email,
           password,

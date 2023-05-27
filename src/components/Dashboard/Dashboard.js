@@ -42,11 +42,11 @@ function Dashboard() {
     try {
       const user = await axios.get("/dashboard");
       setUser({ ...user.data });
-      console.log(user);
+      // console.log(user);
     } catch (error) {
       navigate('/login')
       alert('you are logged out')
-      console.log(error);
+      // console.log(error);
     }
     
   };
@@ -54,8 +54,8 @@ function Dashboard() {
   const setdata = (data) => {
     setData(data[0]);
     setDataType(data[1]);
-    console.log("dataEx: ", dataEx);
-    console.log("data ", data);
+    // console.log("dataEx: ", dataEx);
+    // console.log("data ", data);
   };
   if(!user.email) {return (
     <>

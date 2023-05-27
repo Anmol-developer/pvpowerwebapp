@@ -9,7 +9,18 @@ const InitialState = {
     address: '',
     isLoading: false,
     isFormat: true,
-    dataFormat:  ['Date', 'PV Power (kW)']
+    dataFormat:  ['Date', 'PV Power (kW)'],
+    format1: [
+        "Date",
+        "PV Power (kW)",
+        "Solar Irradiation",
+        "Ambient Temperature",
+        "Wind Speed",
+        "Relative Humidity",
+        "Cloud Cover",
+        "Rainfall",
+      ],
+      format2:["Date", "PV Power (kW)"]
 }
 
 const reducer = (state, action) => {
@@ -48,7 +59,10 @@ const reducer = (state, action) => {
             return {...state, value: state.value + 2};
 
         case 'SET_DATAFORMAT':
-            return {...state, dataFormat: action.payload}
+            return {...state, dataFormat: action.payload};
+
+        case 'SET_DEFAULT':
+            return {...state, disabled:true, dataType: 'pv__data',isFormat: true, selectedFile: null}
 
         default:
             return state;
