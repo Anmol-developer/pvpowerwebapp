@@ -29,15 +29,15 @@ function Signup() {
           <p className="pls-upload">Password and confirm password unequal</p>
         );
       else {
+        const status = await fetch("/verify-email", {
+          method: 'POST',
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email }),
+        });
         setPasswordEqual("");
         setShowVerifyModal(true);
-        try {
-          const status = await axios.post("/verify-email", {
-            email,
-          });
-        } catch (error) {
-          console.log(error);
-        }
       }
     } else {
       alert("please check the box!");
@@ -48,38 +48,39 @@ function Signup() {
     try {
       //request to /verify-email and send code
       const result = await fetch("/signup", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
+        method:"POST",
+        headers:{
+          "Content-type" : "application/json"
         },
-        body: JSON.stringify({ email, password, username, verifyCode }),
+        body: JSON.stringify({
+          email,
+          password,
+          username,
+          verifyCode
+        })
       });
       setStatus(result.status);
       if (result) {
-        if (result.data !== "user already exists") {
-          const user = await fetch("/dashboard", {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-            },
-          });
-          const data = await user.json()
-          console.log(data);
+        const data = await result.json();
+        console.log(data);
+        if (data) {
           navigate(`/dashboard/main/${data._id}`);
-        setShowVerifyModal(false);
-        setVerifyCode(null);
+          setShowVerifyModal(false);
+          setVerifyCode("");
+        } else {
+          setShowVerifyModal(false);
+          setVerifyCode("");
+          alert('code not equal');
+          navigate("/signup");
+        }
       } else {
         setShowVerifyModal(false);
-        setVerifyCode(null);
-        alert(result.data);
-        navigate("/signup");
-      }
-      } else {
-        setShowVerifyModal(false);
-        setVerifyCode(null);
+        setVerifyCode("");
         navigate("/signup");
       }
     } catch (error) {
+      alert('code not equal')
+      setShowVerifyModal(false);
       console.log(error);
     }
   };
