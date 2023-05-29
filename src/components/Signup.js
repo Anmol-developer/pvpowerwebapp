@@ -17,7 +17,8 @@ function Signup() {
   const [agreement, setAgreement] = useState(false);
   const [passwordEqual, setPasswordEqual] = useState("");
   const [showVerifyModal, setShowVerifyModal] = useState(false);
-  const [verifyCode, setVerifyCode] = useState(null)
+  const [verifyCode, setVerifyCode] = useState("");
+  const [status, setStatus] = useState(0);
   const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
@@ -31,10 +32,9 @@ function Signup() {
         setPasswordEqual("");
         setShowVerifyModal(true);
         try {
-          const status = await axios.post('/verify-email',{
-            email
-          })
-          console.log('status ',status);
+          const status = await axios.post("/verify-email", {
+            email,
+          });
         } catch (error) {
           console.log(error);
         }
@@ -44,35 +44,45 @@ function Signup() {
     }
   };
 
-  const handleSignup=async()=>{
+  const handleSignup = async () => {
     try {
-          //request to /verify-email and send code
-          const result = await axios.post("/signup", {
-            username,
-            email,
-            password,
-            verifyCode,
+      //request to /verify-email and send code
+      const result = await fetch("/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password, username, verifyCode }),
+      });
+      setStatus(result.status);
+      if (result) {
+        if (result.data !== "user already exists") {
+          const user = await fetch("/dashboard", {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
           });
-          if (result.data) {
-            if (result.data !== "user already exists") {
-              navigate(`/dashboard/main/${result.data._id}`);
-              setShowVerifyModal(false)
-              setVerifyCode(null);
-            } else {
-              setShowVerifyModal(false)
-              setVerifyCode(null);
-              alert(result.data);
-              navigate("/signup");
-            }
-          } else {
-            setShowVerifyModal(false)
-            setVerifyCode(null);
-            navigate("/signup");
-          }
-        } catch (error) {
-          console.log(error);
-        }
-  }
+          const data = await user.json()
+          console.log(data);
+          navigate(`/dashboard/main/${data._id}`);
+        setShowVerifyModal(false);
+        setVerifyCode(null);
+      } else {
+        setShowVerifyModal(false);
+        setVerifyCode(null);
+        alert(result.data);
+        navigate("/signup");
+      }
+      } else {
+        setShowVerifyModal(false);
+        setVerifyCode(null);
+        navigate("/signup");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const handleChange = (event) => {
     setAgreement(event.target.checked);
@@ -161,14 +171,20 @@ function Signup() {
         </button>
         <Link to={"/login"}>Already a member? Login</Link>
       </form>
-      <VerifyEmailModal
-        open={showVerifyModal}
-        closeModal={closeModal}
-      >
+      <VerifyEmailModal open={showVerifyModal} closeModal={closeModal}>
         <div className="verify__heading">
           <h2>Verify Email</h2>
-            <input type="number" className="code_input" value={verifyCode} onChange={(e)=> setVerifyCode(e.target.value)} placeholder="Enter your 4 digit code" required/>
-            <button className="signup__btn" onClick={handleSignup}>Sign up</button>
+          <input
+            type="number"
+            className="code_input"
+            value={verifyCode}
+            onChange={(e) => setVerifyCode(e.target.value)}
+            placeholder="Enter your 4 digit code"
+            required
+          />
+          <button className="signup__btn" onClick={handleSignup}>
+            Sign up
+          </button>
         </div>
       </VerifyEmailModal>
     </div>

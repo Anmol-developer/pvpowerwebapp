@@ -42,11 +42,9 @@ function Dashboard() {
     try {
       const user = await axios.get("/dashboard");
       setUser({ ...user.data });
-      // console.log(user);
     } catch (error) {
-      navigate('/login')
       alert('you are logged out')
-      // console.log(error);
+      navigate('/login')
     }
     
   };

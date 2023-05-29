@@ -1244,7 +1244,6 @@ function Map() {
         style={(feature) => ({
           color: "#cebfca",
           fillOpacity: 0.1,
-          weight: getBorderSize(feature.target._map.getZoom()),
         })}
       />
       <DraggableMarker />

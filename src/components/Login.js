@@ -29,7 +29,7 @@ function Login() {
           },
         });
         const data = await user.json()
-        console.log(data);
+        // console.log(data);
         navigate(`/dashboard/main/${data._id}`);
       } else {
         alert(result.data);
