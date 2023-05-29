@@ -1,5 +1,4 @@
 import React from "react";
-// import {AiOutlineClose} from 'react-icons/ai';
 import ReactDom from "react-dom";
 import '../../../css/Dashboard/Modal/SubmitModal.css'
 

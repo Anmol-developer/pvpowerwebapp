@@ -7,6 +7,7 @@ import { FaKey } from "react-icons/fa";
 import { AiOutlineMail } from "react-icons/ai";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "../axios";
+import VerifyEmailModal from "./Dashboard/Modal/VerifyEmailModal";
 
 function Signup() {
   const [username, setUsername] = useState("");
@@ -15,7 +16,8 @@ function Signup() {
   const [email, setEmail] = useState("");
   const [agreement, setAgreement] = useState(false);
   const [passwordEqual, setPasswordEqual] = useState("");
-  // const [user, setUser] = useState([]);
+  const [showVerifyModal, setShowVerifyModal] = useState(false);
+  const [verifyCode, setVerifyCode] = useState(null)
   const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
@@ -25,30 +27,52 @@ function Signup() {
         setPasswordEqual(
           <p className="pls-upload">Password and confirm password unequal</p>
         );
-      else{ setPasswordEqual("");
-      try {
-        const result = await axios.post("/signup", {
-          username,
-          email,
-          password,
-        });
-        if (result.data) {
-          if (result.data !== "user already exists") {
-            navigate(`/dashboard/main/${result.data._id}`);
-          } else {
-            alert(result.data);
-            navigate("/signup");
-          }
-        } else {
-          navigate("/signup");
+      else {
+        setPasswordEqual("");
+        setShowVerifyModal(true);
+        try {
+          const status = await axios.post('/verify-email',{
+            email
+          })
+          console.log('status ',status);
+        } catch (error) {
+          console.log(error);
         }
-      } catch (error) {
-        console.log(error);
-      }}
+      }
     } else {
       alert("please check the box!");
     }
   };
+
+  const handleSignup=async()=>{
+    try {
+          //request to /verify-email and send code
+          const result = await axios.post("/signup", {
+            username,
+            email,
+            password,
+            verifyCode,
+          });
+          if (result.data) {
+            if (result.data !== "user already exists") {
+              navigate(`/dashboard/main/${result.data._id}`);
+              setShowVerifyModal(false)
+              setVerifyCode(null);
+            } else {
+              setShowVerifyModal(false)
+              setVerifyCode(null);
+              alert(result.data);
+              navigate("/signup");
+            }
+          } else {
+            setShowVerifyModal(false)
+            setVerifyCode(null);
+            navigate("/signup");
+          }
+        } catch (error) {
+          console.log(error);
+        }
+  }
 
   const handleChange = (event) => {
     setAgreement(event.target.checked);
@@ -56,6 +80,11 @@ function Signup() {
 
   const handlePasswordCheck = (event) => {
     setConfirmPassword(event.target.value);
+  };
+
+  const closeModal = () => {
+    setVerifyCode(null);
+    setShowVerifyModal(false);
   };
 
   return (
@@ -128,10 +157,20 @@ function Signup() {
           className={`signup__btn ${!agreement && "disabled"}`}
           type="submit"
         >
-          Register
+          Submit
         </button>
         <Link to={"/login"}>Already a member? Login</Link>
       </form>
+      <VerifyEmailModal
+        open={showVerifyModal}
+        closeModal={closeModal}
+      >
+        <div className="verify__heading">
+          <h2>Verify Email</h2>
+            <input type="number" className="code_input" value={verifyCode} onChange={(e)=> setVerifyCode(e.target.value)} placeholder="Enter your 4 digit code" required/>
+            <button className="signup__btn" onClick={handleSignup}>Sign up</button>
+        </div>
+      </VerifyEmailModal>
     </div>
   );
 }
