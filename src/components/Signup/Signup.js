@@ -17,9 +17,6 @@ function Signup() {
     event.preventDefault();
     if (state.agreement) {
       if (state.confirmPassword !== state.password)
-        // setPasswordEqual(
-        //   <p className="pls-upload">Password and confirm password unequal</p>
-        // );
         dispatch({type:"SET_PASSEQUAL", payload: (<p className="pls-upload">Password and confirm password unequal</p>)})
       else {
         const status = await fetch("/verify-email", {
@@ -29,13 +26,10 @@ function Signup() {
           },
           body: JSON.stringify({ email: state.email }),
         });
-        // console.log(status.status);
+        
         const isUserExist = status.status;
         if (isUserExist === 200) {
-          // setPasswordEqual("");
           dispatch({type:"SET_PASSEQUAL", payload: ""})
-
-          // setShowVerifyModal(true);
           dispatch({type: "SET_SHOWVERMODAL", payload:true})
         } else if (isUserExist === 409) {
           alert("User already exists");
@@ -66,38 +60,28 @@ function Signup() {
         console.log(data);
         if (data) {
           navigate(`/dashboard/main/${data._id}`);
-          // setShowVerifyModal(false);
           dispatch({type: "SET_SHOWVERMODAL", payload:false})
-
-          // setVerifyCode("");
           dispatch({type: "SET_VERCODE", payload:""})
-
         }
       }
     } catch (error) {
       alert("code not equal");
-      // setShowVerifyModal(false);
       dispatch({type: "SET_SHOWVERMODAL", payload:false})
       console.log(error);
     }
   };
 
   const handleChange = (event) => {
-    // setAgreement(event.target.checked);
     dispatch({type:"SET_AGREEMENT", payload: event.target.checked});
   };
 
   const handlePasswordCheck = (event) => {
-    // setConfirmPassword(event.target.value);
     dispatch({type:"SET_CPASS", payload: event.tartget.value});
 
   };
 
   const closeModal = () => {
-    // setVerifyCode("");
     dispatch({type: "SET_VERCODE", payload:""})
-
-    // setShowVerifyModal(false);
     dispatch({type: "SET_SHOWVERMODAL", payload:false})
 
   };
