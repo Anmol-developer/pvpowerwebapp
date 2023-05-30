@@ -84,7 +84,7 @@ function Signup() {
 
   const handleChange = (event) => {
     // setAgreement(event.target.checked);
-    dispatch({type:"SET_AGREEMENT", payload: event.tartget.checked});
+    dispatch({type:"SET_AGREEMENT", payload: event.target.checked});
   };
 
   const handlePasswordCheck = (event) => {
