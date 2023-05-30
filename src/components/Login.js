@@ -12,7 +12,7 @@ function Login() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    alert("clicked");
+    // alert("clicked");
     const result = await fetch("/login", {
       method: "POST",
       headers: {
@@ -20,27 +20,20 @@ function Login() {
       },
       body: JSON.stringify({ email, password }),
     });
-    if (result) {
-      if (result.data !== "user does not exists") {
-        const user = await fetch("/dashboard", {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-        const data = await user.json()
-        // console.log(data);
-        navigate(`/dashboard/main/${data._id}`);
-      } else {
-        alert(result.data);
-        navigate("/login");
-      }
+    if (result.status === 200) {
+      const user = await fetch("/dashboard", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const data = await user.json();
+      // console.log(data);
+      navigate(`/dashboard/main/${data._id}`);
     } else {
       navigate("/login");
       window.alert("Incorrect credentials");
     }
-
-    // const res =
   };
 
   return (

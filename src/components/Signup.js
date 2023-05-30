@@ -30,14 +30,20 @@ function Signup() {
         );
       else {
         const status = await fetch("/verify-email", {
-          method: 'POST',
+          method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({ email }),
         });
-        setPasswordEqual("");
-        setShowVerifyModal(true);
+        // console.log(status.status);
+        const isUserExist = status.status;
+        if (isUserExist === 200) {
+          setPasswordEqual("");
+          setShowVerifyModal(true);
+        } else if (isUserExist === 409) {
+          alert("User already exists");
+        }
       }
     } else {
       alert("please check the box!");
@@ -48,16 +54,16 @@ function Signup() {
     try {
       //request to /verify-email and send code
       const result = await fetch("/signup", {
-        method:"POST",
-        headers:{
-          "Content-type" : "application/json"
+        method: "POST",
+        headers: {
+          "Content-type": "application/json",
         },
         body: JSON.stringify({
           email,
           password,
           username,
-          verifyCode
-        })
+          verifyCode,
+        }),
       });
       setStatus(result.status);
       if (result) {
@@ -67,19 +73,10 @@ function Signup() {
           navigate(`/dashboard/main/${data._id}`);
           setShowVerifyModal(false);
           setVerifyCode("");
-        } else {
-          setShowVerifyModal(false);
-          setVerifyCode("");
-          alert('code not equal');
-          navigate("/signup");
         }
-      } else {
-        setShowVerifyModal(false);
-        setVerifyCode("");
-        navigate("/signup");
       }
     } catch (error) {
-      alert('code not equal')
+      alert("code not equal");
       setShowVerifyModal(false);
       console.log(error);
     }
@@ -94,7 +91,7 @@ function Signup() {
   };
 
   const closeModal = () => {
-    setVerifyCode(null);
+    setVerifyCode("");
     setShowVerifyModal(false);
   };
 

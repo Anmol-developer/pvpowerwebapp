@@ -16,8 +16,18 @@
   background-color: #FFF;
   padding: 50px;
   z-index: 1000;
+}
+
+.verify__heading{
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  padding: 10px;
+}
+
+.verify__heading > input{
+  margin: 15px 5px;
+  padding: 8px;
+  outline: none;
 }
