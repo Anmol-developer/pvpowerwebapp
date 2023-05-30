@@ -1,5 +1,5 @@
 import React from "react";
-import "../css/Footer.css";
+import "../../css/Pages/Footer.css";
 import { BsFacebook } from "react-icons/bs";
 import { AiFillInstagram } from "react-icons/ai";
 import { GrLinkedin } from "react-icons/gr";

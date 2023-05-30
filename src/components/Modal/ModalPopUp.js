@@ -1,18 +1,18 @@
 import React, { useContext, useEffect, useReducer } from "react";
 import ShowModal from "./ShowModal";
-import "../../../css/Dashboard/Modal/Modal.css";
+import "../../css/Modal/Modal.css";
 import { AiOutlineWarning } from "react-icons/ai";
 import axios from "axios";
 import SubmitModal from "./SubmitModal";
 import { read } from "xlsx";
 import { utils, SSF } from "xlsx";
-import { reducer, InitialState } from "../../../reducer/DataReducer";
+import { reducer, InitialState } from "../../reducer/DataReducer";
 import { useNavigate } from "react-router-dom";
-import DataContext from "../../../context/Data";
+import DataContext from "../../context/Data";
 import ReactLoading from "react-loading";
-import donegif from "../../../41793-correct.gif";
+import donegif from "../../Images/41793-correct.gif";
 import AfterCalcModal from "./AfterCalcModal";
-import userContext from '../../../context/UserContext'
+import userContext from '../../context/UserContext'
 
 function ModalPopUp({ lat, lon }) {
   const navigate = useNavigate();

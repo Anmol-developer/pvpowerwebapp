@@ -8,21 +8,21 @@ import {
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
-import Hero from './components/Hero';
-import Support from './components/Support';
-import Signup from '../src/components/Signup'
-import Pricing from '../src/components/Pricing'
-import About from '../src/components/About'
-import History from '../src/components/History'
-import Login from '../src/components/Login'
+import Hero from './components/Pages/Hero';
+import Support from './components/Pages/Support';
+import Signup from '../src/components/Signup/Signup'
+import Pricing from '../src/components/Pages/Pricing'
+import About from '../src/components/Pages/About'
+import History from '../src/components/Pages/History'
+import Login from '../src/components/Login/Login'
 import Dashboard from './components/Dashboard/Dashboard';
-import { Error } from './components/Error'
+import { Error } from './components/Pages/Error'
 import Main from './components/Dashboard/Main';
 import ShowGraph from './components/Dashboard/ShowGraph';
-import UserHistory from '../src/components/Dashboard/UserHistoy';
-import UserAccount from '../src/components/Dashboard/UserAccount';
-import UserForecast from '../src/components/Dashboard/UserForecast';
-import GraphError from '../src/components/GraphError'
+import UserHistory from './components/Dashboard/UserHistoy';
+import UserAccount from './components/Dashboard/UserAccount';
+import UserForecast from './components/Dashboard/UserForecast';
+import GraphError from './components/Dashboard/GraphError'
 import Validate from './components/Dashboard/Validate';
 
 const router = createBrowserRouter([

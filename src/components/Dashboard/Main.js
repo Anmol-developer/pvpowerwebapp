@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react'
-import Map from './Map'
+import Map from '../Map/Map'
 import '../../css/Dashboard/Main.css'
 import axios from 'axios';
 import MyContext from '../../context/Context';

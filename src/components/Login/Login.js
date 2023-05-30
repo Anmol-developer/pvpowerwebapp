@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import imageSignup from "../undraw_sign_up_n6im.svg";
-import "../css/Login.css";
+import imageSignup from "../../Images/undraw_sign_up_n6im.svg";
+import "../../css/Login/Login.css";
 import { Link, useNavigate } from "react-router-dom";
 import { RiLockPasswordLine } from "react-icons/ri";
 import { AiOutlineMail } from "react-icons/ai";

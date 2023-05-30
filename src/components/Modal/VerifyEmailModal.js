@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDom from "react-dom";
-import '../../../css/Dashboard/Modal/VerifyEmailModal.css'
+import '../../css/Modal/VerifyEmailModal.css'
 
 function VerifyEmailModal({ open, children, closeModal }) {
   if (!open) return null;

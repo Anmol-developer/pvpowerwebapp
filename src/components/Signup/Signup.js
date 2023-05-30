@@ -1,13 +1,12 @@
 import React, { useState } from "react";
-import imageSignup from "../undraw_sign_up_n6im.svg";
-import "../css/Signup.css";
+import imageSignup from "../../Images/undraw_sign_up_n6im.svg";
+import "../../css/Signup/Signup.css";
 import { BiUserCircle } from "react-icons/bi";
 import { RiLockPasswordLine } from "react-icons/ri";
 import { FaKey } from "react-icons/fa";
 import { AiOutlineMail } from "react-icons/ai";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "../axios";
-import VerifyEmailModal from "./Dashboard/Modal/VerifyEmailModal";
+import VerifyEmailModal from "../Modal/VerifyEmailModal";
 
 function Signup() {
   const [username, setUsername] = useState("");
@@ -18,7 +17,6 @@ function Signup() {
   const [passwordEqual, setPasswordEqual] = useState("");
   const [showVerifyModal, setShowVerifyModal] = useState(false);
   const [verifyCode, setVerifyCode] = useState("");
-  const [status, setStatus] = useState(0);
   const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
@@ -65,7 +63,6 @@ function Signup() {
           verifyCode,
         }),
       });
-      setStatus(result.status);
       if (result) {
         const data = await result.json();
         console.log(data);
@@ -145,7 +142,7 @@ function Signup() {
             value={confirmPassword}
             onChange={handlePasswordCheck}
             className="cpassword input"
-            placeholder="Conform password"
+            placeholder="Confirm password"
             required
           />
         </label>

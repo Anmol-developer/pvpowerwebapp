@@ -1,6 +1,6 @@
 import { MapContainer, TileLayer, GeoJSON } from "react-leaflet";
 import React from "react";
-import "../../css/Dashboard/Map.css";
+import "../../css/Map/Map.css";
 import DraggableMarker from "./DraggableMarker";
 
 function Map() {

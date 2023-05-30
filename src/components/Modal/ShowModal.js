@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import '../../../css/Dashboard/Modal/ShowModal.css'
+import '../../css/Modal/ShowModal.css'
 import ReactDom from "react-dom";
 import {AiOutlineClose} from 'react-icons/ai';
 

@@ -1,6 +1,6 @@
 import React from 'react'
-import imagex from '../pv.jpg'
-import '../css/Hero.css'
+import imagex from '../../Images/pv.jpg'
+import '../../css/Pages/Hero.css'
 import { Link } from 'react-router-dom'
 function Hero() {
   return (

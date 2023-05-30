@@ -1,6 +1,6 @@
 import './App.css';
-import Navigation from './components/Navigation';
-import Footer from './components/Footer';
+import Navigation from './components/Pages/Navigation';
+import Footer from './components/Pages/Footer';
 import { Outlet } from 'react-router-dom';
 
 function App() {

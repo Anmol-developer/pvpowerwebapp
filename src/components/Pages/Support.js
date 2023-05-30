@@ -1,6 +1,6 @@
 import React from 'react'
-import support from '../support.jpg'
-import '../css/Support.css'
+import support from '../../Images/support.jpg'
+import '../../css/Pages/Support.css'
 import {BsFillArrowRightCircleFill} from 'react-icons/bs'
 
 function Support() {

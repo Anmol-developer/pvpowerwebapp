@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDom from "react-dom";
-import '../../../css/Dashboard/Modal/SubmitModal.css'
+import '../../css/Modal/SubmitModal.css'
 
 function SubmitModal({open, children}) {
     

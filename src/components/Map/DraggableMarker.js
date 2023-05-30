@@ -1,8 +1,8 @@
 import React, {useRef,useMemo, useReducer, useEffect, useContext} from 'react'
 import MyContext from '../../context/Context';
-import '../../css/Dashboard/DraggableMarker.css'
+import '../../css/Map/DraggableMarker.css'
 import { Marker, Popup } from 'react-leaflet'
-import { ModalPopUp } from './Modal/ModalPopUp';
+import { ModalPopUp } from '../Modal/ModalPopUp';
 import { reducer,InitialState } from '../../reducer/Reducer';
 
 function DraggableMarker() {
