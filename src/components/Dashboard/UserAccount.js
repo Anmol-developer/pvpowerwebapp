@@ -1,11 +1,26 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import "../../css/Dashboard/UserAccount.css";
 import { FaUserAlt } from "react-icons/fa";
 import { AiFillEdit } from "react-icons/ai";
 import userContext from "../../context/UserContext";
+import EditUser from "../Modal/EditUser";
 
 function UserAccount() {
   const { user } = useContext(userContext);
+  const [showEditModal, setShowEditModal] = useState(false)
+
+  const handleEditModal  = ()=>{
+    setShowEditModal(true);
+  }
+
+  const handleCloseModal = ()=>{
+    setShowEditModal(false);
+  }
+
+  const saveInfo = ()=>{
+    setShowEditModal(false)
+    alert('Info saved!')
+  }
 
   return (
     <div className="main__container">
@@ -23,7 +38,7 @@ function UserAccount() {
           </div>
           <div className="edit__profile">
             <AiFillEdit />
-            <span style={{ marginLeft: "6px" }}>Edit</span>
+            <span style={{ marginLeft: "6px" }} onClick={handleEditModal}>Edit</span>
           </div>
         </div>
         <div className="user__info">
@@ -91,6 +106,7 @@ function UserAccount() {
           </div>
         </div>
       </div>
+      <EditUser open={showEditModal} user={user} closeModal={handleCloseModal} saveInfo={saveInfo} />
     </div>
   );
 }
