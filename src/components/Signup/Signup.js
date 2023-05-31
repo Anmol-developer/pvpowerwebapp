@@ -77,7 +77,7 @@ function Signup() {
   };
 
   const handlePasswordCheck = (event) => {
-    dispatch({type:"SET_CPASS", payload: event.tartget.value});
+    dispatch({type:"SET_CPASS", payload: event.target.value});
 
   };
 
