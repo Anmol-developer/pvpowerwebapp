@@ -8,6 +8,7 @@ import { AiOutlineMail } from "react-icons/ai";
 import { Link, useNavigate } from "react-router-dom";
 import VerifyEmailModal from "../Modal/VerifyEmailModal";
 import { initialState, reducer } from "../../reducer/SignupReducer";
+import Agreement from "./Agreement";
 
 function Signup() {
   const [state, dispatch] = useReducer(reducer,initialState);
@@ -86,6 +87,10 @@ function Signup() {
 
   };
 
+  const closeAgreementModal = ()=>{
+    dispatch({type:"SET_SHOWAGREE", payload:false})
+  }
+
   return (
     <div className="form__container">
       <div className="form__img">
@@ -149,7 +154,7 @@ function Signup() {
             onChange={handleChange}
             style={{ marginRight: "5px" }}
           />
-          I accept Terms and services
+          <span className="accept_tns" onClick={()=>dispatch({type:"SET_SHOWAGREE", payload:true})}>I accept Terms and services</span>
         </label>
         <br />
         <button
@@ -176,6 +181,7 @@ function Signup() {
           </button>
         </div>
       </VerifyEmailModal>
+      <Agreement open={state.showAgreement} closeModal={closeAgreementModal} />
     </div>
   );
 }

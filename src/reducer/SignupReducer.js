@@ -7,6 +7,7 @@ const initialState = {
   passwordEqual: "",
   showVerifyModal: false,
   verifyCode: "",
+  showAgreement: false
 };
 
 const reducer = (state, action) => {
@@ -34,6 +35,9 @@ const reducer = (state, action) => {
 
     case "SET_EMAIL":
       return { ...state, email: action.payload };
+
+    case "SET_SHOWAGREE":
+      return {...state, showAgreement:action.payload};
 
     default:
       return state;

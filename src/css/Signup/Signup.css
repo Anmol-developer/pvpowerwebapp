@@ -73,6 +73,12 @@
   color: rgb(40, 40, 40);
   margin-right: 8px;
 }
+.accept_tns{
+  cursor: pointer;
+}
+.accept_tns:hover{
+  text-decoration: underline;
+}
 
 @media (max-width: 500px) {
   .form__container {
