@@ -9,7 +9,7 @@ function EditUser({ open, closeModal, user }) {
   const [showVerifyModal, setVerifyModal] = useState(false);
   const [email, setEmail] = useState(user.email)
   const [address, setAddress] = useState(user.address)
-  const [zipcode, setZipCode] = useState(user.zipCode)
+  const [zipCode, setZipCode] = useState(user.zipCode)
   const [username, setUsername] = useState(user.username)
   const [phone, setPhone] = useState(user.phone)
   const [designation, setDesignation] = useState(user.designation || 'Product Manager');
@@ -37,8 +37,9 @@ function EditUser({ open, closeModal, user }) {
         username,
         verifyCode,
         address,
-        zipcode,
-        phone
+        zipCode,
+        phone,
+        designation
       }),
     })
 
@@ -117,7 +118,7 @@ function EditUser({ open, closeModal, user }) {
             <label htmlFor="zipcode">Zip code : </label>
             <input
               type="number"
-              value={zipcode}
+              value={zipCode}
               id="zipcode"
               name="zipcode"
               className="account-input"

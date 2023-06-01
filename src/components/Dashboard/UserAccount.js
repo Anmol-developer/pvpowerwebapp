@@ -17,10 +17,6 @@ function UserAccount() {
     setShowEditModal(false);
   }
 
-  // const saveInfo = ()=>{
-  //   setShowEditModal(false)
-  //   alert('Info saved!')
-  // }
 
   return (
     <div className="main__container">
@@ -97,7 +93,7 @@ function UserAccount() {
             <label htmlFor="zipcode">Zip code : </label>
             <input
               type="number"
-              value={user.zipcode ? user.zipcode : 12345}
+              value={user.zipCode ? user.zipCode : 12345}
               id="zipcode"
               name="zipcode"
               className="account-input"
