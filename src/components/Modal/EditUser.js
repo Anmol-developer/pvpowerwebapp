@@ -1,8 +1,49 @@
-import React from "react";
+import React, { useState } from "react";
 import ReactDom from "react-dom";
 import "../../css/Modal/EditUser.css";
+import VerifyPhone from "./VerifyPhone";
+import axios from '../../axios'
 
-function EditUser({ open, closeModal, saveInfo, user }) {
+function EditUser({ open, closeModal, user }) {
+  const [verifyCode, setVerifyCode] = useState('');
+  const [showVerifyModal, setVerifyModal] = useState(false);
+  const [email, setEmail] = useState(user.email)
+  const [address, setAddress] = useState(user.address)
+  const [zipcode, setZipCode] = useState(user.zipCode)
+  const [username, setUsername] = useState(user.username)
+  const [phone, setPhone] = useState(user.phone)
+  const [designation, setDesignation] = useState(user.designation || 'Product Manager');
+
+  const saveInfo = async()=>{
+    setVerifyModal(true);
+    const result = await axios.get(`/send-sms/`);
+    console.log('code sent result: ', result);
+  }
+
+  const closeModalPhone = ()=>{
+    setVerifyModal(false)
+    setVerifyCode('')
+  }
+
+  const handleVerify = async()=>{
+    const result = await fetch(`/edit/${user._id}`,{
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        email,
+        username,
+        verifyCode,
+        address,
+        zipcode,
+        phone
+      }),
+    })
+
+    console.log('edited result: ', await result.json());
+  }
+
   if (!open) return null;
   return ReactDom.createPortal(
     <>
@@ -14,10 +55,12 @@ function EditUser({ open, closeModal, saveInfo, user }) {
             <label htmlFor="username">Full name : </label>
             <input
               type="text"
-              value={user.username}
+              value={username}
               id="username"
               name="username"
               className="account-input"
+              required
+              onChange={(e)=>setUsername(e.target.value)}
             />
           </div>
 
@@ -25,10 +68,11 @@ function EditUser({ open, closeModal, saveInfo, user }) {
             <label htmlFor="email">Email : </label>
             <input
               type="email"
-              value={user.email}
+              value={email}
               id="email"
               name="email"
               className="account-input"
+              onChange={(e)=>setEmail(e.target.value)}
               required
             />
           </div>
@@ -37,11 +81,12 @@ function EditUser({ open, closeModal, saveInfo, user }) {
             <label htmlFor="phone">Phone : </label>
             <input
               type="tel"
-              value={user.phone ? user.phone : 123456789}
+              value={phone}
               id="phone"
               name="phone"
               className="account-input"
               required
+              onChange={(e)=>setPhone(e.target.value)}
             />
           </div>
 
@@ -50,12 +95,13 @@ function EditUser({ open, closeModal, saveInfo, user }) {
             <input
               type="text"
               value={
-                user.address ? user.address : "Civil lines, Roorkee, UK, India"
+                address
               }
               id="address"
               name="address"
               className="account-input"
               required
+              onChange={(e)=>setAddress(e.target.value)}
             />
           </div>
 
@@ -63,11 +109,25 @@ function EditUser({ open, closeModal, saveInfo, user }) {
             <label htmlFor="zipcode">Zip code : </label>
             <input
               type="number"
-              value={user.zipcode ? user.zipcode : 12345}
+              value={zipcode}
               id="zipcode"
               name="zipcode"
               className="account-input"
               required
+              onChange={(e)=>setZipCode(e.target.value)}
+            />
+          </div>
+
+          <div className=" edit__designation  editOpt">
+            <label htmlFor="designation">Designation : </label>
+            <input
+              type="text"
+              value={designation}
+              id="designation"
+              name="designation"
+              className="account-input"
+              required
+              onChange={(e)=>setDesignation(e.target.value)}
             />
           </div>
 
@@ -82,6 +142,22 @@ function EditUser({ open, closeModal, saveInfo, user }) {
 
         </div>
       </div>
+      <VerifyPhone open={showVerifyModal} closeModalPhone={closeModalPhone}>
+      <div className="verify__heading">
+          <h2>Verify Phone</h2>
+          <input
+            type="number"
+            className="code_input"
+            value={verifyCode}
+            onChange={(e) => setVerifyCode(e.target.value)}
+            placeholder="Enter your 4 digit code"
+            required
+          />
+          <button className="signup__btn" onClick={handleVerify}>
+            Update
+          </button>
+        </div>
+      </VerifyPhone>
     </>,
     document.getElementById("edit_user")
   );

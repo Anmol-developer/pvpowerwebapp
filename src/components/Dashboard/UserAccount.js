@@ -17,10 +17,10 @@ function UserAccount() {
     setShowEditModal(false);
   }
 
-  const saveInfo = ()=>{
-    setShowEditModal(false)
-    alert('Info saved!')
-  }
+  // const saveInfo = ()=>{
+  //   setShowEditModal(false)
+  //   alert('Info saved!')
+  // }
 
   return (
     <div className="main__container">
@@ -106,7 +106,7 @@ function UserAccount() {
           </div>
         </div>
       </div>
-      <EditUser open={showEditModal} user={user} closeModal={handleCloseModal} saveInfo={saveInfo} />
+      <EditUser open={showEditModal} user={user} closeModal={handleCloseModal} />
     </div>
   );
 }
