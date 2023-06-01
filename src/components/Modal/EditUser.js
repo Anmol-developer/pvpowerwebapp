@@ -14,7 +14,8 @@ function EditUser({ open, closeModal, user }) {
   const [phone, setPhone] = useState(user.phone)
   const [designation, setDesignation] = useState(user.designation || 'Product Manager');
 
-  const saveInfo = async()=>{
+  const saveInfo = async(e)=>{
+    e.preventDefault();
     setVerifyModal(true);
     const result = await axios.get(`/send-sms/`);
     console.log('code sent result: ', result);
@@ -40,6 +41,13 @@ function EditUser({ open, closeModal, user }) {
         phone
       }),
     })
+
+    if(result.status===200){
+      alert('successfully updated')
+      window.location.reload()
+      closeModal()
+      closeModalPhone()
+    }
 
     console.log('edited result: ', await result.json());
   }
