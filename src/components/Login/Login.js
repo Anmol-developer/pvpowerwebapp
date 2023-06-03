@@ -8,6 +8,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "../../axios";
 import ResetModal from "../Modal/ResetModal";
+ import { AiOutlineArrowLeft } from "react-icons/ai";
 
 function Login() {
   const navigate = useNavigate();
@@ -98,6 +99,7 @@ function Login() {
   };
   return (
     <div className="form__container">
+      <Link to='/' className="back-to-home"><AiOutlineArrowLeft/></Link>
       <div className="form__img">
         <img src={imageSignup} alt="abc" />
       </div>

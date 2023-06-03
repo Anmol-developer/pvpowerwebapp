@@ -4,23 +4,28 @@ import "../../css/Signup/Signup.css";
 import { BiUserCircle } from "react-icons/bi";
 import { RiLockPasswordLine } from "react-icons/ri";
 import { FaKey } from "react-icons/fa";
-import { AiOutlineMail } from "react-icons/ai";
+import { AiOutlineArrowLeft, AiOutlineMail } from "react-icons/ai";
 import { Link, useNavigate } from "react-router-dom";
 import VerifyEmailModal from "../Modal/VerifyEmailModal";
 import { initialState, reducer } from "../../reducer/SignupReducer";
 import Agreement from "./Agreement";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function Signup() {
-  const [state, dispatch] = useReducer(reducer,initialState);
+  const [state, dispatch] = useReducer(reducer, initialState);
   const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (state.agreement) {
       if (state.confirmPassword !== state.password)
-        dispatch({type:"SET_PASSEQUAL", payload: (<p className="pls-upload">Password and confirm password unequal</p>)})
+        dispatch({
+          type: "SET_PASSEQUAL",
+          payload: (
+            <p className="pls-upload">Password and confirm password unequal</p>
+          ),
+        });
       else {
         const status = await fetch("/verify-email", {
           method: "POST",
@@ -29,13 +34,13 @@ function Signup() {
           },
           body: JSON.stringify({ email: state.email }),
         });
-        
+
         const isUserExist = status.status;
         if (isUserExist === 200) {
-          dispatch({type:"SET_PASSEQUAL", payload: ""})
-          dispatch({type: "SET_SHOWVERMODAL", payload:true})
+          dispatch({ type: "SET_PASSEQUAL", payload: "" });
+          dispatch({ type: "SET_SHOWVERMODAL", payload: true });
         } else if (isUserExist === 409) {
-          toast.warn('User already exist! Try logging in', {
+          toast.warn("User already exist! Try logging in", {
             position: "top-center",
             autoClose: 5000,
             hideProgressBar: true,
@@ -44,11 +49,11 @@ function Signup() {
             draggable: true,
             progress: 0,
             theme: "light",
-            });
+          });
         }
       }
     } else {
-      toast.warn('Please check the box!', {
+      toast.warn("Please check the box!", {
         position: "top-center",
         autoClose: 5000,
         hideProgressBar: true,
@@ -57,7 +62,7 @@ function Signup() {
         draggable: true,
         progress: 0,
         theme: "light",
-        });
+      });
     }
   };
 
@@ -70,17 +75,17 @@ function Signup() {
           "Content-type": "application/json",
         },
         body: JSON.stringify({
-          email:state.email,
-          password:state.password,
-          username:state.username,
-          verifyCode:state.verifyCode,
+          email: state.email,
+          password: state.password,
+          username: state.username,
+          verifyCode: state.verifyCode,
         }),
       });
       if (result) {
         const data = await result.json();
         // console.log(data);
         if (data) {
-          toast.success('Sign up success!', {
+          toast.success("Sign up success!", {
             position: "top-center",
             autoClose: 5000,
             hideProgressBar: true,
@@ -89,14 +94,14 @@ function Signup() {
             draggable: true,
             progress: 0,
             theme: "light",
-            });
+          });
           navigate(`/dashboard/main/${data._id}`);
-          dispatch({type: "SET_SHOWVERMODAL", payload:false})
-          dispatch({type: "SET_VERCODE", payload:""})
+          dispatch({ type: "SET_SHOWVERMODAL", payload: false });
+          dispatch({ type: "SET_VERCODE", payload: "" });
         }
       }
     } catch (error) {
-      toast.warn('Code not equal!', {
+      toast.warn("Code not equal!", {
         position: "top-center",
         autoClose: 5000,
         hideProgressBar: true,
@@ -105,33 +110,34 @@ function Signup() {
         draggable: true,
         progress: 0,
         theme: "light",
-        });
-      dispatch({type: "SET_SHOWVERMODAL", payload:false})
+      });
+      dispatch({ type: "SET_SHOWVERMODAL", payload: false });
       console.log(error);
     }
   };
 
   const handleChange = (event) => {
-    dispatch({type:"SET_AGREEMENT", payload: event.target.checked});
+    dispatch({ type: "SET_AGREEMENT", payload: event.target.checked });
   };
 
   const handlePasswordCheck = (event) => {
-    dispatch({type:"SET_CPASS", payload: event.target.value});
-
+    dispatch({ type: "SET_CPASS", payload: event.target.value });
   };
 
   const closeModal = () => {
-    dispatch({type: "SET_VERCODE", payload:""})
-    dispatch({type: "SET_SHOWVERMODAL", payload:false})
-
+    dispatch({ type: "SET_VERCODE", payload: "" });
+    dispatch({ type: "SET_SHOWVERMODAL", payload: false });
   };
 
-  const closeAgreementModal = ()=>{
-    dispatch({type:"SET_SHOWAGREE", payload:false})
-  }
+  const closeAgreementModal = () => {
+    dispatch({ type: "SET_SHOWAGREE", payload: false });
+  };
 
   return (
     <div className="form__container">
+      <Link to="/" className="back-to-home">
+        <AiOutlineArrowLeft/>
+      </Link>
       <div className="form__img">
         <img src={imageSignup} alt="abc" />
       </div>
@@ -142,7 +148,9 @@ function Signup() {
           <input
             type="text"
             value={state.username}
-            onChange={(event) => dispatch({type:"SET_USERNAME", payload: event.target.value})}
+            onChange={(event) =>
+              dispatch({ type: "SET_USERNAME", payload: event.target.value })
+            }
             className="username input"
             placeholder="Username"
             required
@@ -154,7 +162,9 @@ function Signup() {
           <input
             type="email"
             value={state.email}
-            onChange={(event) => dispatch({type:"SET_EMAIL", payload: event.target.value})}
+            onChange={(event) =>
+              dispatch({ type: "SET_EMAIL", payload: event.target.value })
+            }
             className="email input"
             placeholder="Email"
             required
@@ -166,7 +176,9 @@ function Signup() {
           <input
             type="password"
             value={state.password}
-            onChange={(event) => dispatch({type:"SET_PASS", payload: event.target.value})}
+            onChange={(event) =>
+              dispatch({ type: "SET_PASS", payload: event.target.value })
+            }
             className="password input"
             placeholder="Password"
             required
@@ -193,7 +205,12 @@ function Signup() {
             onChange={handleChange}
             style={{ marginRight: "5px" }}
           />
-          <span className="accept_tns" onClick={()=>dispatch({type:"SET_SHOWAGREE", payload:true})}>I accept <span className="TnS">Terms and services</span></span>
+          <span
+            className="accept_tns"
+            onClick={() => dispatch({ type: "SET_SHOWAGREE", payload: true })}
+          >
+            I accept <span className="TnS">Terms and services</span>
+          </span>
         </label>
         <br />
         <button
@@ -202,7 +219,9 @@ function Signup() {
         >
           Submit
         </button>
-        <Link to={"/login"} style={{marginTop:"5px"}}>Already a member? Login</Link>
+        <Link to={"/login"} style={{ marginTop: "5px" }}>
+          Already a member? Login
+        </Link>
       </form>
       <VerifyEmailModal open={state.showVerifyModal} closeModal={closeModal}>
         <div className="verify__heading">
@@ -211,7 +230,9 @@ function Signup() {
             type="number"
             className="code_input"
             value={state.verifyCode}
-            onChange={(e) => dispatch({type:"SET_VERCODE",payload:e.target.value})}
+            onChange={(e) =>
+              dispatch({ type: "SET_VERCODE", payload: e.target.value })
+            }
             placeholder="Enter your 4 digit code"
             required
           />
