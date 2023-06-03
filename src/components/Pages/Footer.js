@@ -13,7 +13,7 @@ function Footer() {
         <div className="footer__company">
           <p className="title">Company</p>
           <Link to={'/about'} className="about">About</Link>
-          <Link to={'/history'} className="history">History</Link>
+          <Link to={'/faq'} className="history">FAQ's</Link>
           <p className="contact">Contact Us:</p>
           <p className="contact__email">Email: abcd@gmil.com</p>
           <p className="contact__phone">Phone: 123456789</p>

@@ -22,7 +22,8 @@ function Navigation() {
         <div className='nav__list' >
                 <Link className='nav__item home'to={'/'}>Home</Link>
                 <Link className='nav__item pricing' to={'/pricing'}>Pricing</Link>
-                <Link className='nav__item support' to={'/support'}>Support</Link>
+                <Link className='nav__item support' to={'/services'}>Services</Link>
+                <Link className='nav__item support' to={'/contact'}>Contact</Link>
                 <Link className='nav__item signup' to={'/signup'}>Sign up</Link>
         </div>
     </div>
