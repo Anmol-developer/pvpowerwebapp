@@ -30,6 +30,16 @@ function Login() {
       });
       const data = await user.json();
       navigate(`/dashboard/main/${data._id}`);
+      toast.success("Successfully logged in!", {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: 0,
+        theme: "light",
+      });
     } else {
       toast.warn("Incorrect credentials!", {
         position: "top-center",
