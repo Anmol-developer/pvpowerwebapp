@@ -10,7 +10,6 @@ function ShowGraph() {
   const { dataEx } = useContext(DataContext);
   const {user} = useContext(userContext)
   // Extract the data and time from the Excel sheet columns
-  // const selectedDate = '12/5/2022'; // format - MM/d/yyyy
   const dates = dataEx.map((row) => row.date);
   const [startDate, setStartDate] = useState(dates[0]);
 
@@ -22,7 +21,6 @@ function ShowGraph() {
   const RHumidity = dataEx.map((row) => row.RHumidity);
   const CloudCover = dataEx.map((row) => row.CloudCover);
   const Rainfall = dataEx.map((row) => row.Rainfall);
-  // console.log(time);
   
   // Filter the data for the selected date
   const filteredPVValues = pvValues.filter((_, index) =>

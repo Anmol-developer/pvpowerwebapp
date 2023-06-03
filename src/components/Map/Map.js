@@ -1221,11 +1221,11 @@ function Map() {
     ],
   };
 
-  const getBorderSize = (zoom) => {
+  // const getBorderSize = (zoom) => {
     // Calculate the desired border size based on the zoom level
     // You can adjust this calculation as per your requirements
-    return zoom >= 10 ? 2 : 1;
-  };
+  //   return zoom >= 10 ? 2 : 1;
+  // };
 
   return (
     <MapContainer

@@ -2,7 +2,7 @@ import React from 'react'
 
 function GraphError() {
   return (
-    <div>GraphError</div>
+    <div>An Error occured!</div>
   )
 }
 

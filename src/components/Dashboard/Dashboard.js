@@ -5,11 +5,12 @@ import { Outlet, useNavigate } from "react-router-dom";
 import DataContext from "../../context/Data";
 import userContext from "../../context/UserContext";
 import axios from "axios";
-import Loading from 'react-loading'
+import Loading from "react-loading";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function Dashboard() {
   const navigate = useNavigate();
-  // const param = useParams()
   const [dataEx, setData] = useState([]);
   const [user, setUser] = useState({});
   const [dataType, setDataType] = useState([]);
@@ -17,8 +18,7 @@ function Dashboard() {
 
   useEffect(() => {
     isLoggedIn();
-  }, [])
-  
+  }, []);
 
   useEffect(() => {
     // Update windowWidth state on initial load
@@ -43,27 +43,35 @@ function Dashboard() {
       const user = await axios.get("/dashboard");
       setUser({ ...user.data });
     } catch (error) {
-      alert('you are logged out')
-      navigate('/login')
+      toast.warn("You are logged out!", {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: 0,
+        theme: "light",
+      });
+      navigate("/login");
     }
-    
   };
 
   const setdata = (data) => {
     setData(data[0]);
     setDataType(data[1]);
-    // console.log("dataEx: ", dataEx);
-    // console.log("data ", data);
   };
-  if(!user.email) {return (
-    <>
-      <div className='unauth__wrapper'></div>
-      <div className='unauth__container'>
-        <h2>Loading please wait</h2>
-        <Loading type="spin" color="blue" width={'30%'} height={'30%'} />
-      </div>
-    </>
-  )}
+  if (!user.email) {
+    return (
+      <>
+        <div className="unauth__wrapper"></div>
+        <div className="unauth__container">
+          <h2>Loading please wait</h2>
+          <Loading type="spin" color="blue" width={"30%"} height={"30%"} />
+        </div>
+      </>
+    );
+  }
   return (
     <>
       {windowWidth > 610 ? (
@@ -76,6 +84,18 @@ function Dashboard() {
               <Outlet />
             </userContext.Provider>
           </DataContext.Provider>
+          <ToastContainer
+            position="top-center"
+            autoClose={5000}
+            hideProgressBar
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="light"
+          />
         </div>
       ) : (
         <div className="use-big-screen">

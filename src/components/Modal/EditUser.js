@@ -2,35 +2,39 @@ import React, { useState } from "react";
 import ReactDom from "react-dom";
 import "../../css/Modal/EditUser.css";
 import VerifyPhone from "./VerifyPhone";
-import axios from '../../axios'
+import axios from "../../axios";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function EditUser({ open, closeModal, user }) {
-  const [verifyCode, setVerifyCode] = useState('');
+  const [verifyCode, setVerifyCode] = useState("");
   const [showVerifyModal, setVerifyModal] = useState(false);
-  const [email, setEmail] = useState(user.email)
-  const [address, setAddress] = useState(user.address)
-  const [zipCode, setZipCode] = useState(user.zipCode)
-  const [username, setUsername] = useState(user.username)
-  const [phone, setPhone] = useState(user.phone)
-  const [designation, setDesignation] = useState(user.designation || 'Product Manager');
+  const [email, setEmail] = useState(user.email);
+  const [address, setAddress] = useState(user.address);
+  const [zipCode, setZipCode] = useState(user.zipCode);
+  const [username, setUsername] = useState(user.username);
+  const [phone, setPhone] = useState(user.phone);
+  const [designation, setDesignation] = useState(
+    user.designation || "Product Manager"
+  );
 
-  const saveInfo = async(e)=>{
+  const saveInfo = async (e) => {
     e.preventDefault();
     setVerifyModal(true);
     const result = await axios.get(`/send-sms/`);
-    console.log('code sent result: ', result);
-  }
+    console.log("code sent result: ", result);
+  };
 
-  const closeModalPhone = ()=>{
-    setVerifyModal(false)
-    setVerifyCode('')
-  }
+  const closeModalPhone = () => {
+    setVerifyModal(false);
+    setVerifyCode("");
+  };
 
-  const handleVerify = async()=>{
-    const result = await fetch(`/edit/${user._id}`,{
+  const handleVerify = async () => {
+    const result = await fetch(`/edit/${user._id}`, {
       method: "POST",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
         email,
@@ -39,19 +43,28 @@ function EditUser({ open, closeModal, user }) {
         address,
         zipCode,
         phone,
-        designation
+        designation,
       }),
-    })
+    });
 
-    if(result.status===200){
-      alert('successfully updated')
-      window.location.reload()
-      closeModal()
-      closeModalPhone()
+    if (result.status === 200) {
+      toast.success("Successfully updated!", {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: 0,
+        theme: "light",
+      });
+      window.location.reload();
+      closeModal();
+      closeModalPhone();
     }
 
-    console.log('edited result: ', await result.json());
-  }
+    // console.log('edited result: ', await result.json());
+  };
 
   if (!open) return null;
   return ReactDom.createPortal(
@@ -69,7 +82,7 @@ function EditUser({ open, closeModal, user }) {
               name="username"
               className="account-input"
               required
-              onChange={(e)=>setUsername(e.target.value)}
+              onChange={(e) => setUsername(e.target.value)}
             />
           </div>
 
@@ -81,7 +94,7 @@ function EditUser({ open, closeModal, user }) {
               id="email"
               name="email"
               className="account-input"
-              onChange={(e)=>setEmail(e.target.value)}
+              onChange={(e) => setEmail(e.target.value)}
               required
             />
           </div>
@@ -95,7 +108,7 @@ function EditUser({ open, closeModal, user }) {
               name="phone"
               className="account-input"
               required
-              onChange={(e)=>setPhone(e.target.value)}
+              onChange={(e) => setPhone(e.target.value)}
             />
           </div>
 
@@ -103,14 +116,12 @@ function EditUser({ open, closeModal, user }) {
             <label htmlFor="address">Billing Address : </label>
             <input
               type="text"
-              value={
-                address
-              }
+              value={address}
               id="address"
               name="address"
               className="account-input"
               required
-              onChange={(e)=>setAddress(e.target.value)}
+              onChange={(e) => setAddress(e.target.value)}
             />
           </div>
 
@@ -123,7 +134,7 @@ function EditUser({ open, closeModal, user }) {
               name="zipcode"
               className="account-input"
               required
-              onChange={(e)=>setZipCode(e.target.value)}
+              onChange={(e) => setZipCode(e.target.value)}
             />
           </div>
 
@@ -136,7 +147,7 @@ function EditUser({ open, closeModal, user }) {
               name="designation"
               className="account-input"
               required
-              onChange={(e)=>setDesignation(e.target.value)}
+              onChange={(e) => setDesignation(e.target.value)}
             />
           </div>
 
@@ -148,11 +159,10 @@ function EditUser({ open, closeModal, user }) {
               Cancel
             </button>
           </div>
-
         </div>
       </div>
       <VerifyPhone open={showVerifyModal} closeModalPhone={closeModalPhone}>
-      <div className="verify__heading">
+        <div className="verify__heading">
           <h2>Verify Phone</h2>
           <input
             type="number"
@@ -167,6 +177,18 @@ function EditUser({ open, closeModal, user }) {
           </button>
         </div>
       </VerifyPhone>
+      <ToastContainer
+        position="top-center"
+        autoClose={5000}
+        hideProgressBar
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
     </>,
     document.getElementById("edit_user")
   );

@@ -9,6 +9,8 @@ import { Link, useNavigate } from "react-router-dom";
 import VerifyEmailModal from "../Modal/VerifyEmailModal";
 import { initialState, reducer } from "../../reducer/SignupReducer";
 import Agreement from "./Agreement";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function Signup() {
   const [state, dispatch] = useReducer(reducer,initialState);
@@ -33,11 +35,29 @@ function Signup() {
           dispatch({type:"SET_PASSEQUAL", payload: ""})
           dispatch({type: "SET_SHOWVERMODAL", payload:true})
         } else if (isUserExist === 409) {
-          alert("User already exists");
+          toast.warn('User already exist! Try logging in', {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: 0,
+            theme: "light",
+            });
         }
       }
     } else {
-      alert("please check the box!");
+      toast.warn('Please check the box!', {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: 0,
+        theme: "light",
+        });
     }
   };
 
@@ -58,15 +78,34 @@ function Signup() {
       });
       if (result) {
         const data = await result.json();
-        console.log(data);
+        // console.log(data);
         if (data) {
+          toast.success('Sign up success!', {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: 0,
+            theme: "light",
+            });
           navigate(`/dashboard/main/${data._id}`);
           dispatch({type: "SET_SHOWVERMODAL", payload:false})
           dispatch({type: "SET_VERCODE", payload:""})
         }
       }
     } catch (error) {
-      alert("code not equal");
+      toast.warn('Code not equal!', {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: 0,
+        theme: "light",
+        });
       dispatch({type: "SET_SHOWVERMODAL", payload:false})
       console.log(error);
     }
@@ -182,6 +221,18 @@ function Signup() {
         </div>
       </VerifyEmailModal>
       <Agreement open={state.showAgreement} closeModal={closeAgreementModal} />
+      <ToastContainer
+        position="top-center"
+        autoClose={5000}
+        hideProgressBar
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
     </div>
   );
 }

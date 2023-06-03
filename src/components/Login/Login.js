@@ -4,6 +4,8 @@ import "../../css/Login/Login.css";
 import { Link, useNavigate } from "react-router-dom";
 import { RiLockPasswordLine } from "react-icons/ri";
 import { AiOutlineMail } from "react-icons/ai";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function Login() {
   const navigate = useNavigate();
@@ -12,7 +14,6 @@ function Login() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    // alert("clicked");
     const result = await fetch("/login", {
       method: "POST",
       headers: {
@@ -28,11 +29,19 @@ function Login() {
         },
       });
       const data = await user.json();
-      // console.log(data);
       navigate(`/dashboard/main/${data._id}`);
     } else {
+      toast.warn("Incorrect credentials!", {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: 0,
+        theme: "light",
+      });
       navigate("/login");
-      window.alert("Incorrect credentials");
     }
   };
 
@@ -72,6 +81,18 @@ function Login() {
         </button>
         <Link to={"/signup"}>Not a member? Sign up</Link>
       </form>
+      <ToastContainer
+        position="top-center"
+        autoClose={5000}
+        hideProgressBar
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
     </div>
   );
 }
