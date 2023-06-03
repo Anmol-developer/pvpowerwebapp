@@ -193,7 +193,7 @@ function Signup() {
             onChange={handleChange}
             style={{ marginRight: "5px" }}
           />
-          <span className="accept_tns" onClick={()=>dispatch({type:"SET_SHOWAGREE", payload:true})}>I accept Terms and services</span>
+          <span className="accept_tns" onClick={()=>dispatch({type:"SET_SHOWAGREE", payload:true})}>I accept <span className="TnS">Terms and services</span></span>
         </label>
         <br />
         <button
@@ -202,7 +202,7 @@ function Signup() {
         >
           Submit
         </button>
-        <Link to={"/login"}>Already a member? Login</Link>
+        <Link to={"/login"} style={{marginTop:"5px"}}>Already a member? Login</Link>
       </form>
       <VerifyEmailModal open={state.showVerifyModal} closeModal={closeModal}>
         <div className="verify__heading">

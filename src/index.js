@@ -2,19 +2,17 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
-// import 'leaflet/dist/leafelt.css'
 import reportWebVitals from './reportWebVitals';
 import {
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
 import Hero from './components/Pages/Hero';
-import Support from './components/Pages/Support';
 import Signup from '../src/components/Signup/Signup'
 import Pricing from '../src/components/Pages/Pricing'
 import About from '../src/components/Pages/About'
-import History from '../src/components/Pages/History'
 import Login from '../src/components/Login/Login'
+import ResetPassword from '../src/components/Login/ResetPassword'
 import Dashboard from './components/Dashboard/Dashboard';
 import { Error } from './components/Pages/Error'
 import Main from './components/Dashboard/Main';
@@ -41,25 +39,9 @@ const router = createBrowserRouter([
         element: <Pricing />,
       },
       {
-        path: "/signup",
-        element: <Signup />,
-      },
-      {
-        path: "/support",
-        element: <Support />,
-      },
-      {
-        path: "/history",
-        element: <History />,
-      },
-      {
         path: "/about",
         element: <About />,
       },
-      {
-        path: "/login",
-        element: <Login />,
-      }
     ]
   },
   {
@@ -93,6 +75,21 @@ const router = createBrowserRouter([
       },
 
     ]
+  },
+  {
+    path:'/signup',
+    element:<Signup/>,
+    errorElement: <Error/>
+  },
+  {
+    path:'/login',
+    element:<Login/>,
+    errorElement: <Error/>
+  },
+  {
+    path:'/reset-password/:userId',
+    element:<ResetPassword/>,
+    errorElement: <Error/>
   }
 ]);
 

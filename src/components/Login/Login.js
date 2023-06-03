@@ -6,11 +6,14 @@ import { RiLockPasswordLine } from "react-icons/ri";
 import { AiOutlineMail } from "react-icons/ai";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import axios from "../../axios";
+import ResetModal from "../Modal/ResetModal";
 
 function Login() {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showResetModal, setShowResetModal] = useState(false);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -55,6 +58,44 @@ function Login() {
     }
   };
 
+  const resetPassword = async () => {
+    const sentResult = await axios.post("/send-reset-password",{
+      email
+    });
+    if (sentResult.status === 200) {
+      toast.info("Reset Password link has been sent on your registered email", {
+        position: "top-center",
+        autoClose: 10000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+      setShowResetModal(false);
+    } else {
+      toast.error("OOPS! An error occured.", {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+      setShowResetModal(false);
+    }
+  };
+
+  const closeModal = () => {
+    setShowResetModal(false);
+  };
+
+  const handleResetModal = () => {
+    setShowResetModal(true);
+  };
   return (
     <div className="form__container">
       <div className="form__img">
@@ -89,7 +130,12 @@ function Login() {
         <button className="login__btn" type="submit">
           Login
         </button>
-        <Link to={"/signup"}>Not a member? Sign up</Link>
+        <Link to={"/signup"} style={{ marginTop: "5px" }}>
+          Not a member? Sign up
+        </Link>
+        <p className="forgotP" onClick={handleResetModal}>
+          Forgot password?
+        </p>
       </form>
       <ToastContainer
         position="top-center"
@@ -103,6 +149,22 @@ function Login() {
         pauseOnHover
         theme="light"
       />
+      <ResetModal open={showResetModal} closeModal={closeModal}>
+        <div className="resetP__heading">
+          <h2>Enter Email</h2>
+          <input
+            type="email"
+            className="code_input"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="Enter your Registered Email"
+            required
+          />
+          <button className="signup__btn" onClick={resetPassword}>
+            Reset
+          </button>
+        </div>
+      </ResetModal>
     </div>
   );
 }
