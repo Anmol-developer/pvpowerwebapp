@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useReducer } from "react";
+import React, { useContext, useEffect, useReducer, useState } from "react";
 import ShowModal from "./ShowModal";
 import "../../css/Modal/Modal.css";
 import { AiOutlineWarning } from "react-icons/ai";
@@ -13,10 +13,13 @@ import ReactLoading from "react-loading";
 import donegif from "../../Images/41793-correct.gif";
 import AfterCalcModal from "./AfterCalcModal";
 import userContext from '../../context/UserContext'
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function ModalPopUp({ lat, lon }) {
   const navigate = useNavigate();
   const [state, dispatch] = useReducer(reducer, InitialState);
+  const [CalcModel, setCalcModel] = useState("Randomforest")
 
   const { setdata } = useContext(DataContext);
   const { user } = useContext(userContext);
@@ -57,6 +60,18 @@ function ModalPopUp({ lat, lon }) {
 
   const NotifyCalc = async(email)=>{
     const send_calc_email = await axios.post('/send-calc-mail', {email})
+    if(send_calc_email.status===200){
+      toast.success("Calculation is done!", {
+        position: "top-center",
+        autoClose: 10000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
   }
 
   const handleFileChange = async (event) => {
@@ -189,6 +204,10 @@ function ModalPopUp({ lat, lon }) {
     setdata([state.data, state.dataFormat]);
   };
 
+  const changeModel=(e)=>{
+    setCalcModel(e.target.value)
+  }
+
   return (
     <div className="modal__container">
       <button className="modal-btn" onClick={setLocation}>
@@ -205,11 +224,21 @@ function ModalPopUp({ lat, lon }) {
           <b>Longitude: </b>
           {lon}
         </p>
-        {/* <p className="modal__adrs">
-          <b>Address: </b>
-          {state.isLoading && <span>Loading...</span>}
-          {!state.isLoading && state.address && state.address}
-        </p> */}
+        <p className="modal__adrs">
+          <label htmlFor="model" ><b>Calculation Model: </b></label>
+          <select id="model" value={CalcModel} onChange={changeModel}>
+            <option value='randomforest'>Randomforest</option>
+            <option value='lgbm'>Light Gradient Boosting Machine</option>
+            <option value='k-nearest'>K-Nearest Neighbour</option>
+            <option value='vector-regression'>Support Vector Regression</option>
+            <option value='essemble'>Essemble</option>
+            <option value='lstm'>LSTM</option>
+            <option value='namemd-lstm'>NAMEMD + LSTM</option>
+            <option value='namemd-fft-am-lstm'>NAMEMD + FFT + AM + LSTM</option>
+          </select>
+          {/* {state.isLoading && <span>Loading...</span>}
+          {!state.isLoading && state.address && state.address} */}
+        </p>
 
         <form className="data-type-form">
           <label htmlFor="data-type">
@@ -340,6 +369,18 @@ function ModalPopUp({ lat, lon }) {
           </div>
         </div>
       </AfterCalcModal>
+      <ToastContainer
+        position="top-center"
+        autoClose={5000}
+        hideProgressBar
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
     </div>
   );
 }
