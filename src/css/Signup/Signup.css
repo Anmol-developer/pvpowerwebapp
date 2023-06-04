@@ -4,6 +4,7 @@
   justify-content: center;
   align-items: center;
   width: 100%;
+  border: 1px solid black;
   height: 100vh;
 }
 .form__img {
@@ -112,10 +113,11 @@
   .form__container {
     flex-direction: column;
   }
-}
-@media (max-width: 400px) {
-  .form__container {
-    flex-direction: column;
-    width: 90%;
+  .form__img{
+    display: none;
+  }
+  .form{
+    width: 100%;
+    flex: 1;
   }
 }

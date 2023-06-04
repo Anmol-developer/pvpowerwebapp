@@ -27,6 +27,7 @@ function ModalPopUp({ lat, lon }) {
       if (state.showSubmitModal) {
         dispatch({ type: "SET_AFTERCALCMODAL", payload: true });
         dispatch({type:'SET_SHOWSUBMODAL', payload:false})
+        NotifyCalc(user.email);
       }else{
         dispatch({type:'SET_AFTERCALCMODAL',payload:false})
       }
@@ -53,6 +54,10 @@ function ModalPopUp({ lat, lon }) {
 
     location__adrs();
   }, [lat, lon]);
+
+  const NotifyCalc = async(email)=>{
+    const send_calc_email = await axios.post('/send-calc-mail', {email})
+  }
 
   const handleFileChange = async (event) => {
     //initializing state so that it is default every time file changes

@@ -87,11 +87,15 @@
     cursor: not-allowed;
     background-color: rgb(110, 110, 241);
 }
+.contact__form > h2{
+    display: none;
+}
 
 @media (max-width: 500px){
     .contact__container{
         flex-direction: column-reverse;
         height: fit-content;
+        padding-top: 5px;
     }
     .contact__text{
         display: flex;
@@ -103,5 +107,11 @@
     }
     .contact__text > p{
         text-align: center;
+    }
+    .contact__form>h2{
+        display: block;
+        text-align: center;
+        margin-top: 20px;
+        color: grey;
     }
 }
