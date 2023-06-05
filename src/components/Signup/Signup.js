@@ -1,4 +1,4 @@
-import React, { useReducer } from "react";
+import React, { useReducer, useState } from "react";
 import imageSignup from "../../Images/undraw_sign_up_n6im.svg";
 import "../../css/Signup/Signup.css";
 import { BiUserCircle } from "react-icons/bi";
@@ -11,9 +11,11 @@ import { initialState, reducer } from "../../reducer/SignupReducer";
 import Agreement from "./Agreement";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import PasswordStrengthBar from 'react-password-strength-bar';
 
 function Signup() {
   const [state, dispatch] = useReducer(reducer, initialState);
+  const [display, setDisplay] = useState('none')
   const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
@@ -133,6 +135,13 @@ function Signup() {
     dispatch({ type: "SET_SHOWAGREE", payload: false });
   };
 
+  const handleFocus = ()=>{
+    setDisplay('block')
+  }
+  const handleBlur=()=>{
+    setDisplay('none')
+  }
+
   return (
     <div className="form__container">
       <Link to="/" className="back-to-home">
@@ -181,10 +190,12 @@ function Signup() {
             }
             className="password input"
             placeholder="Password"
+            onFocus={handleFocus}
+            onBlur={handleBlur}
             required
           />
         </label>
-
+        <PasswordStrengthBar password={state.password} style={{marginBottom:'10px',display: display}}/>
         <label>
           <FaKey className="signupicon" />
           <input

@@ -13,14 +13,12 @@ import ReactLoading from "react-loading";
 import donegif from "../../Images/41793-correct.gif";
 import AfterCalcModal from "./AfterCalcModal";
 import userContext from '../../context/UserContext'
-import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 function ModalPopUp({ lat, lon }) {
   const navigate = useNavigate();
   const [state, dispatch] = useReducer(reducer, InitialState);
   const [CalcModel, setCalcModel] = useState("Randomforest")
-
   const { setdata } = useContext(DataContext);
   const { user } = useContext(userContext);
 
@@ -29,7 +27,7 @@ function ModalPopUp({ lat, lon }) {
     const timer = setTimeout(() => {
       if (state.showSubmitModal) {
         dispatch({ type: "SET_AFTERCALCMODAL", payload: true });
-        dispatch({type:'SET_SHOWSUBMODAL', payload:false})
+        dispatch({type:'SET_SUBMODAL', payload:false})
         NotifyCalc(user.email);
       }else{
         dispatch({type:'SET_AFTERCALCMODAL',payload:false})
@@ -60,18 +58,6 @@ function ModalPopUp({ lat, lon }) {
 
   const NotifyCalc = async(email)=>{
     const send_calc_email = await axios.post('/send-calc-mail', {email})
-    if(send_calc_email.status===200){
-      toast.success("Calculation is done!", {
-        position: "top-center",
-        autoClose: 10000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-    }
   }
 
   const handleFileChange = async (event) => {
@@ -369,18 +355,6 @@ function ModalPopUp({ lat, lon }) {
           </div>
         </div>
       </AfterCalcModal>
-      <ToastContainer
-        position="top-center"
-        autoClose={5000}
-        hideProgressBar
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="light"
-      />
     </div>
   );
 }
