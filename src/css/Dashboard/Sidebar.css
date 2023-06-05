@@ -64,3 +64,8 @@
 .account-info:hover{
     background-color: #576a83;
 }
+
+.user-account{
+    margin-top: 20px;
+    padding-bottom: 5px;
+}

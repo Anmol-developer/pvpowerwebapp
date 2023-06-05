@@ -1,6 +1,7 @@
 .main__container{
     height: 100%;
     padding: 10px;
+    padding-top: 0;
     flex: 0.8;
     display: flex;
     flex-direction: column;
@@ -9,7 +10,7 @@
 .main__map{
     height: 90%;
     width: 100%;
-    margin-top: 20px;
+    margin-top: 10px;
     display: flex;
     flex-direction: column;
     align-items: flex-end;
@@ -18,14 +19,23 @@
     display: flex;
     color: #c5c4c4;
     padding: 10px;
+    padding-bottom: 0;
     border-bottom: 1px solid #c5c4c4;
+    /* border: 1px solid red; */
+    position: relative;
 }
 
 .dheader__title{
     font-size: 20px;
+    /* border: 1px solid green; */
+    position: absolute;
+    left: 0;
 }
 .dheader__greet{
-    margin-left: 25%;
+    margin-top: 5px;
+    /* border: 1px solid orange; */
+    width: 100%;
+    text-align: center;
 }
 
 .map__location{
