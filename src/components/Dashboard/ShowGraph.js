@@ -144,7 +144,7 @@ function ShowGraph() {
     <>
       <div className="plot__container">
         <div className="main__header">
-          <p className="dheader__title">DASHBOARD &gt; Graph</p>
+          <p className="dheader__title">DASHBOARD &gt; Visualize</p>
           <p className="dheader__greet">welcome {user.username}</p>
         </div>
         {dataEx[0]?(<div className="main__plot">

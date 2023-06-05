@@ -1,13 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import Plot from "react-plotly.js";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import axios from "../../axios";
 import '../../css/Dashboard/UserForecast.css'
+import userContext from "../../context/UserContext";
 
 function ShowGraph() {
   const [data, setData] = useState([]);
   const [startDate, setStartDate] = useState(null);
+  const { user } = useContext(userContext);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -86,8 +88,8 @@ function ShowGraph() {
     <>
       <div className="plot__container">
         <div className="main__header">
-          <p className="dheader__title">DASHBOARD &gt; Graph</p>
-          <p className="dheader__greet">welcome User</p>
+          <p className="dheader__title">DASHBOARD &gt; Forecast</p>
+          <p className="dheader__greet">welcome {user.username}</p>
         </div>
         <div className="main__plot">
           <div style={{marginBottom:'10px',display:'flex'}}>

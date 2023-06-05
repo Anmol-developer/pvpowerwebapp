@@ -1,6 +1,7 @@
 .plot__container {
     height: 100%;
     padding: 10px;
+    padding-top: 0;
     flex: 0.8;
     display: flex;
     flex-direction: column;
@@ -36,6 +37,7 @@
     width: 99%;
     position: absolute;
     height: 90%;
+    margin-top: 10px;
 }
 
 .radio-opt {

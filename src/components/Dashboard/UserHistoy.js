@@ -26,6 +26,7 @@ function UserHistoy() {
     <div className="main__container">
       <div className="main__header">
         <p className="dheader__title">DASHBOARD &gt; History</p>
+        <p className="dheader__greet">welcome {user.username}</p>
       </div>
       <div className="main__history">
         <div className="history__item">
