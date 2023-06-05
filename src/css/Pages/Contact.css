@@ -78,6 +78,7 @@
     color: white;
     border: none;
     padding: 10px 0;
+    transition: background-color 200ms ease-in;
 }
 .contact-sbmt-btn:hover{
     cursor: pointer;
