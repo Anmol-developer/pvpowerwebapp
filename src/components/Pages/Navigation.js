@@ -42,7 +42,8 @@ function Navigation() {
                 {!user && (<Link className='nav__item pricing' to={'/pricing'}>Pricing</Link>)}
                 <Link className='nav__item support' to={'/services'}>Services</Link>
                 <Link className='nav__item support' to={'/contact'}>Contact</Link>
-                {user && (<Link className='nav__item support' to={'/tut'}>Tutorial</Link>)}
+                {/* {user && (<Link className='nav__item support' to={'/tut'}>Tutorial</Link>)} */}
+                <Link className='nav__item support' to={'/tut'}>Tutorial</Link>
                 {!user ? (<Link className='nav__item signup' to={'/signup'}>Sign up</Link>) : (<button style={{border:'none'}} className='nav__item signup' onClick={logout}>Log out</button>)}
         </div>
     </div>

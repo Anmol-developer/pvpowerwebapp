@@ -35,7 +35,7 @@ function Login() {
       const data = await user.json();
       navigate(`/dashboard/main/${data._id}`);
       // window.location.reload();
-      // navigate(`/${data._id}`);
+      // navigate(`/`);
       toast.success("Successfully logged in!", {
         position: "top-center",
         autoClose: 5000,
