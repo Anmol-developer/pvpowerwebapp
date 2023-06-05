@@ -92,6 +92,10 @@ function Login() {
     }
   };
 
+  // const handleGoogle=()=>{
+  //   window.open('http://localhost:5000/google/callback', "_self")
+  // }
+
   const closeModal = () => {
     setShowResetModal(false);
   };
@@ -141,6 +145,10 @@ function Login() {
           Forgot password?
         </p>
       </form>
+      
+        {/* <button className="login__btn" onClick={handleGoogle}>
+          Google
+        </button> */}
       <ToastContainer
         position="top-center"
         autoClose={5000}
