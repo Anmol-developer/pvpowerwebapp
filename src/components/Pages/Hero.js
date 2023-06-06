@@ -1,10 +1,8 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import imagex from '../../Images/pv.jpg'
 import '../../css/Pages/Hero.css'
 import { Link } from 'react-router-dom'
-import userLogin from '../../context/UserLogin'
 function Hero() {
-  const user = useContext(userLogin)
   return (
     <div className='hero__container'>
         <div className='hero__text'>

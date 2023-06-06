@@ -1,8 +1,12 @@
 import React from 'react'
+import Testing from './Testing'
 
 function Pricing() {
   return (
-    <div>Pricing</div>
+    <div>
+      Pricing
+      <Testing/>
+    </div>
   )
 }
 
