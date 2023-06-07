@@ -23,18 +23,18 @@ function ModalPopUp({ lat, lon }) {
   const { user } = useContext(userContext);
 
   //testing show submit modal
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      if (state.showSubmitModal) {
-        dispatch({ type: "SET_AFTERCALCMODAL", payload: true });
-        dispatch({type:'SET_SUBMODAL', payload:false})
-        NotifyCalc(user.email);
-      }else{
-        dispatch({type:'SET_AFTERCALCMODAL',payload:false})
-      }
-    }, 5000); // Delay in milliseconds before playing the GIF
-    return () => clearTimeout(timer);
-  }, [state.showSubmitModal]);
+  // useEffect(() => {
+  //   const timer = setTimeout(() => {
+  //     if (state.showSubmitModal) {
+  //       // dispatch({ type: "SET_AFTERCALCMODAL", payload: true });
+  //       // dispatch({type:'SET_SUBMODAL', payload:false})
+  //       // NotifyCalc(user.email);
+  //     }else{
+  //       dispatch({type:'SET_AFTERCALCMODAL',payload:false})
+  //     }
+  //   }, 5000); // Delay in milliseconds before playing the GIF
+  //   return () => clearTimeout(timer);
+  // }, [state.showSubmitModal]);
 
   //getting input address's lat and lon using forward geocoding and loading functionality
   useEffect(() => {
@@ -146,6 +146,7 @@ function ModalPopUp({ lat, lon }) {
   };
   const closeSubmitModal = () => {
     dispatch({ type: "SET_SUBMODAL", payload: false });
+    dispatch({type:"SET_SHOWMODAL", payload:false})
 
     //setting everything back to default
     dispatch({type:'SET_DEFAULT'})
@@ -155,6 +156,7 @@ function ModalPopUp({ lat, lon }) {
 
   const closeAfterCalcModal = () => {
     dispatch({ type: "SET_AFTERCALCMODAL", payload: false });
+    dispatch({type:"SET_SHOWMODAL", payload:false})
 
     //setting everything back to default
     dispatch({type:'SET_DEFAULT'})
@@ -183,10 +185,22 @@ function ModalPopUp({ lat, lon }) {
   };
 
   const handleInfoSubmit = async () => {
+    dispatch({ type: "SET_SUBMODAL", payload: true });
+    dispatch({ type: "SET_AFTERCALCMODAL", payload: false });
+
     const formData = new FormData();
     formData.append("file", state.selectedFile);
+    const result = await fetch('http://127.0.0.1:5000/api/flask/processing', {
+      method: 'POST',
+      // headers:{"Content-Type": "application/json"},
+      body: formData,
+    })
+    console.log('File response: ', await result.json());
+    dispatch({ type: "SET_AFTERCALCMODAL", payload: true });
+    dispatch({ type: "SET_SUBMODAL", payload: false });
+    NotifyCalc(user.email);
+
     dispatch({ type: "SET_SHOWMODAL", payload: false });
-    dispatch({ type: "SET_SUBMODAL", payload: true });
     setdata([state.data, state.dataFormat]);
   };
 

@@ -5,7 +5,7 @@ function Testing() {
     const handleTesting= async()=>{
         // const result = await axios.get('https://amalfez-laughing-cod-vjvpppxvjrwcw545-5000.preview.app.github.dev//api/flask/testing');
         // alert(result.data)
-        const result = await fetch('https://amalfez-laughing-cod-vjvpppxvjrwcw545-5000.preview.app.github.dev/api/flask/testing',{
+        const result = await fetch('http://127.0.0.1:5000/api/flask/testing',{
           method: "GET",
           headers: {
             "Content-Type" : "application/json",

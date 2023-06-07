@@ -15,9 +15,11 @@ function ShowGraph() {
     const fetchData = async () => {
       try {
         const response = await axios.get("/forecast");
-        console.log(response.data[response.data.length - 2]);
+        // console.log(response.data[0]);
+        console.log(response.data);
         setStartDate(response.data[response.data.length - 2].date);
-        setData(response.data);
+        // setStartDate(response.data[0].date);
+        setData([...response.data]);
       } catch (error) {
         console.log(error);
       }
@@ -25,7 +27,9 @@ function ShowGraph() {
 
     fetchData();
   }, []);
-
+  
+  console.log('data', data);
+  console.log(startDate);
   const predicted = data.map((row) => row.Predictedpv);
   const time = data.map((row) => row.time);
   const dates = data.map((row) => row.date);
@@ -69,14 +73,14 @@ function ShowGraph() {
 
   const handleDownload = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/download", {
+      const response = await axios.get("http://localhost:8080/download", {
         responseType: "blob",
       });
       // Create a download link for the Excel file
       const url = window.URL.createObjectURL(new Blob([response.data]));
       const link = document.createElement("a");
       link.href = url;
-      link.setAttribute("download", "data_predicted.xlsx");
+      link.setAttribute("download", "processed_data.csv");
       document.body.appendChild(link);
       link.click();
     } catch (error) {
