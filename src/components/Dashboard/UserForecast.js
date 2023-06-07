@@ -5,16 +5,18 @@ import "react-datepicker/dist/react-datepicker.css";
 import axios from "../../axios";
 import '../../css/Dashboard/UserForecast.css'
 import userContext from "../../context/UserContext";
+import DataContext from "../../context/Data";
 
 function ShowGraph() {
   const [data, setData] = useState([]);
   const [startDate, setStartDate] = useState(null);
   const { user } = useContext(userContext);
+  const { dataEx } = useContext(DataContext);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("/forecast");
+        const response = await axios.get(`/forecast/${user._id}`);
         // console.log(response.data[0]);
         console.log(response.data);
         setStartDate(response.data[response.data.length - 2].date);
@@ -88,7 +90,16 @@ function ShowGraph() {
     }
   };
 
-  return (
+  if(!dataEx[0]){ return(<>
+    <div className="plot__container">
+        <div className="main__header">
+          <p className="dheader__title">DASHBOARD &gt; Forecast</p>
+          <p className="dheader__greet">welcome {user.username}</p>
+        </div>
+        <div>Please Upload Data</div>
+      </div>
+  </>)}
+  else {return (
     <>
       <div className="plot__container">
         <div className="main__header">
@@ -116,6 +127,6 @@ function ShowGraph() {
             <button onClick={handleDownload} className="download-btn">Download Excel</button>
       </div>
     </>
-  );
+  );}
 }
 export default ShowGraph;
