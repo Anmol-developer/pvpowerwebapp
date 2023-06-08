@@ -16,12 +16,12 @@ function ShowGraph() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`/forecast/${user._id}`);
+        const response = await axios.get(`/forecast/data/${user._id}`);
         // console.log(response.data[0]);
         console.log(response.data);
-        setStartDate(response.data[response.data.length - 2].date);
+        setStartDate(new Date(response.data[0].data[response.data[0].data.length - 2].date).toLocaleDateString('en-US'));
         // setStartDate(response.data[0].date);
-        setData([...response.data]);
+        setData([...response.data[0].data]);
       } catch (error) {
         console.log(error);
       }
@@ -32,9 +32,12 @@ function ShowGraph() {
   
   console.log('data', data);
   console.log(startDate);
-  const predicted = data.map((row) => row.Predictedpv);
+  const predicted = data.map((row) => row.PredictedPV);
   const time = data.map((row) => row.time);
-  const dates = data.map((row) => row.date);
+  const dates = data.map((row) => {
+    const date = row.date;
+    return new Date(date).toLocaleDateString('en-US');
+  });
 
   const filteredPredictedpv = predicted.filter((_, index) =>
     dates[index].startsWith(startDate)
@@ -75,7 +78,7 @@ function ShowGraph() {
 
   const handleDownload = async () => {
     try {
-      const response = await axios.get("http://localhost:8080/download", {
+      const response = await axios.get("/download", {
         responseType: "blob",
       });
       // Create a download link for the Excel file

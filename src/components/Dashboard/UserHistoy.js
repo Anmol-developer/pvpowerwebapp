@@ -24,9 +24,9 @@ function UserHistoy() {
     getHistory();
   },[])
 
-  const showView = () => {
+  const showView = (date) => {
     navigate(`/dashboard/graph/${user._id}`);
-    toast.info('Viewing data uploaded on MM/DD/YYYY.', {
+    toast.info(`Viewing data uploaded on MM/DD/YYYY.`, {
       position: "top-center",
       autoClose: 10000,
       hideProgressBar: true,
@@ -38,9 +38,10 @@ function UserHistoy() {
       });
   };
 
-  const deleteHistory = async()=>{
+  const deleteHistory = async(id)=>{
     try {
-      const deleteHistory = await axios.delete(`/delete/${user._id}`)
+      console.log(history);
+      const deleteHistory = await axios.delete(`/delete/${user._id}?data=${id}`)
       if(deleteHistory.status===200){
         alert('Deleted')
         window.location.reload()
@@ -58,25 +59,16 @@ function UserHistoy() {
       </div>
       <div className="main__history">
         {history.map((data)=>{
-          return(<div className="history__item">
+          return(<div className="history__item" key={data._id}>
           <p className="item__date"><span className="date">{new Date(data.date).toLocaleDateString('en-US')}</span><span className="time" style={{display:'block'}}>{new Date(data.date).toLocaleTimeString('en-US', {hour: '2-digit', minute: '2-digit', second: '2-digit'})}</span></p>
           <button className="view-history" onClick={showView}>
             View
           </button>
-          <button className="delete-history" onClick={deleteHistory}>
+          <button className="delete-history" onClick={()=>deleteHistory(data._id)}>
             <AiFillDelete />
           </button>
         </div>)
         })}
-        {/* <div className="history__item">
-          <p className="item__date">Dec 05 2022</p>
-          <button className="view-history" onClick={showView}>
-            View
-          </button>
-          <button className="delete-history">
-            <AiFillDelete />
-          </button>
-        </div> */}
       </div>
       <ToastContainer
         position="top-center"

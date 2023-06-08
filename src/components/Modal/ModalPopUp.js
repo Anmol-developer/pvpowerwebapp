@@ -12,13 +12,13 @@ import DataContext from "../../context/Data";
 import ReactLoading from "react-loading";
 import donegif from "../../Images/41793-correct.gif";
 import AfterCalcModal from "./AfterCalcModal";
-import userContext from '../../context/UserContext'
+import userContext from "../../context/UserContext";
 import "react-toastify/dist/ReactToastify.css";
 
 function ModalPopUp({ lat, lon }) {
   const navigate = useNavigate();
   const [state, dispatch] = useReducer(reducer, InitialState);
-  const [CalcModel, setCalcModel] = useState("Randomforest")
+  const [CalcModel, setCalcModel] = useState("Randomforest");
   const { setdata } = useContext(DataContext);
   const { user } = useContext(userContext);
 
@@ -56,16 +56,17 @@ function ModalPopUp({ lat, lon }) {
     location__adrs();
   }, [lat, lon]);
 
-  const NotifyCalc = async(email)=>{
-    const send_calc_email = await axios.post('/send-calc-mail', {email})
-  }
+  const NotifyCalc = async (email) => {
+    const send_calc_email = await axios.post("/send-calc-mail", { email });
+  };
 
   const handleFileChange = async (event) => {
     //initializing state so that it is default every time file changes
     dispatch({ type: "SET_FORMAT", payload: true });
     dispatch({ type: "SET_DISABLED", payload: true });
 
-    const data_format = state.dataType === "pv__data" ? state.format2 : state.format1;
+    const data_format =
+      state.dataType === "pv__data" ? state.format2 : state.format1;
 
     //handling file
     const file = event.target.files[0];
@@ -141,25 +142,22 @@ function ModalPopUp({ lat, lon }) {
   const closeModal = () => {
     dispatch({ type: "SET_SHOWMODAL", payload: false });
     //setting everything back to default
-    dispatch({type:'SET_DEFAULT'})
-
+    dispatch({ type: "SET_DEFAULT" });
   };
   const closeSubmitModal = () => {
     dispatch({ type: "SET_SUBMODAL", payload: false });
-    dispatch({type:"SET_SHOWMODAL", payload:false})
+    dispatch({ type: "SET_SHOWMODAL", payload: false });
 
     //setting everything back to default
-    dispatch({type:'SET_DEFAULT'})
-
-
+    dispatch({ type: "SET_DEFAULT" });
   };
 
   const closeAfterCalcModal = () => {
     dispatch({ type: "SET_AFTERCALCMODAL", payload: false });
-    dispatch({type:"SET_SHOWMODAL", payload:false})
+    dispatch({ type: "SET_SHOWMODAL", payload: false });
 
     //setting everything back to default
-    dispatch({type:'SET_DEFAULT'})
+    dispatch({ type: "SET_DEFAULT" });
   };
 
   const setLocation = () => {
@@ -190,23 +188,28 @@ function ModalPopUp({ lat, lon }) {
 
     const formData = new FormData();
     formData.append("file", state.selectedFile);
-    const result = await fetch('http://127.0.0.1:5000/api/flask/processing', {
-      method: 'POST',
+    const result = await fetch("http://127.0.0.1:5000/api/flask/processing", {
+      method: "POST",
       // headers:{"Content-Type": "application/json"},
       body: formData,
-    })
-    console.log('File response: ', await result.json());
-    dispatch({ type: "SET_AFTERCALCMODAL", payload: true });
-    dispatch({ type: "SET_SUBMODAL", payload: false });
-    NotifyCalc(user.email);
+    });
+    console.log("File response: ", await result.json());
+
+    //making request to /forecast to save data in mongoDB
+    const saveData = await axios.get(`/forecast/${user._id}`);
+    if (saveData.status === 200) {
+      dispatch({ type: "SET_AFTERCALCMODAL", payload: true });
+      dispatch({ type: "SET_SUBMODAL", payload: false });
+      NotifyCalc(user.email);
+    }
 
     dispatch({ type: "SET_SHOWMODAL", payload: false });
     setdata([state.data, state.dataFormat]);
   };
 
-  const changeModel=(e)=>{
-    setCalcModel(e.target.value)
-  }
+  const changeModel = (e) => {
+    setCalcModel(e.target.value);
+  };
 
   return (
     <div className="modal__container">
@@ -225,16 +228,18 @@ function ModalPopUp({ lat, lon }) {
           {lon}
         </p>
         <p className="modal__adrs">
-          <label htmlFor="model" ><b>Calculation Model: </b></label>
+          <label htmlFor="model">
+            <b>Calculation Model: </b>
+          </label>
           <select id="model" value={CalcModel} onChange={changeModel}>
-            <option value='randomforest'>Randomforest</option>
-            <option value='lgbm'>Light Gradient Boosting Machine</option>
-            <option value='k-nearest'>K-Nearest Neighbour</option>
-            <option value='vector-regression'>Support Vector Regression</option>
-            <option value='essemble'>Essemble</option>
-            <option value='lstm'>LSTM</option>
-            <option value='namemd-lstm'>NAMEMD + LSTM</option>
-            <option value='namemd-fft-am-lstm'>NAMEMD + FFT + AM + LSTM</option>
+            <option value="randomforest">Randomforest</option>
+            <option value="lgbm">Light Gradient Boosting Machine</option>
+            <option value="k-nearest">K-Nearest Neighbour</option>
+            <option value="vector-regression">Support Vector Regression</option>
+            <option value="essemble">Essemble</option>
+            <option value="lstm">LSTM</option>
+            <option value="namemd-lstm">NAMEMD + LSTM</option>
+            <option value="namemd-fft-am-lstm">NAMEMD + FFT + AM + LSTM</option>
           </select>
           {/* {state.isLoading && <span>Loading...</span>}
           {!state.isLoading && state.address && state.address} */}
