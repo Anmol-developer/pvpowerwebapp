@@ -5,13 +5,18 @@ import "react-datepicker/dist/react-datepicker.css";
 import axios from "../../axios";
 import '../../css/Dashboard/UserForecast.css'
 import userContext from "../../context/UserContext";
-import DataContext from "../../context/Data";
+import { useLocation } from "react-router-dom";
+// import DataContext from "../../context/Data";
 
 function ShowGraph() {
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+
+  const date = queryParams.get('date');
   const [data, setData] = useState([]);
   const [startDate, setStartDate] = useState(null);
   const { user } = useContext(userContext);
-  const { dataEx } = useContext(DataContext);
+  // const { dataEx } = useContext(DataContext);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -19,9 +24,16 @@ function ShowGraph() {
         const response = await axios.get(`/forecast/data/${user._id}`);
         // console.log(response.data[0]);
         console.log(response.data);
-        setStartDate(new Date(response.data[0].data[response.data[0].data.length - 2].date).toLocaleDateString('en-US'));
-        // setStartDate(response.data[0].date);
-        setData([...response.data[0].data]);
+        if(!date){
+        setStartDate(new Date(response.data[response.data.length-1].data[response.data[0].data.length - 1].date).toLocaleDateString('en-US'));
+        setData([...response.data[response.data.length-1].data]);
+        }else{
+          const data = response.data.filter((Data)=> new Date(Data.date).toLocaleDateString('en-US') === new Date(date).toLocaleDateString('en-US'))
+          console.log(data[data.length-1].data);
+          setStartDate(new Date(data[data.length-1].data[data[data.length-1].data.length-1].date).toLocaleDateString('en-US'))
+          setData([...data[data.length-1].data]);
+        }
+        
       } catch (error) {
         console.log(error);
       }
@@ -30,8 +42,8 @@ function ShowGraph() {
     fetchData();
   }, []);
   
-  console.log('data', data);
-  console.log(startDate);
+  // console.log('data', data);
+  // console.log(startDate);
   const predicted = data.map((row) => row.PredictedPV);
   const time = data.map((row) => row.time);
   const dates = data.map((row) => {
@@ -93,21 +105,41 @@ function ShowGraph() {
     }
   };
 
-  if(!dataEx[0]){ return(<>
-    <div className="plot__container">
+  // if(!dataEx[0]){ return(<>
+  //   <div className="plot__container">
+  //       <div className="main__header">
+  //         <p className="dheader__title">DASHBOARD &gt; Forecast</p>
+  //         <p className="dheader__greet">welcome {user.username}</p>
+  //         <p className="dheader__date">Date: {user.username}</p>
+  //       </div>
+  //       <div>Please Upload Data</div>
+  //     </div>
+  // </>)}
+  // else {
+
+  if(!startDate){
+    return(
+      <>
+      <div className="plot__container">
         <div className="main__header">
           <p className="dheader__title">DASHBOARD &gt; Forecast</p>
           <p className="dheader__greet">welcome {user.username}</p>
+          <p className="dheader__date">Date: {date ? (new Date(date).toLocaleDateString('en-US')):(new Date().toLocaleDateString('en-US'))}</p>
         </div>
-        <div>Please Upload Data</div>
+        <div className="main__plot">
+          Loading....
+        </div>
       </div>
-  </>)}
-  else {return (
+      </>
+    )
+  }
+    return (
     <>
       <div className="plot__container">
         <div className="main__header">
           <p className="dheader__title">DASHBOARD &gt; Forecast</p>
           <p className="dheader__greet">welcome {user.username}</p>
+          <p className="dheader__date">Date: {date ? (new Date(date).toLocaleDateString('en-US')):(new Date().toLocaleDateString('en-US'))}</p>
         </div>
         <div className="main__plot">
           <div style={{marginBottom:'10px',display:'flex'}}>
@@ -130,6 +162,7 @@ function ShowGraph() {
             <button onClick={handleDownload} className="download-btn">Download Excel</button>
       </div>
     </>
-  );}
+  );
+// }
 }
 export default ShowGraph;

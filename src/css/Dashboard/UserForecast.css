@@ -11,3 +11,9 @@
 .download-btn:hover{
     background-color: rgb(2, 92, 2);
 }
+
+.dheader__date{
+    position: absolute;
+    right: 10px;
+    top: 15px;
+}

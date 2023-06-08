@@ -25,8 +25,8 @@ function UserHistoy() {
   },[])
 
   const showView = (date) => {
-    navigate(`/dashboard/graph/${user._id}`);
-    toast.info(`Viewing data uploaded on MM/DD/YYYY.`, {
+    navigate(`/dashboard/forecast/${user._id}?date=${date}`);
+    toast.info(`Viewing Forecast for Data uploaded on ${new Date(date).toLocaleDateString('en-US')}.`, {
       position: "top-center",
       autoClose: 10000,
       hideProgressBar: true,
@@ -61,7 +61,7 @@ function UserHistoy() {
         {history.map((data)=>{
           return(<div className="history__item" key={data._id}>
           <p className="item__date"><span className="date">{new Date(data.date).toLocaleDateString('en-US')}</span><span className="time" style={{display:'block'}}>{new Date(data.date).toLocaleTimeString('en-US', {hour: '2-digit', minute: '2-digit', second: '2-digit'})}</span></p>
-          <button className="view-history" onClick={showView}>
+          <button className="view-history" onClick={()=>showView(data.date)}>
             View
           </button>
           <button className="delete-history" onClick={()=>deleteHistory(data._id)}>
