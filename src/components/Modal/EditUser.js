@@ -164,6 +164,7 @@ function EditUser({ open, closeModal, user }) {
       <VerifyPhone open={showVerifyModal} closeModalPhone={closeModalPhone}>
         <div className="verify__heading">
           <h2>Verify Phone</h2>
+          <p>Verification code is sent on your new phone number.</p>
           <input
             type="number"
             className="code_input"

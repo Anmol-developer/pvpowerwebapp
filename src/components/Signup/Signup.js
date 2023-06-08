@@ -237,6 +237,7 @@ function Signup() {
       <VerifyEmailModal open={state.showVerifyModal} closeModal={closeModal}>
         <div className="verify__heading">
           <h2>Verify Email</h2>
+          <p>Verification code is sent on your registered Email.</p>
           <input
             type="number"
             className="code_input"
