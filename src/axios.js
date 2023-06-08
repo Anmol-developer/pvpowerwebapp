@@ -1,8 +1,9 @@
-require('dotenv').config()
+// import dotenv from 'dotenv';
 import axios from "axios";
+// dotenv.config();
 
 const instance = axios.create({
-    baseURL: `${process.env.SERVER_PORT}`,
+    baseURL: `http://localhost:8080`,
     withCredentials:true
   });
 

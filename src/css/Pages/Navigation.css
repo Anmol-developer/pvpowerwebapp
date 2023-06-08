@@ -78,7 +78,7 @@
     background-color: black;
 }
 
-@media (max-width:500px){
+@media (max-width:800px){
     .nav__container{
         flex-direction: column;
     }

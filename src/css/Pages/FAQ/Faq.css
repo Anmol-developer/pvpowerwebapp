@@ -1,0 +1,22 @@
+.faq__container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 50px;
+    width: 100%;
+    height: 100vh;
+    margin-bottom: 40px;
+}
+.faq__accordion{
+    margin-top: 50px;
+    /* border: 1px solid black; */
+}
+.extra{
+    color: rgb(118, 140, 171);
+    margin-top: 20px;
+}
+@media (max-width:500px){
+    .faq__accordion{
+        padding: 0 20px;
+    }
+}

@@ -36,7 +36,7 @@
 }
 .contact__form{
     flex: 0.45;
-    height: 100%;
+    height: fit-content;
     width: 100%;
     background-color: rgb(244, 248, 248);
 }
@@ -61,7 +61,7 @@
     border: 1px solid lightgrey;
     outline: none;
     font-size: 16px;
-    height: 150px;
+    max-height: 150px;
     /* width: 100%; */
     resize: none;
 }

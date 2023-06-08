@@ -40,7 +40,7 @@ function Navigation() {
         <div className='nav__list' >
                 <Link className='nav__item home'to={'/'}>Home</Link>
                 {!user && (<Link className='nav__item pricing' to={'/pricing'}>Pricing</Link>)}
-                <Link className='nav__item support' to={'/services'}>Services</Link>
+                {/* <Link className='nav__item support' to={'/services'}>Services</Link> */}
                 <Link className='nav__item support' to={'/contact'}>Contact</Link>
                 {/* {user && (<Link className='nav__item support' to={'/tut'}>Tutorial</Link>)} */}
                 <Link className='nav__item support' to={'/tut'}>Tutorial</Link>
