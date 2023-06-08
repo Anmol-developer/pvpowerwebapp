@@ -6,17 +6,15 @@ import axios from "../../axios";
 import '../../css/Dashboard/UserForecast.css'
 import userContext from "../../context/UserContext";
 import { useLocation } from "react-router-dom";
-// import DataContext from "../../context/Data";
 
 function ShowGraph() {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
 
-  const date = queryParams.get('date');
+  let date = queryParams.get('date');
   const [data, setData] = useState([]);
   const [startDate, setStartDate] = useState(null);
   const { user } = useContext(userContext);
-  // const { dataEx } = useContext(DataContext);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -105,18 +103,6 @@ function ShowGraph() {
     }
   };
 
-  // if(!dataEx[0]){ return(<>
-  //   <div className="plot__container">
-  //       <div className="main__header">
-  //         <p className="dheader__title">DASHBOARD &gt; Forecast</p>
-  //         <p className="dheader__greet">welcome {user.username}</p>
-  //         <p className="dheader__date">Date: {user.username}</p>
-  //       </div>
-  //       <div>Please Upload Data</div>
-  //     </div>
-  // </>)}
-  // else {
-
   if(!startDate){
     return(
       <>
@@ -139,7 +125,7 @@ function ShowGraph() {
         <div className="main__header">
           <p className="dheader__title">DASHBOARD &gt; Forecast</p>
           <p className="dheader__greet">welcome {user.username}</p>
-          <p className="dheader__date">Date: {date ? (new Date(date).toLocaleDateString('en-US')):(new Date().toLocaleDateString('en-US'))}</p>
+          {date && (<p className="dheader__date">Date: {new Date(date).toLocaleDateString('en-US')}</p>)}
         </div>
         <div className="main__plot">
           <div style={{marginBottom:'10px',display:'flex'}}>
@@ -163,6 +149,5 @@ function ShowGraph() {
       </div>
     </>
   );
-// }
 }
 export default ShowGraph;

@@ -6,6 +6,7 @@
 .pnp.js
 /note.txt
 /trial_forecast.xlsx
+/.env
 
 # testing
 /coverage
