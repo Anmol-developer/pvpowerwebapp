@@ -6,10 +6,10 @@
     margin-top: 60px;
     margin-bottom: 60px;
 }
-img{
+.step > img{
     width: 55%;
 }
-p{
+.tutorial__container > p{
     width: 80%;
 }
 
@@ -21,7 +21,7 @@ p{
     color: grey;
     font-size: 15px;
 }
-h2{
+.tutorial__container > h2{
     margin: 15px 0px;
 }
 
@@ -38,7 +38,7 @@ h2{
 }
 
 @media (max-width:500px){
-    img{
+    .step > img{
         width: 80%;
     }
 }

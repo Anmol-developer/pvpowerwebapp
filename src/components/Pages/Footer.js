@@ -15,8 +15,8 @@ function Footer() {
           <Link to={'/about'} className="about">About</Link>
           <Link to={'/faq'} className="history">FAQ's</Link>
           <p className="contact">Contact Us:</p>
-          <p className="contact__email">Email: abcd@gmil.com</p>
-          <p className="contact__phone">Phone: 123456789</p>
+          <span className="contact__email">Email: abcd@gmil.com</span><br/>
+          <span className="contact__phone">Phone: 123456789</span>
         </div>
         <div className="footer__follow">
           <p className="title follow">Follow Us</p>

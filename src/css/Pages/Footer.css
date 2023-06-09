@@ -71,9 +71,8 @@
     font-size: 14px;
     margin-left: 12px;
     color: rgb(175, 175, 190);
-}
-.contact__email{
-    margin-top: 5px;
+    /* border: 1px solid white; */
+    margin-top: 0;
 }
 
 .follow{
