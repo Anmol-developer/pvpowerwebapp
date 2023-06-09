@@ -2,7 +2,7 @@ import React, { useEffect, useState,useContext } from "react";
 import Plot from "react-plotly.js";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import axios from "axios";
+import axios from "../../axios";
 import '../../css/Dashboard/Validate.css'
 import { read } from "xlsx";
 import { utils, SSF } from "xlsx";
@@ -17,7 +17,7 @@ function Validate() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/forecast");
+        const response = await axios.get(`/forecast/data/${user._id}`);
         console.log(response.data[response.data.length - 2]);
         setStartDate(response.data[response.data.length - 2].date);
         setData(response.data);

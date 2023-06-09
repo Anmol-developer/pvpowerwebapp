@@ -22,6 +22,7 @@ function UserAccount() {
     <div className="main__container">
       <div className="main__header">
         <p className="dheader__title">DASHBOARD &gt; Account</p>
+        <p className="dheader__greet">welcome {user.username}</p>
       </div>
       <div className="main__account">
         <div className="user__photo">

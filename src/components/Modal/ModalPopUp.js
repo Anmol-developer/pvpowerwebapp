@@ -18,23 +18,8 @@ import "react-toastify/dist/ReactToastify.css";
 function ModalPopUp({ lat, lon }) {
   const navigate = useNavigate();
   const [state, dispatch] = useReducer(reducer, InitialState);
-  const [CalcModel, setCalcModel] = useState("Randomforest");
   const { setdata } = useContext(DataContext);
   const { user } = useContext(userContext);
-
-  //testing show submit modal
-  // useEffect(() => {
-  //   const timer = setTimeout(() => {
-  //     if (state.showSubmitModal) {
-  //       // dispatch({ type: "SET_AFTERCALCMODAL", payload: true });
-  //       // dispatch({type:'SET_SUBMODAL', payload:false})
-  //       // NotifyCalc(user.email);
-  //     }else{
-  //       dispatch({type:'SET_AFTERCALCMODAL',payload:false})
-  //     }
-  //   }, 5000); // Delay in milliseconds before playing the GIF
-  //   return () => clearTimeout(timer);
-  // }, [state.showSubmitModal]);
 
   //getting input address's lat and lon using forward geocoding and loading functionality
   useEffect(() => {
@@ -207,10 +192,6 @@ function ModalPopUp({ lat, lon }) {
     setdata([state.data, state.dataFormat]);
   };
 
-  const changeModel = (e) => {
-    setCalcModel(e.target.value);
-  };
-
   return (
     <div className="modal__container">
       <button className="modal-btn" onClick={setLocation}>
@@ -226,23 +207,6 @@ function ModalPopUp({ lat, lon }) {
         <p className="modal__lng">
           <b>Longitude: </b>
           {lon}
-        </p>
-        <p className="modal__adrs">
-          <label htmlFor="model">
-            <b>Calculation Model: </b>
-          </label>
-          <select id="model" value={CalcModel} onChange={changeModel}>
-            <option value="randomforest">Randomforest</option>
-            <option value="lgbm">Light Gradient Boosting Machine</option>
-            <option value="k-nearest">K-Nearest Neighbour</option>
-            <option value="vector-regression">Support Vector Regression</option>
-            <option value="essemble">Essemble</option>
-            <option value="lstm">LSTM</option>
-            <option value="namemd-lstm">NAMEMD + LSTM</option>
-            <option value="namemd-fft-am-lstm">NAMEMD + FFT + AM + LSTM</option>
-          </select>
-          {/* {state.isLoading && <span>Loading...</span>}
-          {!state.isLoading && state.address && state.address} */}
         </p>
 
         <form className="data-type-form">
