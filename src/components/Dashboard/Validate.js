@@ -17,9 +17,10 @@ function Validate() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`/forecast/data/${user._id}`);
-        console.log(response.data[response.data.length - 2]);
-        setStartDate(response.data[response.data.length - 2].date);
+        const response = await axios.get(`/validate/${user._id}`);
+        console.log(response.data);
+        // console.log(response.data[response.data.length - 1].date);
+        setStartDate(response.data[response.data.length - 1].date);
         setData(response.data);
       } catch (error) {
         console.log(error);
@@ -29,7 +30,7 @@ function Validate() {
     fetchData();
   }, []);
 
-  const predicted = data.map((row) => row.Predictedpv);
+  const predicted = data.map((row) => row.PredictedPV);
   const actual = Acdata.map((row) => row.Actualpv);
   const time = data.map((row) => row.time);
   const dates = data.map((row) => row.date);
