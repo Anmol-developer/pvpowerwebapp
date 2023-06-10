@@ -88,6 +88,8 @@ function ModalPopUp({ lat, lon }) {
 
     dispatch({ type: "SET_DATA", payload: extractedData });
     dispatch({ type: "SET_DISABLED", payload: false });
+    setdata([state.data, state.dataFormat]);
+
 
     // Getting the names of headers to check for format
     const rowNum = 1; // Assuming row number 2 (index starts at 1)
@@ -161,10 +163,10 @@ function ModalPopUp({ lat, lon }) {
   };
 
   const redirectToGraph = () => {
-    navigate(`/dashboard/graph/${user._id}`);
+    navigate(`/dashboard/graph`);
   };
   const redirectToForecastResult = () => {
-    navigate(`/dashboard/forecast/${user._id}`);
+    navigate(`/dashboard/forecast`);
   };
 
   const handleInfoSubmit = async () => {
@@ -173,7 +175,7 @@ function ModalPopUp({ lat, lon }) {
 
     const formData = new FormData();
     formData.append("file", state.selectedFile);
-    const result = await fetch("http://127.0.0.1:5000/api/flask/processing", {
+    const result = await fetch(`http://127.0.0.1:5000/api/flask/processing`, {
       method: "POST",
       // headers:{"Content-Type": "application/json"},
       body: formData,
@@ -189,7 +191,6 @@ function ModalPopUp({ lat, lon }) {
     }
 
     dispatch({ type: "SET_SHOWMODAL", payload: false });
-    setdata([state.data, state.dataFormat]);
   };
 
   return (

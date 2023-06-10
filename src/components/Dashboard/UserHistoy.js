@@ -27,7 +27,7 @@ function UserHistoy() {
   },[])
 
   const showView = (date) => {
-    navigate(`/dashboard/forecast/${user._id}?date=${date}`);
+    navigate(`/dashboard/forecast?date=${date}`);
     toast.info(`Viewing Forecast for Data uploaded on ${new Date(date).toLocaleDateString('en-US')}.`, {
       position: "top-center",
       autoClose: 10000,

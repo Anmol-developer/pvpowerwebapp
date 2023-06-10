@@ -11,8 +11,9 @@ function ShowGraph() {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const [CalcModel, setCalcModel] = useState("Randomforest");
-
+  
   let date = queryParams.get("date");
+  const[dataDate, setDataDate] = useState(null)
   const [data, setData] = useState([]);
   const [startDate, setStartDate] = useState(null);
   const { user } = useContext(userContext);
@@ -32,6 +33,7 @@ function ShowGraph() {
             ).toLocaleDateString("en-US")
           );
           setData([...response.data[response.data.length - 1].data]);
+          setDataDate(new Date(response.data[response.data.length-1].date).toLocaleDateString('en-US'))
         } else {
           const data = response.data.filter(
             (Data) =>
@@ -148,11 +150,13 @@ function ShowGraph() {
         <div className="main__header">
           <p className="dheader__title">DASHBOARD &gt; Forecast</p>
           <p className="dheader__greet">welcome {user.username}</p>
-          {date && (
+          {date ? (
             <p className="dheader__date">
               Date: {new Date(date).toLocaleDateString("en-US")}
             </p>
-          )}
+          ):(<p className="dheader__date">
+          Date: {dataDate}
+        </p>)}
         </div>
         <div className="main__plot">
           <div style={{ marginBottom: "10px", display: "flex" }}>
