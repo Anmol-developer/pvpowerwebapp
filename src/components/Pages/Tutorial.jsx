@@ -9,9 +9,31 @@ import visualize from '../../Images/visualize.png'
 import account from '../../Images/userAccount.png'
 import forecast from '../../Images/forecast.png'
 import history from '../../Images/history.png'
+import { Link } from 'react-scroll'
+
 
 function Tutorial() {
   return (
+    <div className="tut">
+    <div className="tutorial__sidebar">
+      <p>Tutorial</p>
+      <ul>
+        <li>
+          <p>Overview</p>
+        </li>
+        <li>
+          <p>How to Guide</p>
+          <ul>
+            <Link className="sidebar-link-to-content" to="upload" smooth={true} duration={500}><li>Upload the data</li></Link>
+            <Link className="sidebar-link-to-content" to="visualize" smooth={true} duration={500}><li>Visualize</li></Link>
+            <Link className="sidebar-link-to-content" to="account" smooth={true} duration={500}><li>Account</li></Link>
+            <Link className="sidebar-link-to-content" to="forecast" smooth={true} duration={500}><li>Get forecast</li></Link>
+            <Link className="sidebar-link-to-content" to="validate" smooth={true} duration={500}><li>Validate Data</li></Link>
+            <Link className="sidebar-link-to-content" to="history" smooth={true} duration={500}><li>View older Data</li></Link>
+          </ul>
+        </li>
+      </ul>
+    </div>
     <div className="tutorial__container">
       <h1 className="tut__overview">Overview</h1>
       <p className="tut-overview-txt">
@@ -20,8 +42,8 @@ function Tutorial() {
         accurately estimate the energy production of solar panels based on
         various input parameters.
       </p>
-      <h2>How to Guide</h2>
-      <div className="step">
+      <h2 style={{marginTop:'30px'}}>How to Guide</h2>
+      <div className="step" id="upload">
         <h3>1. Upload data for forecasting</h3>
         <p>After login, you will see a dashboard like this</p>
         <img src={dashboardImg} alt="dashboard" />
@@ -42,36 +64,37 @@ function Tutorial() {
         <p>now you can view full forecast. it's that easy!</p>
       </div>
 
-      <div className="step">
+      <div className="step" id="visualize">
         <h3>2. Visualize Tab</h3>
         <p>After uploading data, this tab has the plot of your uploaded data which you can download.<br/>It looks like this:</p>
         <img src={visualize} alt="visualize" />
         <p>You can view your data for different dates.</p>
       </div>
 
-      <div className="step">
+      <div className="step" id="account">
         <h3>3. Account</h3>
         <p>you can view your account details and also edit them from this tab.<br/>It looks like this:</p>
         <img src={account} alt="account" />
       </div>
 
-      <div className="step">
+      <div className="step" id="forecast">
         <h3>4. Forecast</h3>
         <p>This tab shows you your latest forecast calculation on a plot. You can also download excel sheet of your forecast results from here.<br/> Also you can view results of different forecasting models.<br/>It looks like this:</p>
         <img src={forecast} alt="forecast" />
       </div>
 
-      <div className="step">
+      <div className="step" id="validate">
         <h3>5. Validate</h3>
         <p>You can validate forecast results in this tab by uploading your actual data that you got on particular dates.<br/>It looks like this:</p>
         <img src={forecast} alt="forecast" />
       </div>
 
-      <div className="step">
+      <div className="step" id="history">
         <h3>6. History</h3>
         <p>In this tab you can view all your previous calculations. You can view and delete your history.<br/>It looks like this:</p>
         <img src={history} alt="history" />
       </div>
+    </div>
     </div>
   );
 }
