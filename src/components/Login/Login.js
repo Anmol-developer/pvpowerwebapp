@@ -33,7 +33,7 @@ function Login() {
         },
       });
       const data = await user.json();
-      navigate(`/dashboard/main/${data._id}`);
+      navigate(`/dashboard/main`);
       toast.success("Successfully logged in!", {
         position: "top-center",
         autoClose: 5000,

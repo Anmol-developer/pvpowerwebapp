@@ -97,7 +97,7 @@ function Signup() {
             progress: 0,
             theme: "light",
           });
-          navigate(`/dashboard/main/${data._id}`);
+          navigate(`/`);
           dispatch({ type: "SET_SHOWVERMODAL", payload: false });
           dispatch({ type: "SET_VERCODE", payload: "" });
         }
