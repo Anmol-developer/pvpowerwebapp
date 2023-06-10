@@ -26,36 +26,9 @@ function Login() {
       body: JSON.stringify({ email, password }),
     });
     if (result.status === 200) {
-      const user = await fetch("/dashboard", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      const data = await user.json();
       navigate(`/`);
-      toast.success("Successfully logged in!", {
-        position: "top-center",
-        autoClose: 5000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: 0,
-        theme: "light",
-      });
     } else {
       navigate("/login");
-      toast.warn("Incorrect credentials!", {
-        position: "top-center",
-        autoClose: 5000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: 0,
-        theme: "light",
-      });
     }
   };
 
