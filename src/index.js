@@ -68,28 +68,28 @@ const router = createBrowserRouter([
     element: <Dashboard />,
     children: [
       {
-        path: 'main/:userId',
+        path: 'main',
         element: <Main/>
       },
       {
-        path: 'graph/:userId',
+        path: 'graph',
         element: <ShowGraph/>,
         errorElement: <GraphError/>
       },
       {
-        path: 'history/:userId',
+        path: 'history',
         element: <UserHistory/>
       },
       {
-        path: 'account/:userId',
+        path: 'account',
         element: <UserAccount/>
       },
       {
-        path: 'forecast/:userId',
+        path: 'forecast',
         element: <UserForecast/>
       },
       {
-        path: 'validateData/:userId',
+        path: 'validateData',
         element: <Validate/>
       },
 

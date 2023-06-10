@@ -11,6 +11,7 @@ function UserHistoy() {
   const navigate = useNavigate();
   const { user } = useContext(userContext);
   const [history, setHistory] = useState([]);
+  const [loading, setLoading] = useState(true)
 
   useEffect(()=>{
     const getHistory=async()=>{
@@ -22,6 +23,7 @@ function UserHistoy() {
       }
     }
     getHistory();
+    setLoading(false);
   },[])
 
   const showView = (date) => {
@@ -51,6 +53,21 @@ function UserHistoy() {
     }
   }
 
+  if(loading) {
+    return(
+      <>
+        <div className="main__container">
+      <div className="main__header">
+        <p className="dheader__title">DASHBOARD &gt; History</p>
+        <p className="dheader__greet">welcome {user.username}</p>
+      </div>
+      <div className="main__history">
+        <p>Loading...</p>
+      </div>
+    </div>
+      </>
+    )
+  }
   return (
     <div className="main__container">
       <div className="main__header">

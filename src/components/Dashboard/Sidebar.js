@@ -37,9 +37,9 @@ function Sidebar() {
         <FaUserCircle className="username-icon" />
         <p className={`user-account`}>Account</p>
         <Link
-          to={`/dashboard/account/${user._id}`}
+          to={`/dashboard/account`}
           className={`account-info ${
-            pathname === `/dashboard/account/${user._id}` && "active-sb"
+            pathname === `/dashboard/account` && "active-sb"
           }`}
         >
           &gt;
@@ -47,18 +47,18 @@ function Sidebar() {
       </div>
       <Link
         className={`link-to-home ${
-          pathname === `/dashboard/main/${user._id}` && "active-sb"
+          pathname === `/dashboard/main` && "active-sb"
         }`}
-        to={`/dashboard/main/${user._id}`}
+        to={`/dashboard/main`}
       >
         <AiFillHome className="home-icon" />
         Home
       </Link>
       <Link
         className={`link-to-graph ${
-          pathname === `/dashboard/graph/${user._id}` && "active-sb"
+          pathname === `/dashboard/graph` && "active-sb"
         }`}
-        to={`/dashboard/graph/${user._id}`}
+        to={`/dashboard/graph`}
       >
         <BsFillFileBarGraphFill className="graph-icon" />
         Visualize
@@ -69,27 +69,27 @@ function Sidebar() {
       </div>
 
       <Link
-        to={`/dashboard/forecast/${user._id}`}
+        to={`/dashboard/forecast`}
         className={`link-to-forecast ${
-          pathname === `/dashboard/forecast/${user._id}` && "active-sb"
+          pathname === `/dashboard/forecast` && "active-sb"
         }`}
       >
         <MdOnlinePrediction className="forecast-icon" />
         Forecast
       </Link>
       <Link
-        to={`/dashboard/validateData/${user._id}`}
+        to={`/dashboard/validateData`}
         className={`link-to-compare ${
-          pathname === `/dashboard/validateData/${user._id}` && "active-sb"
+          pathname === `/dashboard/validateData` && "active-sb"
         }`}
       >
         <MdCompareArrows className="compare-icon" />
         Validate
       </Link>
       <Link
-        to={`/dashboard/history/${user._id}`}
+        to={`/dashboard/history`}
         className={`link-to-history ${
-          pathname === `/dashboard/history/${user._id}` && "active-sb"
+          pathname === `/dashboard/history` && "active-sb"
         }`}
       >
         <MdWorkHistory className="history-icon" />

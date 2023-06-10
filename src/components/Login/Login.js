@@ -34,8 +34,6 @@ function Login() {
       });
       const data = await user.json();
       navigate(`/dashboard/main/${data._id}`);
-      // window.location.reload();
-      // navigate(`/`);
       toast.success("Successfully logged in!", {
         position: "top-center",
         autoClose: 5000,
@@ -47,6 +45,7 @@ function Login() {
         theme: "light",
       });
     } else {
+      navigate("/login");
       toast.warn("Incorrect credentials!", {
         position: "top-center",
         autoClose: 5000,
@@ -57,7 +56,6 @@ function Login() {
         progress: 0,
         theme: "light",
       });
-      navigate("/login");
     }
   };
 
