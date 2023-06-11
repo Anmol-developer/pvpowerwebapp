@@ -65,7 +65,7 @@ function Validate() {
     },
   ];
   const layout = {
-    title: Acdata[0] ? `Validate for ${startDate}`:'Please upload file',
+    title: Acdata[0] ? `Validate for ${new Date(startDate).toLocaleDateString('en-US')}`:'Please upload file',
     yaxis: {
       title: `Predicted And Actual Data`,
     },
