@@ -13,8 +13,7 @@ function Footer() {
         <div className="footer__company">
           <p className="title">Company</p>
           <Link to={'/about'} className="about">About</Link>
-          <Link to={'/faq'} className="history">FAQ's</Link>
-          <p className="contact">Contact Us:</p>
+          <Link to={'/faq'} className="history" style={{marginBottom:'15px'}}>FAQ's</Link>
           <span className="contact__email">Email: abcd@gmil.com</span><br/>
           <span className="contact__phone">Phone: 123456789</span>
         </div>

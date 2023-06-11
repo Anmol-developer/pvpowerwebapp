@@ -98,6 +98,7 @@ function Signup() {
             theme: "light",
           });
           navigate(`/`);
+          window.location.reload()
           dispatch({ type: "SET_SHOWVERMODAL", payload: false });
           dispatch({ type: "SET_VERCODE", payload: "" });
         }

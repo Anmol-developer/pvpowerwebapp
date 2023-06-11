@@ -27,6 +27,7 @@ function Login() {
     });
     if (result.status === 200) {
       navigate(`/`);
+      window.location.reload()
     } else {
       navigate("/login");
     }
