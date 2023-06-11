@@ -88,8 +88,6 @@ function ModalPopUp({ lat, lon }) {
 
     dispatch({ type: "SET_DATA", payload: extractedData });
     dispatch({ type: "SET_DISABLED", payload: false });
-    setdata([state.data, state.dataFormat]);
-
 
     // Getting the names of headers to check for format
     const rowNum = 1; // Assuming row number 2 (index starts at 1)
@@ -170,6 +168,7 @@ function ModalPopUp({ lat, lon }) {
   };
 
   const handleInfoSubmit = async () => {
+    setdata([state.data, state.dataFormat]);
     dispatch({ type: "SET_SUBMODAL", payload: true });
     dispatch({ type: "SET_AFTERCALCMODAL", payload: false });
 
@@ -214,7 +213,7 @@ function ModalPopUp({ lat, lon }) {
           <label htmlFor="data-type">
             <b>Select Data type: </b>
           </label>
-          <select id="data-type" name="data-type" onChange={handleDataType}>
+          <select id="data-type" name="data-type" onChange={handleDataType} style={{marginTop:'5px'}}>
             <option value="pv__data">pv data</option>
             <option value="both">pv data + weather data</option>
           </select>
@@ -304,10 +303,10 @@ function ModalPopUp({ lat, lon }) {
           </p>
           <div className="btns">
             <button className="sample-graph" onClick={redirectToGraph}>
-              Sample graph
+              Visualize Data
             </button>
             <button className="cancel-sbmt" onClick={closeSubmitModal}>
-              cancel
+              cancel calculation
             </button>
           </div>
         </div>
