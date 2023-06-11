@@ -18,8 +18,6 @@ function Validate() {
     const fetchData = async () => {
       try {
         const response = await axios.get(`/validate/${user._id}`);
-        console.log(response.data);
-        // console.log(response.data[response.data.length - 1].date);
         setStartDate(response.data[response.data.length - 1].date);
         setData(response.data);
       } catch (error) {

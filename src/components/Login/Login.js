@@ -26,8 +26,8 @@ function Login() {
       body: JSON.stringify({ email, password }),
     });
     if (result.status === 200) {
-      navigate(`/`);
       window.location.reload()
+      navigate(`/`);
     } else {
       navigate("/login");
     }

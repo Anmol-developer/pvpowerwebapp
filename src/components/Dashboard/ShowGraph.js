@@ -164,7 +164,7 @@ function ShowGraph() {
             config={{ responsive: true }}
             layout={layout}
           />
-        </div>):(<div className="main__plot">Please Upload data</div>)}
+        </div>):(<div className="main__plot"><p>Please Upload data</p></div>)}
       </div>
     </>
   );

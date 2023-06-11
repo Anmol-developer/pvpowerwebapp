@@ -22,25 +22,27 @@ function ShowGraph() {
     const fetchData = async () => {
       try {
         const response = await axios.get(`/forecast/data/${user._id}`);
-        // console.log(response.data[0]);
-        console.log(response.data);
+        const filterData = response.data.filter((elem)=> elem.model === CalcModel)
+        if(filterData.length===0){
+          setData([])
+          return;
+        }
         if (!date) {
           setStartDate(
             new Date(
-              response.data[response.data.length - 1].data[
-                response.data[0].data.length - 1
-              ].date
+              filterData[filterData.length - 1].data[
+                filterData[0].data.length - 1
+                ].date
             ).toLocaleDateString("en-US")
           );
-          setData([...response.data[response.data.length - 1].data]);
-          setDataDate(new Date(response.data[response.data.length-1].date).toLocaleDateString('en-US'))
+          setData([...filterData[filterData.length - 1].data]);
+          setDataDate(new Date(filterData[filterData.length-1].date).toLocaleDateString('en-US'))
         } else {
-          const data = response.data.filter(
+          const data = filterData.filter(
             (Data) =>
               new Date(Data.date).toLocaleDateString("en-US") ===
               new Date(date).toLocaleDateString("en-US")
           );
-          console.log(data[data.length - 1].data);
           setStartDate(
             new Date(
               data[data.length - 1].data[
@@ -56,10 +58,8 @@ function ShowGraph() {
     };
 
     fetchData();
-  }, []);
+  }, [CalcModel]);
 
-  // console.log('data', data);
-  // console.log(startDate);
   const predicted = data.map((row) => row.PredictedPV);
   const time = data.map((row) => row.time);
   const dates = data.map((row) => {
@@ -173,7 +173,7 @@ function ShowGraph() {
                 <span>Model: </span>
               </label>
               <select id="model" value={CalcModel} onChange={changeModel}>
-                <option value="randomforest">Randomforest</option>
+                <option value="Randomforest">Randomforest</option>
                 <option value="lgbm">Light Gradient Boosting Machine</option>
                 <option value="k-nearest">K-Nearest Neighbour</option>
                 <option value="vector-regression">
@@ -188,12 +188,12 @@ function ShowGraph() {
               </select>
             </p>
           </div>
-          <Plot
+          {data.length!==0 ? (<Plot
             className="plot"
             data={plotData}
             config={{ responsive: true }}
             layout={layout}
-          />
+          />):(<p className="no-data-available">No Data Available</p>)}
         </div>
         <button onClick={handleDownload} className="download-btn">
           Download Excel

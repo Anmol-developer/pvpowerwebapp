@@ -42,7 +42,7 @@ function UserHistoy() {
 
   const deleteHistory = async(id)=>{
     try {
-      console.log(history);
+      // console.log(history);
       const deleteHistory = await axios.delete(`/delete/${user._id}?data=${id}`)
       if(deleteHistory.status===200){
         alert('Deleted')
@@ -62,7 +62,7 @@ function UserHistoy() {
         <p className="dheader__greet">welcome {user.username}</p>
       </div>
       <div className="main__history">
-        <p>Loading...</p>
+        <p className="loading-p">Loading...</p>
       </div>
     </div>
       </>

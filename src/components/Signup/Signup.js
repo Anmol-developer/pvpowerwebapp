@@ -97,8 +97,8 @@ function Signup() {
             progress: 0,
             theme: "light",
           });
-          navigate(`/`);
           window.location.reload()
+          navigate(`/`);
           dispatch({ type: "SET_SHOWVERMODAL", payload: false });
           dispatch({ type: "SET_VERCODE", payload: "" });
         }

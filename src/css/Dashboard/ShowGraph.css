@@ -17,6 +17,15 @@
     flex-direction: column;
     padding: 5px;
 }
+.main__plot>p{
+    height: 100%;
+    font-size: 30px;
+    font-weight: 500;
+    color: lightgrey;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 
 .params-btn {
     width: fit-content;

@@ -5,6 +5,16 @@
     padding: 3px;
     overflow: auto;
 }
+.main__history > .loading-p{
+    font-size: 25px;
+    font-weight: 500;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: lightgrey;
+}
+
 .disabled{
     background-color: rgb(135, 145, 235);
     cursor: not-allowed;
