@@ -26,8 +26,8 @@ function Login() {
       body: JSON.stringify({ email, password }),
     });
     if (result.status === 200) {
-      window.location.reload()
-      navigate(`/`);
+      window.location.href = 'http://localhost:3000/'
+      // navigate(`/`);
     } else {
       navigate("/login");
     }
