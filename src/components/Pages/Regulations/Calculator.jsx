@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import '../../../css/Pages/Regulations/Calculation.css'
 
 function Calculator() {
   const [penaltyError, setPenaltyError] = useState("");
@@ -8,10 +9,12 @@ function Calculator() {
   const [calculatedValue2, setCalculatedValue2] = useState("");
 
   const handlePenaltyErrorChange = (event) => {
+    setCalculatedValue1('')
     setPenaltyError(event.target.value);
   };
 
   const handleForecastPowerChange = (event) => {
+    setCalculatedValue1('')
     setForecastPower(event.target.value);
   };
   const handleCalc1 = (e) => {
@@ -34,18 +37,19 @@ function Calculator() {
   };
 
   const handlePpaValueChange = (event) => {
+    setCalculatedValue2('')
     setPpaValue(event.target.value);
   };
 
   return (
-    <>
-      <h1>
+    <div className="calculator__container">
+      <h2>
         Cost of Penalties for deviation of Variable Renewable Power Forecasting
-      </h1>
+      </h2>
       <form>
-        <div>
+        <div style={{marginBottom:'40px'}}>
           <label htmlFor="penaltyError">
-            Enter No Penalty Error Band (%) :{" "}
+            <b>Enter No Penalty Error Band (%) :{" "}</b>
           </label>
           <input
             type="number"
@@ -54,7 +58,7 @@ function Calculator() {
             onChange={handlePenaltyErrorChange}
             required
           />
-          <p>
+          <p style={{color:'grey', fontSize:'14px', margin:'8px 5px'}}>
             [ For CERC reguation No Penalty Error Band is 15%, for FOR reguation
             No Penalty Error Band is 10% (new projects) and 15% (old progects),
             for TNERC regulation No Penalty Error Band is 5% for Solar and 10%
@@ -64,8 +68,8 @@ function Calculator() {
 
         <div>
           <label htmlFor="forecastPower">
-            Enter the probability value that the forecast power is inside the No
-            penalty error band (%) :
+            <b>Enter the probability value that the forecast power is inside the No
+            penalty error band (%) : </b>
           </label>
           <input
             type="number"
@@ -74,16 +78,16 @@ function Calculator() {
             onChange={handleForecastPowerChange}
             required
           />
-          <button onClick={handleCalc1}>Click</button>
-          <p>
-            Approximate average cost per available capcity due to deviation
-            charge (INR / kW-Hr) : {calculatedValue1}
-          </p>
         </div>
-
-        <div>
+        <button onClick={handleCalc1}>Calculate</button>
+          <p>
+            <b>Approximate average cost per available capcity due to deviation
+            charge (INR / kW-Hr) : {calculatedValue1}</b><br/>
+          {!calculatedValue1 && <span style={{color:'red', marginTop:'4px'}}>[ This needs to be calculated first before further calculations. ]</span>}
+          </p>
+        <div style={{marginTop:'30px'}}>
           <label htmlFor="ppaValue">
-            Enter the PPA value of the project (INR/kW-Hr):
+            <b>Enter the PPA value of the project (INR/kW-Hr) : </b>
           </label>
           <input
             type="number"
@@ -92,18 +96,19 @@ function Calculator() {
             onChange={handlePpaValueChange}
             required
           />
-          <button onClick={handleCalc2}>click</button>
-          <p>
-            Approximate Cost due to deviation charge w.r.t PPA (%):{" "}
-            {calculatedValue2}
-          </p>
+    
         </div>
+          <button onClick={handleCalc2}>Calculate</button>
+          <p>
+          <b>Approximate Cost due to deviation charge w.r.t PPA (%):{" "}
+            {calculatedValue2}</b>
+          </p>
       </form>
-      <p>
+      <p style={{marginTop:'50px'}}>
         For further details please contact at
         abc@gmail.com
       </p>
-    </>
+    </div>
   );
 }
 

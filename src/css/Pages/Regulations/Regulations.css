@@ -1,0 +1,29 @@
+.regulations__container{
+    width: 100%;
+    min-height: 110dvh;
+    padding: 30px;
+    padding-top: 80px;
+    padding-left: 12%;
+    padding-right: 12%;
+    margin-bottom: 100px;
+}
+
+.pdf{
+    cursor: pointer;
+}
+.pdf:hover{
+    text-decoration: underline;
+}
+.docs-links{
+    padding: 5%;
+    padding-left: 3%;
+}
+.docs-links>ul{
+    margin-top: 20px;
+}
+.regulations__container > .tab{
+    margin-top: 50px;
+}
+.docs-links>ul>li{
+    margin-bottom: 20px;
+}
