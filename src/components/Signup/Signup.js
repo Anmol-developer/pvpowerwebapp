@@ -98,7 +98,7 @@ function Signup() {
             theme: "light",
           });
           window.location.reload()
-          navigate(`/`);
+          navigate(`/regulations`);
           dispatch({ type: "SET_SHOWVERMODAL", payload: false });
           dispatch({ type: "SET_VERCODE", payload: "" });
         }

@@ -11,7 +11,6 @@ import Signup from '../src/components/Signup/Signup'
 import Pricing from '../src/components/Pages/Pricing'
 import About from '../src/components/Pages/About'
 import Contact from '../src/components/Pages/Contact'
-// import Services from '../src/components/Pages/Services'
 import Login from '../src/components/Login/Login'
 import ResetPassword from '../src/components/Login/ResetPassword'
 import Dashboard from './components/Dashboard/Dashboard';
@@ -25,7 +24,7 @@ import GraphError from './components/Dashboard/GraphError'
 import Validate from './components/Dashboard/Validate';
 import Faq from './components/Pages/FAQ/Faq'
 import Tutorial from './components/Pages/Tutorial';
-import Regulations from './components/Pages/Regulations';
+import Regulations from './components/Pages/Regulations/Regulations';
 
 const router = createBrowserRouter([
   {
