@@ -6,11 +6,12 @@ import axios from "../../axios";
 import "../../css/Dashboard/UserForecast.css";
 import userContext from "../../context/UserContext";
 import { useLocation } from "react-router-dom";
+import Dropdown from "./Dropdown";
 
 function ShowGraph() {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
-  const [CalcModel, setCalcModel] = useState("Randomforest");
+  const [CalcModel, setCalcModel] = useState(["Randomforest"]);
   
   let date = queryParams.get("date");
   const[dataDate, setDataDate] = useState(null)
@@ -22,7 +23,7 @@ function ShowGraph() {
     const fetchData = async () => {
       try {
         const response = await axios.get(`/forecast/data/${user._id}`);
-        const filterData = response.data.filter((elem)=> elem.model === CalcModel)
+        const filterData = response.data.filter((elem)=> elem.model === CalcModel[0])
         if(filterData.length===0){
           setData([])
           return;
@@ -121,8 +122,13 @@ function ShowGraph() {
     }
   };
 
-  const changeModel = (e) => {
-    setCalcModel(e.target.value);
+  const changeModel = (value, checked) => {
+    // const { value, checked } = e.target;
+    if (checked) {
+      setCalcModel([...CalcModel, value]);
+    } else {
+      setCalcModel(CalcModel.filter((val) => val !== value));
+    }
   };
 
   if (!startDate) {
@@ -168,25 +174,9 @@ function ShowGraph() {
               minDate={new Date(dates[0])}
               maxDate={new Date(dates[dates.length - 1])}
             />
-            <p className="modal__adrs" style={{display:'flex'}}>
-              <label htmlFor="model">
-                <span>Model: </span>
-              </label>
-              <select id="model" value={CalcModel} onChange={changeModel}>
-                <option value="Randomforest">Randomforest</option>
-                <option value="lgbm">Light Gradient Boosting Machine</option>
-                <option value="k-nearest">K-Nearest Neighbour</option>
-                <option value="vector-regression">
-                  Support Vector Regression
-                </option>
-                <option value="essemble">Essemble</option>
-                <option value="lstm">LSTM</option>
-                <option value="namemd-lstm">NAMEMD + LSTM</option>
-                <option value="namemd-fft-am-lstm">
-                  NAMEMD + FFT + AM + LSTM
-                </option>
-              </select>
-            </p>
+            <div className="dropdown-model" style={{display:'flex'}}>
+              <Dropdown changeModel={changeModel} CalcModel={CalcModel}/>
+            </div>
           </div>
           {data.length!==0 ? (<Plot
             className="plot"

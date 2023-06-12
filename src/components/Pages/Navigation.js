@@ -59,6 +59,7 @@ function Navigation() {
                 {/* <Link className='nav__item support' to={'/services'}>Services</Link> */}
                 <Link className='nav__item support' to={'/contact'}>Contact</Link>
                 {user && (<Link className='nav__item support' to={'/tut'}>Tutorial</Link>)}
+                {user && (<Link className='nav__item support' to={'/regulations'}>Regulations</Link>)}
                 {/* <Link className='nav__item support' to={'/tut'}>Tutorial</Link> */}
                 {!user ? (<Link className='nav__item signup' to={'/signup'}>Sign up</Link>) : (<button style={{border:'none'}} className='nav__item signup' onClick={logout}>Log out</button>)}
         </div>

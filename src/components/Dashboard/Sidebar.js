@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React from "react";
 import "../../css/Dashboard/Sidebar.css";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FaUserCircle } from "react-icons/fa";
@@ -10,12 +10,10 @@ import {
   MdCompareArrows,
 } from "react-icons/md";
 import { AiFillHome } from "react-icons/ai";
-import userContext from "../../context/UserContext";
 
 function Sidebar() {
   const navigate = useNavigate();
   const { pathname } = useLocation();
-  const { user } = useContext(userContext);
   const logout = async () => {
     fetch('/logout', { method: 'GET', credentials: 'include' })
       .then(response => {

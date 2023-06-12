@@ -25,6 +25,7 @@ import GraphError from './components/Dashboard/GraphError'
 import Validate from './components/Dashboard/Validate';
 import Faq from './components/Pages/FAQ/Faq'
 import Tutorial from './components/Pages/Tutorial';
+import Regulations from './components/Pages/Regulations';
 
 const router = createBrowserRouter([
   {
@@ -60,6 +61,10 @@ const router = createBrowserRouter([
       {
         path: "/tut",
         element: <Tutorial />,
+      },
+      {
+        path: "/regulations",
+        element: <Regulations />,
       }
     ]
   },
