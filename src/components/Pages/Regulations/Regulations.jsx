@@ -1,12 +1,27 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "../../../css/Pages/Regulations/Regulations.css";
 import Calculator from "./Calculator";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
 import CERC from "../../../Docs/SOR7.pdf";
 import FOR from "../../../Docs/FOR.pdf";
+import axios from '../../../axios'
 
 function Regulations() {
+  const [user, setUser] = useState(false)
+
+  useEffect(()=>{
+    getUser();
+  },[])
+
+  const getUser= async()=>{
+    const user = await axios.get('/')
+    if(user.status===200){
+      setUser(true)
+    }else{
+      setUser(false)
+    }
+  }
   const openPDF = (str) => {
     switch (str) {
       case "cerc":
@@ -56,7 +71,14 @@ function Regulations() {
         break;
     }
   };
-  return (
+
+  if(!user){ 
+    return(
+    <div className="regulations__container">
+      <h1>Unauthorized</h1>
+    </div>
+  )}
+   else return (
     <div className="regulations__container">
       <h1>Regulations</h1>
       <p style={{marginTop:'20px', color:'grey'}}>

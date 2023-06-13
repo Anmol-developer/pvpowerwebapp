@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useState,useEffect} from "react";
 import dashboardImg from "../../Images/dashboard.png";
 import dashboardImg2 from "../../Images/dashboard_step2.png";
 import dashboardImg3 from "../../Images/dashboard_step3.png";
@@ -11,8 +11,31 @@ import forecast from "../../Images/forecast.png";
 import validate from '../../Images/validate.png'
 import history from "../../Images/history.png";
 import { Link } from "react-scroll";
+import axios from '../../axios'
 
 function Tutorial() {
+  const [user, setUser] = useState(false)
+
+  useEffect(()=>{
+    getUser();
+  },[])
+
+  const getUser= async()=>{
+    const user = await axios.get('/')
+    if(user.status===200){
+      setUser(true)
+    }else{
+      setUser(false)
+    }
+  }
+
+  if(!user){ 
+    return(
+    <div className="regulations__container">
+      <h1>Unauthorized</h1>
+    </div>
+  )}
+  
   return (
     <div className="tut">
       <div className="tutorial__sidebar">
