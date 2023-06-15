@@ -11,11 +11,11 @@ import Dropdown from "./Dropdown";
 function ShowGraph() {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
-  const [CalcModel, setCalcModel] = useState(["Randomforest"]);
+  const [CalcModel, setCalcModel] = useState(["randomforest"]);
   
   let date = queryParams.get("date");
-  const[dataDate, setDataDate] = useState(null)
-  const [data, setData] = useState([]);
+  const[dataDate, setRandomforestDate] = useState(null)
+  const [randomforest, setRandomforest] = useState([]);
   const [startDate, setStartDate] = useState(null);
   const { user } = useContext(userContext);
 
@@ -23,37 +23,34 @@ function ShowGraph() {
     const fetchData = async () => {
       try {
         const response = await axios.get(`/forecast/data/${user._id}`);
-        const filterData = response.data.filter((elem)=> elem.model === CalcModel[0])
-        if(filterData.length===0){
-          setData([])
+        const randomforestData = response.data;
+        if(randomforestData.length===0){
+          setRandomforest([])
           return;
         }
         if (!date) {
           setStartDate(
             new Date(
-              filterData[filterData.length - 1].data[
-                filterData[0].data.length - 1
-                ].date
+              randomforestData[randomforestData.length - 1].randomforest[randomforestData[randomforestData.length - 1].randomforest.length-1].date //forecast date
             ).toLocaleDateString("en-US")
           );
-          setData([...filterData[filterData.length - 1].data]);
-          setDataDate(new Date(filterData[filterData.length-1].date).toLocaleDateString('en-US'))
+          setRandomforest([...randomforestData[randomforestData.length - 1].randomforest]);
+          setRandomforestDate(new Date(randomforestData[randomforestData.length-1].date).toLocaleDateString('en-US'))
         } else {
-          const data = filterData.filter(
+          const data = randomforestData.filter(
             (Data) =>
               new Date(Data.date).toLocaleDateString("en-US") ===
               new Date(date).toLocaleDateString("en-US")
           );
           setStartDate(
             new Date(
-              data[data.length - 1].data[
-                data[data.length - 1].data.length - 1
-              ].date
+              data[data.length - 1].randomforest[data[data.length - 1].randomforest.length-1].date
             ).toLocaleDateString("en-US")
           );
-          setData([...data[data.length - 1].data]);
+          setRandomforest([...data[data.length - 1].randomforest]);
         }
       } catch (error) {
+        setRandomforest([]);
         console.log(error);
       }
     };
@@ -61,9 +58,9 @@ function ShowGraph() {
     fetchData();
   }, [CalcModel]);
 
-  const predicted = data.map((row) => row.PredictedPV);
-  const time = data.map((row) => row.time);
-  const dates = data.map((row) => {
+  const predicted = randomforest.map((row) => row.PredictedPV);
+  const time = randomforest.map((row) => row.time);
+  const dates = randomforest.map((row) => {
     const date = row.date;
     return new Date(date).toLocaleDateString("en-US");
   });
@@ -178,7 +175,7 @@ function ShowGraph() {
               <Dropdown changeModel={changeModel} CalcModel={CalcModel}/>
             </div>
           </div>
-          {data.length!==0 ? (<Plot
+          {randomforest.length!==0 ? (<Plot
             className="plot"
             data={plotData}
             config={{ responsive: true }}

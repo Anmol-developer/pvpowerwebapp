@@ -87,7 +87,7 @@ function UserHistoy() {
             <div className="history__item" key={data._id}>
               <p className="item__date">
                 <span className="date">
-                  {new Date(data.date).toLocaleDateString("en-US")}
+                  Data uploaded on {new Date(data.date).toLocaleDateString("en-US")}
                 </span>
                 <span className="time" style={{ display: "block" }}>
                   {new Date(data.date).toLocaleTimeString("en-US", {

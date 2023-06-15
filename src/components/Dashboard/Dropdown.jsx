@@ -23,40 +23,40 @@ const Dropdown = ({changeModel,CalcModel}) => {
             <li>
               <input
                 type="checkbox"
-                value="Randomforest"
+                value="randomforest"
                 onChange={handleCheckboxChange}
-                checked={CalcModel.includes("Randomforest")}
+                checked={CalcModel.includes("randomforest")}
               />
               Randomforest
             </li>
             <li>
               <input
                 type="checkbox"
-                value="Light Gradient Boosting Machine"
+                value="lgbm"
                 onChange={handleCheckboxChange}
-                checked={CalcModel.includes("Light Gradient Boosting Machine")}
+                checked={CalcModel.includes("lgbm")}
               />
               Light Gradient Boosting Machine
             </li>
             <li>
               <input
                 type="checkbox"
-                value="K-Nearest Neighbour"
+                value="knn"
                 onChange={handleCheckboxChange}
-                checked={CalcModel.includes("K-Nearest Neighbour")}
+                checked={CalcModel.includes("knn")}
               />
               K-Nearest Neighbour
             </li>
             <li>
               <input
                 type="checkbox"
-                value="Support Vector Regression"
+                value="svr"
                 onChange={handleCheckboxChange}
-                checked={CalcModel.includes("Support Vector Regression")}
+                checked={CalcModel.includes("svr")}
               />
               Support Vector Regression
             </li>
-            <li>
+            {/* <li>
               <input
                 type="checkbox"
                 value="NAMEMD + FFT + AM + LSTM"
@@ -64,7 +64,7 @@ const Dropdown = ({changeModel,CalcModel}) => {
                 checked={CalcModel.includes("NAMEMD + FFT + AM + LSTM")}
               />
               NAMEMD + FFT + AM + LSTM
-            </li>
+            </li> */}
           </ul>
         </div>
       )}

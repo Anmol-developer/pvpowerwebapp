@@ -182,7 +182,7 @@ function ModalPopUp({ lat, lon }) {
     console.log("File response: ", await result.json());
 
     //making request to /forecast to save data in mongoDB
-    const saveData = await axios.get(`/forecast/${user._id}?model=Randomforest`);
+    const saveData = await axios.get(`/forecast/${user._id}`);
     if (saveData.status === 200) {
       dispatch({ type: "SET_AFTERCALCMODAL", payload: true });
       dispatch({ type: "SET_SUBMODAL", payload: false });
