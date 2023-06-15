@@ -16,6 +16,9 @@ function ShowGraph() {
   let date = queryParams.get("date");
   const[dataDate, setRandomforestDate] = useState(null)
   const [randomforest, setRandomforest] = useState([]);
+  const [knn, setKnn] = useState([]);
+  const [lgbm, setLgbm] = useState([]);
+  const [svr, setSvr] = useState([]);
   const [startDate, setStartDate] = useState(null);
   const { user } = useContext(userContext);
 
@@ -23,21 +26,24 @@ function ShowGraph() {
     const fetchData = async () => {
       try {
         const response = await axios.get(`/forecast/data/${user._id}`);
-        const randomforestData = response.data;
-        if(randomforestData.length===0){
+        const ResponseData = response.data;
+        if(ResponseData.length===0){
           setRandomforest([])
           return;
         }
         if (!date) {
           setStartDate(
             new Date(
-              randomforestData[randomforestData.length - 1].randomforest[randomforestData[randomforestData.length - 1].randomforest.length-1].date //forecast date
+              ResponseData[ResponseData.length - 1].randomforest[ResponseData[ResponseData.length - 1].randomforest.length-1].date //forecast date
             ).toLocaleDateString("en-US")
           );
-          setRandomforest([...randomforestData[randomforestData.length - 1].randomforest]);
-          setRandomforestDate(new Date(randomforestData[randomforestData.length-1].date).toLocaleDateString('en-US'))
+          setRandomforest([...ResponseData[ResponseData.length - 1].randomforest]);
+          setKnn([...ResponseData[ResponseData.length - 1].knn]);
+          setLgbm([...ResponseData[ResponseData.length - 1].lgbm]);
+          setSvr([...ResponseData[ResponseData.length - 1].svr]);
+          setRandomforestDate(new Date(ResponseData[ResponseData.length-1].date).toLocaleDateString('en-US'))
         } else {
-          const data = randomforestData.filter(
+          const data = ResponseData.filter(
             (Data) =>
               new Date(Data.date).toLocaleDateString("en-US") ===
               new Date(date).toLocaleDateString("en-US")
@@ -48,9 +54,15 @@ function ShowGraph() {
             ).toLocaleDateString("en-US")
           );
           setRandomforest([...data[data.length - 1].randomforest]);
+          setKnn([...data[data.length - 1].knn]);
+          setLgbm([...data[data.length - 1].lgbm]);
+          setSvr([...data[data.length - 1].svr]);
         }
       } catch (error) {
         setRandomforest([]);
+        setKnn([]);
+        setLgbm([]);
+        setSvr([]);
         console.log(error);
       }
     };
@@ -58,31 +70,76 @@ function ShowGraph() {
     fetchData();
   }, [CalcModel]);
 
-  const predicted = randomforest.map((row) => row.PredictedPV);
-  const time = randomforest.map((row) => row.time);
+  const predicted_RF = randomforest.map((row) => row.PredictedPV);
+  const predicted_KNN = knn.map((row) => row.PredictedPV);
+  const predicted_LGBM = lgbm.map((row) => row.PredictedPV);
+  const predicted_SVR = svr.map((row) => row.PredictedPV);
+
+  // const time_RF = randomforest.map((row) => row.time);
+  const time_RF = randomforest.map((row) => row.time);
+  // const time_KNN = randomforest.map((row) => row.time);
+  // const time_LGBM = randomforest.map((row) => row.time);
+  // const time_SVR = randomforest.map((row) => row.time);
+
   const dates = randomforest.map((row) => {
     const date = row.date;
     return new Date(date).toLocaleDateString("en-US");
   });
 
-  const filteredPredictedpv = predicted.filter((_, index) =>
+  const filteredPredictedpv_RF = predicted_RF.filter((_, index) =>
+    dates[index].startsWith(startDate)
+  );
+  const filteredPredictedpv_KNN = predicted_KNN.filter((_, index) =>
+    dates[index].startsWith(startDate)
+  );
+  const filteredPredictedpv_LGBM = predicted_LGBM.filter((_, index) =>
+    dates[index].startsWith(startDate)
+  );
+  const filteredPredictedpv_SVR = predicted_SVR.filter((_, index) =>
     dates[index].startsWith(startDate)
   );
 
-  const filteredTime = time.filter((_, index) =>
+  const filteredTime_RF = time_RF.filter((_, index) =>
     dates[index].startsWith(startDate)
   );
 
   // Prepare the plot data
   const plotData = [
     {
-      y: filteredPredictedpv,
-      x: filteredTime,
+      y: filteredPredictedpv_RF,
+      x: filteredTime_RF,
       type: "scatter",
       mode: "lines+markers",
-      name: "Predicted",
+      name: "randomforest",
       marker: { color: "blue" },
-      visible: filteredPredictedpv[0] !== undefined ? true : false,
+      visible: (filteredPredictedpv_RF[0] !== undefined && CalcModel.includes("randomforest")!==false) ? true : false,
+    },
+    {
+      y: filteredPredictedpv_KNN,
+      x: filteredTime_RF,
+      type: "scatter",
+      mode: "lines+markers",
+      name: "KNN",
+      marker: { color: "green" },
+      visible: (filteredPredictedpv_KNN[0] !== undefined && CalcModel.includes("knn")!==false) ? true : false,
+    },
+    {
+      y: filteredPredictedpv_LGBM,
+      x: filteredTime_RF,
+      type: "scatter",
+      mode: "lines+markers",
+      name: "LGBM",
+      marker: { color: "black" },
+      visible: (filteredPredictedpv_LGBM[0] !== undefined && CalcModel.includes("lgbm")!==false) ? true : false,
+    },
+    {
+      y: filteredPredictedpv_SVR,
+      x: filteredTime_RF,
+      type: "scatter",
+      mode: "lines+markers",
+      name: "SVR",
+      marker: { color: "red" },
+      visible: (filteredPredictedpv_SVR[0] !== undefined && CalcModel.includes("svr")!==false) ? true : false,
     },
   ];
   const layout = {
