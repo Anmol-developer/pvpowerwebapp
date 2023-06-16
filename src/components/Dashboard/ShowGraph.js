@@ -8,10 +8,11 @@ import userContext from "../../context/UserContext";
 
 function ShowGraph() {
   const { dataEx } = useContext(DataContext);
-  const {user} = useContext(userContext)
+  const { user } = useContext(userContext);
   // Extract the data and time from the Excel sheet columns
   const dates = dataEx.map((row) => row.date);
   const [startDate, setStartDate] = useState(dates[0]);
+  const [endDate, setEndDate] = useState(dates[0]);
 
   const time = dataEx[0] && dataEx.map((row) => row.time);
   const pvValues = dataEx.map((row) => row.pv);
@@ -21,45 +22,49 @@ function ShowGraph() {
   const RHumidity = dataEx.map((row) => row.RHumidity);
   const CloudCover = dataEx.map((row) => row.CloudCover);
   const Rainfall = dataEx.map((row) => row.Rainfall);
-  
+  // const dt = dataEx.map((row)=> row.date+' '+row.time);
+  // console.log(dt);
+
   // Filter the data for the selected date
   const filteredPVValues = pvValues.filter((_, index) =>
-    dates[index].startsWith(startDate)
+    (dates[index]>=(startDate) && dates[index]<=(endDate))
   );
-  
-  const filteredTime = dataEx[0] && time.filter((_, index) =>
-    dates[index].startsWith(startDate)
-  );
-  
+
+  const filteredTime =dataEx[0] && time.filter((_, index) => dates[index]>=(startDate) && dates[index]<=(endDate));
+  // const filteredDate =dataEx[0] && dates.filter((_, index) => dates[index]>=(startDate) && dates[index]<=(endDate));
+
   const filteredsolarRadiation = solarRadiation.filter((_, index) =>
-    dates[index].startsWith(startDate)
+  dates[index]>=(startDate) && dates[index]<=(endDate)
   );
-  
+
   const filteredTemperature = Temperature.filter((_, index) =>
-    dates[index].startsWith(startDate)
+  dates[index]>=(startDate) && dates[index]<=(endDate)
   );
-  
+
   const filteredwindSpeed = windSpeed.filter((_, index) =>
-    dates[index].startsWith(startDate)
+    dates[index].startsWith(startDate) || dates[index].startsWith(endDate)
   );
-  
+
   const filteredRHumidity = RHumidity.filter((_, index) =>
-    dates[index].startsWith(startDate)
+  dates[index]>=(startDate) && dates[index]<=(endDate)
   );
-  
+
   const filteredCloudCover = CloudCover.filter((_, index) =>
-    dates[index].startsWith(startDate)
+  dates[index]>=(startDate) && dates[index]<=(endDate)
   );
 
   const filteredRainfall = Rainfall.filter((_, index) =>
-    dates[index].startsWith(startDate)
+  dates[index]>=(startDate) && dates[index]<=(endDate)
   );
 
+  const filteredDT = dataEx.filter((row)=> row.date<=endDate && row.date>=startDate);
+  const dt = filteredDT.map((row)=> row.date + ' ' + row.time)
+ console.log(dt)
   // Prepare the plot data
   const plotData = [
     {
       y: filteredPVValues,
-      x: filteredTime,
+      x: startDate===endDate ? filteredTime : dt,
       type: "scatter",
       mode: "lines+markers",
       name: "PV",
@@ -68,7 +73,7 @@ function ShowGraph() {
     },
     {
       y: filteredsolarRadiation,
-      x: filteredTime,
+      x: startDate===endDate ? filteredTime : dt,
       type: "scatter",
       mode: "lines+markers",
       name: "Solar radiation",
@@ -77,7 +82,7 @@ function ShowGraph() {
     },
     {
       y: filteredTemperature,
-      x: filteredTime,
+      x: startDate===endDate ? filteredTime : dt,
       type: "scatter",
       mode: "lines+markers",
       name: "Temperature",
@@ -86,7 +91,7 @@ function ShowGraph() {
     },
     {
       y: filteredwindSpeed,
-      x: filteredTime,
+      x: startDate===endDate ? filteredTime : dt,
       type: "scatter",
       mode: "lines+markers",
       name: "Wind Speed",
@@ -95,7 +100,7 @@ function ShowGraph() {
     },
     {
       y: filteredRainfall,
-      x: filteredTime,
+      x: startDate===endDate ? filteredTime : dt,
       type: "scatter",
       mode: "lines+markers",
       marker: { color: "black" },
@@ -104,7 +109,7 @@ function ShowGraph() {
     },
     {
       y: filteredRHumidity,
-      x: filteredTime,
+      x: startDate===endDate ? filteredTime : dt,
       type: "scatter",
       mode: "lines+markers",
       marker: { color: "orange" },
@@ -113,7 +118,7 @@ function ShowGraph() {
     },
     {
       y: filteredCloudCover,
-      x: filteredTime,
+      x: startDate===endDate ? filteredTime : dt,
       type: "scatter",
       mode: "lines+markers",
       marker: { color: "grey" },
@@ -124,12 +129,12 @@ function ShowGraph() {
 
   // Set the layout options for the plot
   const layout = {
-    title: `PV Data for ${startDate}`,
+    title: `Data from ${startDate} to ${endDate}`,
     yaxis: {
-      title: "Time",
+      title: "PV Data",
     },
     xaxis: {
-      title: "PV Data",
+      title: "Time",
     },
   };
 
@@ -140,6 +145,13 @@ function ShowGraph() {
     setStartDate(`${month}/${day}/${year}`);
   };
 
+  const handleSetEndDate = (date) => {
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    const year = date.getFullYear();
+    setEndDate(`${month}/${day}/${year}`);
+  };
+
   return (
     <>
       <div className="plot__container">
@@ -147,24 +159,44 @@ function ShowGraph() {
           <p className="dheader__title">DASHBOARD &gt; Visualize</p>
           <p className="dheader__greet">welcome {user.username}</p>
         </div>
-        {dataEx[0]?(<div className="main__plot">
-          <div>
-            <span>Date: </span>
-            <DatePicker
-              selected={new Date(startDate)}
-              onChange={handleSetDate}
-              dateFormat={"MM/dd/yyyy"}
-              minDate={new Date(dates[0])}
-              maxDate={new Date(dates[dates.length-1])}
+        {dataEx[0] ? (
+          <div className="main__plot">
+            <div style={{ display: "flex" }}>
+              <div>
+                <span style={{color:'grey'}}>From: </span>
+                <DatePicker
+                  selected={new Date(startDate)}
+                  onChange={handleSetDate}
+                  dateFormat={"MM/dd/yyyy"}
+                  style={{ border: "1px solid red" }}
+                  minDate={new Date(dates[0])}
+                  maxDate={new Date(dates[dates.length - 1])}
+                />
+              </div>
+              <div>
+                <span style={{color:'grey'}}>To: </span>
+                <DatePicker
+                  selected={new Date(endDate)}
+                  onChange={handleSetEndDate}
+                  dateFormat={"MM/dd/yyyy"}
+                  minDate={new Date(dates[0])}
+                  maxDate={new Date(dates[dates.length - 1])}
+                />
+              </div>
+            </div>
+
+            <Plot
+              className="plot"
+              data={plotData}
+              config={{ responsive: true }}
+              layout={layout}
             />
           </div>
-          <Plot
-            className="plot"
-            data={plotData}
-            config={{ responsive: true }}
-            layout={layout}
-          />
-        </div>):(<div className="main__plot"><p>Please Upload data</p></div>)}
+        ) : (
+          <div className="main__plot">
+            <p>Please Upload data</p>
+          </div>
+        )}
       </div>
     </>
   );
