@@ -5,7 +5,7 @@ import { Outlet, useNavigate } from "react-router-dom";
 import DataContext from "../../context/Data";
 import userContext from "../../context/UserContext";
 import axios from "axios";
-import Loading from "react-loading";
+import Loading from "../Modal/Loading";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -64,11 +64,7 @@ function Dashboard() {
   if (!user.email) {
     return (
       <>
-        <div className="unauth__wrapper"></div>
-        <div className="unauth__container">
-          <h2>Loading please wait</h2>
-          <Loading type="spin" color="blue" width={"30%"} height={"30%"} />
-        </div>
+        <Loading/>
       </>
     );
   }
