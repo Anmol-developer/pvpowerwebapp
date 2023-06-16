@@ -135,6 +135,7 @@ function ShowGraph() {
     },
     xaxis: {
       title: "Time",
+      // rangeslider:{}
     },
   };
 

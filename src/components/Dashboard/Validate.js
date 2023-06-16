@@ -24,7 +24,7 @@ function Validate() {
   const fetchData = async () => {
     try {
       const response = await axios.get(`/validate/${user._id}`);
-      console.log(response.data);
+      // console.log(response.data);
       setStartDate(
         response.data.randomforest[response.data.randomforest.length - 1].date
       );
@@ -37,85 +37,92 @@ function Validate() {
     }
   };
 
-  const randomforestData = randomforest.map((row) => row.PredictedPV);
-  const knnData = knn.map((row) => row.PredictedPV);
-  const lgbmData = lgbm.map((row) => row.PredictedPV);
-  const svrData = svr.map((row) => row.PredictedPV);
-  const actual = Acdata.map((row) => row.Actualpv);
-  const dates = randomforestData.map((row) => row.date);
+  // console.log(new Date(randomforest[0].date).toLocaleDateString('en-US'));
   
-  const filteredrandomforest = randomforestData.filter((elem) =>
+  
+  const filteredrandomforest = randomforest.filter((elem) =>
   elem.date === startDate
   );
+  const randomforestPlot = filteredrandomforest.map((row)=> row.PredictedPV)
+  console.log(filteredrandomforest);
+  const dates = randomforest.map((row) => row.date);// not in format
+  // console.log(dates);
   const time = filteredrandomforest.map((row) => row.time);
+  // console.log(time);
 
-  const filteredknn = knnData.filter((elem) =>
+  const filteredknn = knn.filter((elem) =>
   elem.date === startDate
   );
+  const knnPlot = filteredknn.map((row)=> row.PredictedPV)
 
-  const filteredlgbm = lgbmData.filter((elem) =>
+  const filteredlgbm = lgbm.filter((elem) =>
   elem.date === startDate
   );
+  const lgbmPlot = filteredlgbm.map((row)=> row.PredictedPV)
 
-  const filteredsvr = svrData.filter((elem) =>
+  const filteredsvr = svr.filter((elem) =>
   elem.date === startDate
   );
+  const svrPlot = filteredsvr.map((row)=> row.PredictedPV)
 
-  const filteredActualpv = actual.filter((elem) =>
-  elem.date === startDate
+  // console.log(Acdata);
+  const filteredActualpv = Acdata.filter((elem) =>
+  new Date(elem.date).toLocaleDateString('en-US') === new Date(startDate).toLocaleDateString('en-US')
   );
-  // const filteredTime = time.filter((elem) =>
-  // elem.date === startDate
-  // );
+  const actualPlot = filteredActualpv.map((row)=> row.Actualpv)
+  console.log(filteredActualpv);
+  console.log(new Date(startDate).toLocaleDateString('en-US'));
+  // console.log(new Date(Acdata[0].date).toLocaleDateString('en-US'));
+  
 
   // Prepare the plot data
   const plotData = [
     {
-      y: filteredrandomforest,
+      // y: filteredrandomforest,
+      y: randomforestPlot,
       x: time,
       type: "scatter",
       mode: "lines+markers",
       name: "Predicted from Randomforest",
       marker: { color: "blue" },
-      visible:
-        filteredrandomforest[0] !== undefined && Acdata[0] ? true : false,
+      visible: randomforestPlot[0] !== undefined && Acdata[0] ? true : false,
+      // filteredrandomforest[0] !== undefined ,
     },
     {
-      y: filteredknn,
-      // x: filteredTime,
+      y: knnPlot,
       x: time,
       type: "scatter",
       mode: "lines+markers",
-      name: "Predicted from Randomforest",
+      name: "Predicted from KNN",
       marker: { color: "orange" },
-      visible: filteredknn[0] !== undefined && Acdata[0] ? true : false,
+      visible: knnPlot[0] !== undefined && Acdata[0] ? true : false,
     },
     {
-      y: filteredlgbm,
+      y: lgbmPlot,
       x: time,
       type: "scatter",
       mode: "lines+markers",
-      name: "Predicted from Randomforest",
+      name: "Predicted from LGBM",
       marker: { color: "black" },
-      visible: filteredlgbm[0] !== undefined && Acdata[0] ? true : false,
+      visible: lgbmPlot[0] !== undefined && Acdata[0] ? true : false,
     },
     {
-      y: filteredsvr,
+      y: svrPlot,
       x: time,
       type: "scatter",
       mode: "lines+markers",
-      name: "Predicted from Randomforest",
+      name: "Predicted from SVR",
       marker: { color: "green" },
-      visible: filteredsvr[0] !== undefined && Acdata[0] ? true : false,
+      visible: svrPlot[0] !== undefined && Acdata[0] ? true : false,
     },
     {
-      y: filteredActualpv,
+      y: actualPlot,
       x: time,
       type: "scatter",
       mode: "lines+markers",
       name: "Actual Data of the day",
       marker: { color: "red" },
-      visible: filteredActualpv[0] !== undefined ? true : false,
+      visible: actualPlot[0] !== undefined ? true : false,
     },
   ];
   const layout = {
@@ -131,10 +138,7 @@ function Validate() {
   };
 
   const handleSetDate = (date) => {
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-    const day = String(date.getDate()).padStart(2, "0");
-    const year = date.getFullYear();
-    setStartDate(`${month}/${day}/${year}`);
+    setStartDate(`${new Date(date).toLocaleDateString('en-US')}`);
   };
 
   const handleFileChange = async (e) => {
@@ -147,21 +151,21 @@ function Validate() {
     const Sheet = workbook.Sheets[SheetName];
 
     const excelData = utils.sheet_to_json(Sheet, { header: 1 });
+    // console.log(exce);
 
     const extractedData = excelData.slice(1).map((row) => {
       const numericValue = parseFloat(row[3]);
       const dateObject = SSF.parse_date_code(numericValue);
+// const formattedDate = new Date(dateObject.year, dateObject.month - 1, dateObject.day, dateObject.hour, dateObject.minute, dateObject.second).toISOString();
+// console.log(dateObject);
 
       return {
-        date: `${String(dateObject.m).padStart(2, "0")}/${String(
-          dateObject.d
-        ).padStart(2, "0")}/${String(dateObject.y)}`,
-        time: dateObject.H + ":" + dateObject.M + ":" + dateObject.S,
+        date: `${new Date(String(dateObject.y), String(dateObject.m-1 ), String(dateObject.d), dateObject.H, dateObject.M, dateObject.S)}`,
         Actualpv: row[1],
       };
     });
-
-    setAcData(extractedData);
+    // console.log(extractedData);
+    setAcData([...extractedData]);
   };
 
   return (
