@@ -12,11 +12,14 @@ import validate from '../../Images/validate.png'
 import history from "../../Images/history.png";
 import { Link } from "react-scroll";
 import axios from '../../axios'
+import Loading from '../Modal/Loading'
 
 function Tutorial() {
   const [user, setUser] = useState(false)
+  const [loading,setLoading] = useState(false)
 
   useEffect(()=>{
+    setLoading(true)
     getUser();
   },[])
 
@@ -24,16 +27,19 @@ function Tutorial() {
     const user = await axios.get('/')
     if(user.status===200){
       setUser(true)
+    setLoading(false)
+
     }else{
       setUser(false)
+    setLoading(false)
+
     }
   }
-
-  if(!user){ 
+  if(loading===true){
     return(
-    <div className="regulations__container">
-      <h1>Unauthorized</h1>
-    </div>
+      <div className="regulations__container">
+        <Loading/> 
+      </div>
   )}
   
   return (
