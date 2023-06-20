@@ -21,6 +21,19 @@ function ModalPopUp({ lat, lon }) {
   const { setdata } = useContext(DataContext);
   const { user } = useContext(userContext);
 
+  useEffect(()=>{
+    handleCalc();
+  },[])
+
+  const handleCalc = async()=>{
+    const isCalcDone = await axios.get('/calc-state');
+    if(isCalcDone.data){
+      dispatch({type:'SET_SUBMODAL', payload:false})
+    }else{
+      dispatch({type:'SET_SUBMODAL', payload:true})
+    }
+  }
+
   //getting input address's lat and lon using forward geocoding and loading functionality
   useEffect(() => {
     const location__adrs = async () => {
@@ -172,6 +185,10 @@ function ModalPopUp({ lat, lon }) {
     dispatch({ type: "SET_SUBMODAL", payload: true });
     dispatch({ type: "SET_AFTERCALCMODAL", payload: false });
 
+    //setting calculation state in mongodb to false
+    axios.post('/calc-state',{isCalcDone:false})
+
+    //sending data to model for calculation
     const formData = new FormData();
     formData.append("file", state.selectedFile);
     const result = await fetch(`http://127.0.0.1:5000/api/flask/processing`, {
@@ -193,95 +210,103 @@ function ModalPopUp({ lat, lon }) {
   };
 
   return (
-    <div className="modal__container">
-      <button className="modal-btn" onClick={setLocation}>
-        set this location
-      </button>
+    <>
+      <div className="modal__container">
+        <button className="modal-btn" onClick={setLocation}>
+          set this location
+        </button>
 
-      <ShowModal open={state.showModal} closeModal={closeModal}>
-        <h2 className="modal__heading">Fill the information</h2>
-        <p className="modal__lat">
-          <b>Latitude: </b>
-          {lat}
-        </p>
-        <p className="modal__lng">
-          <b>Longitude: </b>
-          {lon}
-        </p>
-
-        <form className="data-type-form">
-          <label htmlFor="data-type">
-            <b>Select Data type: </b>
-          </label>
-          <select id="data-type" name="data-type" onChange={handleDataType} style={{marginTop:'5px'}}>
-            <option value="pv__data">pv data</option>
-            <option value="both">pv data + weather data</option>
-          </select>
-        </form>
-
-        <div className="sample__table">
-          <p className="pls-upload">
-            Format of your data sheet should be same as in sample table
+        <ShowModal open={state.showModal} closeModal={closeModal}>
+          <h2 className="modal__heading">Fill the information</h2>
+          <p className="modal__lat">
+            <b>Latitude: </b>
+            {lat}
           </p>
-          {state.dataType === "pv__data" ? (
-            <a
-              href={
-                "https://docs.google.com/spreadsheets/d/1gUmeH_IQ8DKPmq1_UxcVWg4ws-LUgo4C9yO7qSUho_c/edit?usp=sharing"
-              }
-              rel="noreferrer"
-              target="_blank"
+          <p className="modal__lng">
+            <b>Longitude: </b>
+            {lon}
+          </p>
+
+          <form className="data-type-form">
+            <label htmlFor="data-type">
+              <b>Select Data type: </b>
+            </label>
+            <select
+              id="data-type"
+              name="data-type"
+              onChange={handleDataType}
+              style={{ marginTop: "5px" }}
             >
-              Sample table for pv data
-            </a>
-          ) : (
-            <a
-              href={
-                "https://docs.google.com/spreadsheets/d/12V6K4fs46bQihzyUmSWe54kf2x-bvJcLHLonCgqthsk/edit?usp=sharing"
-              }
-              rel="noreferrer"
-              target="_blank"
-            >
-              Sample table for pv data + weather
-            </a>
-          )}
-        </div>
+              <option value="pv__data">pv data</option>
+              <option value="both">pv data + weather data</option>
+            </select>
+          </form>
 
-        <div className="file__upload">
-          <p className="upload-text">
-            <b>Upload your .xlsx or .xls file: </b>
-          </p>
-          <p className="upload-warn">
-            <AiOutlineWarning className="warn-icon" /> Format of your file must
-            be same as the sample table shown above
-          </p>
-          <input
-            type="file"
-            id="fileInput"
-            onChange={handleFileChange}
-            accept=".xlsx, .xls, .csv"
-          />
-          {state.selectedFile === null && (
-            <p className="pls-upload">pls upload file</p>
-          )}
-          {state.isFormat && state.disabled && state.selectedFile !== null && (
-            <p style={{ marginTop: "5px", fontSize: "13px" }}>
-              checking pls wait...
+          <div className="sample__table">
+            <p className="pls-upload">
+              Format of your data sheet should be same as in sample table
             </p>
-          )}
-          {state.isFormat === false && state.selectedFile !== null && (
-            <p className="pls-upload">Format not correct</p>
-          )}
-        </div>
+            {state.dataType === "pv__data" ? (
+              <a
+                href={
+                  "https://docs.google.com/spreadsheets/d/1gUmeH_IQ8DKPmq1_UxcVWg4ws-LUgo4C9yO7qSUho_c/edit?usp=sharing"
+                }
+                rel="noreferrer"
+                target="_blank"
+              >
+                Sample table for pv data
+              </a>
+            ) : (
+              <a
+                href={
+                  "https://docs.google.com/spreadsheets/d/12V6K4fs46bQihzyUmSWe54kf2x-bvJcLHLonCgqthsk/edit?usp=sharing"
+                }
+                rel="noreferrer"
+                target="_blank"
+              >
+                Sample table for pv data + weather
+              </a>
+            )}
+          </div>
 
-        {state.disabled ? (
-          <button className="sb-disabled">Submit</button>
-        ) : (
-          <button className="sb-active" onClick={handleInfoSubmit}>
-            Submit
-          </button>
-        )}
-      </ShowModal>
+          <div className="file__upload">
+            <p className="upload-text">
+              <b>Upload your .xlsx or .xls file: </b>
+            </p>
+            <p className="upload-warn">
+              <AiOutlineWarning className="warn-icon" /> Format of your file
+              must be same as the sample table shown above
+            </p>
+            <input
+              type="file"
+              id="fileInput"
+              onChange={handleFileChange}
+              accept=".xlsx, .xls, .csv"
+            />
+            {state.selectedFile === null && (
+              <p className="pls-upload">pls upload file</p>
+            )}
+            {state.isFormat &&
+              state.disabled &&
+              state.selectedFile !== null && (
+                <p style={{ marginTop: "5px", fontSize: "13px" }}>
+                  checking pls wait...
+                </p>
+              )}
+            {state.isFormat === false && state.selectedFile !== null && (
+              <p className="pls-upload">Format not correct</p>
+            )}
+          </div>
 
+          {state.disabled ? (
+            <button className="sb-disabled">Submit</button>
+          ) : (
+            <button className="sb-active" onClick={handleInfoSubmit}>
+              Submit
+            </button>
+          )}
+        </ShowModal>
+      </div>
       <SubmitModal open={state.showSubmitModal} closeModal={closeSubmitModal}>
         <div className="sbmt-modal-childs">
           <p
@@ -338,7 +363,7 @@ function ModalPopUp({ lat, lon }) {
           </div>
         </div>
       </AfterCalcModal>
-    </div>
+    </>
   );
 }
 

@@ -20,7 +20,8 @@ const InitialState = {
         "Cloud Cover",
         "Rainfall",
       ],
-      format2:["Date", "PV Power (kW)"]
+      format2:["Date", "PV Power (kW)"],
+      isCalcDone: true
 }
 
 const reducer = (state, action) => {
