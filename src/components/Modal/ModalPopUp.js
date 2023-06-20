@@ -299,7 +299,7 @@ function ModalPopUp({ lat, lon }) {
           />
           <p className="desc-txt">
             Calculation will take around 3 hours. You can close the window or
-            view forecast for next day
+            view your data
           </p>
           <div className="btns">
             <button className="sample-graph" onClick={redirectToGraph}>
