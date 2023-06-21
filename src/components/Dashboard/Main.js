@@ -102,7 +102,8 @@ function Main() {
     dispatch({ type: "SET_DEFAULT" });
   };
 
-  const redirectToForecastResult = () => {
+  const redirectToForecastResult = async() => {
+    await axios.get('/close-calc');
     navigate(`/dashboard/forecast`);
   };
 
