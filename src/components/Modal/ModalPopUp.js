@@ -162,10 +162,12 @@ function ModalPopUp({ lat, lon }) {
       : dispatch({ type: "SET_DISABLED", payload: true });
   };
 
-  const redirectToGraph = () => {
+  const redirectToGraph = async() => {
+    await axios.get("/close-calc");
     navigate(`/dashboard/graph`);
   };
-  const redirectToForecastResult = () => {
+  const redirectToForecastResult = async() => {
+    await axios.get("/close-calc");
     navigate(`/dashboard/forecast`);
   };
 
@@ -174,34 +176,22 @@ function ModalPopUp({ lat, lon }) {
     dispatch({ type: "SET_SUBMODAL", payload: true });
     dispatch({ type: "SET_AFTERCALCMODAL", payload: false });
 
-    //setting calculation state in mongodb to false
-    axios.post("/calc-state", { isCalcDone: false });
-
-    //sending data to model for calculation
     const formData = new FormData();
     formData.append("file", state.selectedFile);
-    fetch(`http://127.0.0.1:5000/api/flask/processing`, {
+    const result = await fetch(`http://127.0.0.1:5000/api/flask/processing`, {
       method: "POST",
       // headers:{"Content-Type": "application/json"},
       body: formData,
-    }).then(() => {
-      axios.get(`/forecast/${user._id}`).then((data) => {
-        if (data.status === 200) {
-          dispatch({ type: "SET_AFTERCALCMODAL", payload: true });
-          dispatch({ type: "SET_SUBMODAL", payload: false });
-          NotifyCalc(user.email);
-        }
-      });
     });
-    // console.log("File response: ", await result.json());
+    console.log("File response: ", await result.json());
 
     //making request to /forecast to save data in mongoDB
-    // const saveData = await axios.get(`/forecast/${user._id}`);
-    // if (saveData.status === 200) {
-    //   dispatch({ type: "SET_AFTERCALCMODAL", payload: true });
-    //   dispatch({ type: "SET_SUBMODAL", payload: false });
-    //   NotifyCalc(user.email);
-    // }
+    const saveData = await axios.get(`/forecast/${user._id}`);
+    if (saveData.status === 200) {
+      dispatch({ type: "SET_AFTERCALCMODAL", payload: true });
+      dispatch({ type: "SET_SUBMODAL", payload: false });
+      NotifyCalc(user.email);
+    }
 
     dispatch({ type: "SET_SHOWMODAL", payload: false });
   };
