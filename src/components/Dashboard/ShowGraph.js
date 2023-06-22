@@ -42,7 +42,8 @@ function ShowGraph() {
   );
 
   const filteredwindSpeed = windSpeed.filter((_, index) =>
-    dates[index].startsWith(startDate) || dates[index].startsWith(endDate)
+  dates[index]>=(startDate) && dates[index]<=(endDate)
+  // dates[index].startsWith(startDate) || dates[index].startsWith(endDate)
   );
 
   const filteredRHumidity = RHumidity.filter((_, index) =>
@@ -66,61 +67,61 @@ function ShowGraph() {
       y: filteredPVValues,
       x: startDate===endDate ? filteredTime : dt,
       type: "scatter",
-      mode: "lines+markers",
+      mode: "lines",
       name: "PV",
       marker: { color: "blue" },
       visible: filteredPVValues[0] !== undefined ? true : false,
     },
     {
-      y: filteredsolarRadiation,
+      y: filteredsolarRadiation.map((elem)=> elem *= 5),
       x: startDate===endDate ? filteredTime : dt,
       type: "scatter",
-      mode: "lines+markers",
+      mode: "lines",
       name: "Solar radiation",
       marker: { color: "red" },
       visible: filteredsolarRadiation[0] !== undefined ? "legendonly" : false,
     },
     {
-      y: filteredTemperature,
+      y: filteredTemperature.map((elem)=> elem *= 50),
       x: startDate===endDate ? filteredTime : dt,
       type: "scatter",
-      mode: "lines+markers",
+      mode: "lines",
       name: "Temperature",
       marker: { color: "green" },
       visible: filteredTemperature[0] !== undefined ? "legendonly" : false,
     },
     {
-      y: filteredwindSpeed,
+      y: filteredwindSpeed.map((elem)=> elem *= 1200),
       x: startDate===endDate ? filteredTime : dt,
       type: "scatter",
-      mode: "lines+markers",
+      mode: "lines",
       name: "Wind Speed",
       marker: { color: "pink" },
       visible: filteredwindSpeed[0] !== undefined ? "legendonly" : false,
     },
     {
-      y: filteredRainfall,
+      y: filteredRainfall.map((elem)=> elem *= 3000),
       x: startDate===endDate ? filteredTime : dt,
       type: "scatter",
-      mode: "lines+markers",
+      mode: "lines",
       marker: { color: "black" },
       name: "rainfall",
       visible: filteredRainfall[0] !== undefined ? "legendonly" : false,
     },
     {
-      y: filteredRHumidity,
+      y: filteredRHumidity.map((elem)=> elem *= 10),
       x: startDate===endDate ? filteredTime : dt,
       type: "scatter",
-      mode: "lines+markers",
+      mode: "lines",
       marker: { color: "orange" },
       name: "relative humidity",
       visible: filteredRHumidity[0] !== undefined ? "legendonly" : false,
     },
     {
-      y: filteredCloudCover,
+      y: filteredCloudCover.map((elem)=> elem *= 500),
       x: startDate===endDate ? filteredTime : dt,
       type: "scatter",
-      mode: "lines+markers",
+      mode: "lines",
       marker: { color: "grey" },
       name: "Cloud Cover",
       visible: filteredCloudCover[0] !== undefined ? "legendonly" : false,
@@ -131,10 +132,10 @@ function ShowGraph() {
   const layout = {
     title: `Data from ${startDate} to ${endDate}`,
     yaxis: {
-      title: "PV Data",
+      title: "Normalized Data",
     },
     xaxis: {
-      title: "Time",
+      title: "",
       // rangeslider:{}
     },
   };
@@ -183,6 +184,9 @@ function ShowGraph() {
                   minDate={new Date(dates[0])}
                   maxDate={new Date(dates[dates.length - 1])}
                 />
+              </div>
+              <div style={{color:'grey', position:'absolute', right:'1rem', top:'15px'}}>
+                *Please select dates of same year
               </div>
             </div>
 

@@ -70,7 +70,7 @@ function Dashboard() {
   }
   return (
     <>
-      {windowWidth > 610 ? (
+      {windowWidth > 900 ? (
         <div className="container">
           <userContext.Provider value={{ user }}>
             <Sidebar />

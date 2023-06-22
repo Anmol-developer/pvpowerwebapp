@@ -315,7 +315,7 @@ function ModalPopUp({ lat, lon }) {
           </p>
           <div className="btns">
             <button className="sample-graph" onClick={redirectToGraph}>
-              Visualize Data
+              Check Trend
             </button>
             <button className="cancel-sbmt" onClick={closeSubmitModal}>
               cancel calculation
