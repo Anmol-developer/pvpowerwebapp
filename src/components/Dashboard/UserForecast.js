@@ -13,7 +13,7 @@ function ShowGraph() {
   const [state, dispatch] = useReducer(reducer, initialState);
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
-
+  
   let date = queryParams.get("date");
   const model = ["rf", "knn", "lgbm", "svr"];
   const { user } = useContext(userContext);
@@ -62,7 +62,6 @@ function ShowGraph() {
             ).toLocaleDateString("en-US"),
           });
           dispatch({ type: "SET_FILL", payload: data[data.length - 1] }); //sets the value of all model's result forecast
-          // dispatch({type:'SET_RANDOMFOREST',payload:[...data[data.length - 1].randomforest]});
         }
       } catch (error) {
         dispatch({ type: "SET_EMPTY" }); //sets all the data of each model to []
@@ -106,7 +105,7 @@ function ShowGraph() {
       y: filteredPredictedpv_RF,
       x: filteredTime_RF,
       type: "scatter",
-      mode: "lines+markers",
+      mode: "lines",
       name: "randomforest",
       marker: { color: "blue" },
       visible:
@@ -119,7 +118,7 @@ function ShowGraph() {
       y: filteredPredictedpv_KNN,
       x: filteredTime_RF,
       type: "scatter",
-      mode: "lines+markers",
+      mode: "lines",
       name: "KNN",
       marker: { color: "green" },
       visible:
@@ -132,7 +131,7 @@ function ShowGraph() {
       y: filteredPredictedpv_LGBM,
       x: filteredTime_RF,
       type: "scatter",
-      mode: "lines+markers",
+      mode: "lines",
       name: "LGBM",
       marker: { color: "black" },
       visible:
@@ -145,7 +144,7 @@ function ShowGraph() {
       y: filteredPredictedpv_SVR,
       x: filteredTime_RF,
       type: "scatter",
-      mode: "lines+markers",
+      mode: "lines",
       name: "SVR",
       marker: { color: "red" },
       visible:

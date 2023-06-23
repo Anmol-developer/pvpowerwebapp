@@ -20,7 +20,11 @@ function ModalPopUp({ lat, lon }) {
   const [state, dispatch] = useReducer(reducer, InitialState);
   const { setdata } = useContext(DataContext);
   const { user } = useContext(userContext);
-
+  // const time = dataEx[0] && dataEx.map((row) => row.time);
+  const { dataEx } = useContext(DataContext);
+  const nextDayDate = dataEx.map((row) => row.date)[dataEx.map((row) => row.date).length-1];
+  const filteredTime =dataEx[0] && dataEx.filter((row) => row.date===(nextDayDate)).map((row)=>row.time);
+  
   //getting input address's lat and lon using forward geocoding and loading functionality
   useEffect(() => {
     const location__adrs = async () => {
@@ -172,6 +176,8 @@ function ModalPopUp({ lat, lon }) {
   };
 
   const handleInfoSubmit = async () => {
+    // console.log('nextDayDate',nextDayDate);
+    // console.log('Time',filteredTime);
     setdata([state.data, state.dataFormat]);
     dispatch({ type: "SET_SUBMODAL", payload: true });
     dispatch({ type: "SET_AFTERCALCMODAL", payload: false });
@@ -186,7 +192,8 @@ function ModalPopUp({ lat, lon }) {
     console.log("File response: ", await result.json());
 
     //making request to /forecast to save data in mongoDB
-    const saveData = await axios.get(`/forecast/${user._id}`);
+    const tempDate = new Date(nextDayDate).setDate(new Date(nextDayDate).getDate() + 1);
+    const saveData = await axios.post(`/forecast/${user._id}`,{NextDate:new Date(tempDate).toLocaleDateString('en-US'), Time:filteredTime});
     if (saveData.status === 200) {
       dispatch({ type: "SET_AFTERCALCMODAL", payload: true });
       dispatch({ type: "SET_SUBMODAL", payload: false });
@@ -315,7 +322,7 @@ function ModalPopUp({ lat, lon }) {
           </p>
           <div className="btns">
             <button className="sample-graph" onClick={redirectToGraph}>
-              Check Trend
+            Visualize
             </button>
             <button className="cancel-sbmt" onClick={closeSubmitModal}>
               cancel calculation

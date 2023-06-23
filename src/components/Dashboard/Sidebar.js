@@ -59,7 +59,7 @@ function Sidebar() {
         to={`/dashboard/graph`}
       >
         <BsFillFileBarGraphFill className="graph-icon" />
-        Trend
+        Visualize
       </Link>
       <div className="link-to-logout" onClick={logout}>
         <FiLogOut className="logout-icon" />

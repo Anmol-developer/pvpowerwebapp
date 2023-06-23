@@ -22,6 +22,7 @@ function Hero() {
   return (
     <>
       <div className="hero__container">
+        {/* <div className="hero__image"></div> */}
         <div className="hero__text">
           <p className="hero__header">Power up your day with PV forecasts!</p>
           <p className="hero__desc">
@@ -41,7 +42,6 @@ function Hero() {
         </div>
         <img src={imagex} alt="a hero" className="hero__img" />
       </div>
-      {/* <Services/> */}
     </>
   );
 }

@@ -14,17 +14,18 @@ function UserHistoy() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const getHistory = async () => {
-      try {
-        const history = await axios.get(`/history/${user._id}`);
-        setHistory([...history.data]);
-      } catch (error) {
-        console.log(error);
-      }
-    };
     getHistory();
-    setLoading(false);
   }, [user._id]);
+
+  const getHistory = async () => {
+    try {
+      const history = await axios.get(`/history/${user._id}`);
+      setHistory([...history.data]);
+      setLoading(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const showView = (date) => {
     navigate(`/dashboard/forecast?date=${date}`);

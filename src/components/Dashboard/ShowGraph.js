@@ -22,8 +22,6 @@ function ShowGraph() {
   const RHumidity = dataEx.map((row) => row.RHumidity);
   const CloudCover = dataEx.map((row) => row.CloudCover);
   const Rainfall = dataEx.map((row) => row.Rainfall);
-  // const dt = dataEx.map((row)=> row.date+' '+row.time);
-  // console.log(dt);
 
   // Filter the data for the selected date
   const filteredPVValues = pvValues.filter((_, index) =>
@@ -31,7 +29,6 @@ function ShowGraph() {
   );
 
   const filteredTime =dataEx[0] && time.filter((_, index) => dates[index]>=(startDate) && dates[index]<=(endDate));
-  // const filteredDate =dataEx[0] && dates.filter((_, index) => dates[index]>=(startDate) && dates[index]<=(endDate));
 
   const filteredsolarRadiation = solarRadiation.filter((_, index) =>
   dates[index]>=(startDate) && dates[index]<=(endDate)
@@ -43,7 +40,6 @@ function ShowGraph() {
 
   const filteredwindSpeed = windSpeed.filter((_, index) =>
   dates[index]>=(startDate) && dates[index]<=(endDate)
-  // dates[index].startsWith(startDate) || dates[index].startsWith(endDate)
   );
 
   const filteredRHumidity = RHumidity.filter((_, index) =>
