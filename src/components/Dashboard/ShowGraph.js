@@ -25,43 +25,36 @@ function ShowGraph() {
 
   // Filter the data for the selected date
   const filteredPVValues = pvValues.filter((_, index) =>
-    (dates[index]>=(startDate) && dates[index]<=(endDate))
-  );
+    (new Date(dates[index]).valueOf() >= new Date(startDate).valueOf() && new Date(dates[index]).valueOf() <= new Date(endDate).valueOf()));
 
-  const filteredTime =dataEx[0] && time.filter((_, index) => dates[index]>=(startDate) && dates[index]<=(endDate));
+  const filteredTime =dataEx[0] && time.filter((_, index) => new Date(dates[index]).valueOf() >= new Date(startDate).valueOf() && new Date(dates[index]).valueOf() <= new Date(endDate).valueOf())
 
   const filteredsolarRadiation = solarRadiation.filter((_, index) =>
-  dates[index]>=(startDate) && dates[index]<=(endDate)
-  );
+  new Date(dates[index]).valueOf() >= new Date(startDate).valueOf() && new Date(dates[index]).valueOf() <= new Date(endDate).valueOf() );
 
   const filteredTemperature = Temperature.filter((_, index) =>
-  dates[index]>=(startDate) && dates[index]<=(endDate)
-  );
+  new Date(dates[index]).valueOf() >= new Date(startDate).valueOf() && new Date(dates[index]).valueOf() <= new Date(endDate).valueOf() );
 
   const filteredwindSpeed = windSpeed.filter((_, index) =>
-  dates[index]>=(startDate) && dates[index]<=(endDate)
-  );
+  new Date(dates[index]).valueOf() >= new Date(startDate).valueOf() && new Date(dates[index]).valueOf() <= new Date(endDate).valueOf() );
 
   const filteredRHumidity = RHumidity.filter((_, index) =>
-  dates[index]>=(startDate) && dates[index]<=(endDate)
-  );
+  new Date(dates[index]).valueOf() >= new Date(startDate).valueOf() && new Date(dates[index]).valueOf() <= new Date(endDate).valueOf() );
 
   const filteredCloudCover = CloudCover.filter((_, index) =>
-  dates[index]>=(startDate) && dates[index]<=(endDate)
-  );
+  new Date(dates[index]).valueOf() >= new Date(startDate).valueOf() && new Date(dates[index]).valueOf() <= new Date(endDate).valueOf() );
 
   const filteredRainfall = Rainfall.filter((_, index) =>
-  dates[index]>=(startDate) && dates[index]<=(endDate)
-  );
+  new Date(dates[index]).valueOf() >= new Date(startDate).valueOf() && new Date(dates[index]).valueOf() <= new Date(endDate).valueOf() );
 
-  const filteredDT = dataEx.filter((row)=> row.date<=endDate && row.date>=startDate);
+  const filteredDT = dataEx.filter((row)=>  new Date(row.date).valueOf() <= new Date(endDate ).valueOf() &&  new Date(row.date).valueOf() >= new Date(startDate).valueOf());
   const dt = filteredDT.map((row)=> row.date + ' ' + row.time)
- console.log(dt)
+//  console.log(dt)
   // Prepare the plot data
   const plotData = [
     {
       y: filteredPVValues,
-      x: startDate===endDate ? filteredTime : dt,
+      x: startDate === endDate ? filteredTime : dt,
       type: "scatter",
       mode: "lines",
       name: "PV",
@@ -69,8 +62,8 @@ function ShowGraph() {
       visible: filteredPVValues[0] !== undefined ? true : false,
     },
     {
-      y: filteredsolarRadiation.map((elem)=> elem *= 5),
-      x: startDate===endDate ? filteredTime : dt,
+      y: filteredsolarRadiation.map((elem) => (elem *= 5)),
+      x: startDate === endDate ? filteredTime : dt,
       type: "scatter",
       mode: "lines",
       name: "Solar radiation",
@@ -78,8 +71,8 @@ function ShowGraph() {
       visible: filteredsolarRadiation[0] !== undefined ? "legendonly" : false,
     },
     {
-      y: filteredTemperature.map((elem)=> elem *= 50),
-      x: startDate===endDate ? filteredTime : dt,
+      y: filteredTemperature.map((elem) => (elem *= 50)),
+      x: startDate === endDate ? filteredTime : dt,
       type: "scatter",
       mode: "lines",
       name: "Temperature",
@@ -87,8 +80,8 @@ function ShowGraph() {
       visible: filteredTemperature[0] !== undefined ? "legendonly" : false,
     },
     {
-      y: filteredwindSpeed.map((elem)=> elem *= 1200),
-      x: startDate===endDate ? filteredTime : dt,
+      y: filteredwindSpeed.map((elem) => (elem *= 1200)),
+      x: startDate === endDate ? filteredTime : dt,
       type: "scatter",
       mode: "lines",
       name: "Wind Speed",
@@ -96,8 +89,8 @@ function ShowGraph() {
       visible: filteredwindSpeed[0] !== undefined ? "legendonly" : false,
     },
     {
-      y: filteredRainfall.map((elem)=> elem *= 3000),
-      x: startDate===endDate ? filteredTime : dt,
+      y: filteredRainfall.map((elem) => (elem *= 3000)),
+      x: startDate === endDate ? filteredTime : dt,
       type: "scatter",
       mode: "lines",
       marker: { color: "black" },
@@ -105,8 +98,8 @@ function ShowGraph() {
       visible: filteredRainfall[0] !== undefined ? "legendonly" : false,
     },
     {
-      y: filteredRHumidity.map((elem)=> elem *= 10),
-      x: startDate===endDate ? filteredTime : dt,
+      y: filteredRHumidity.map((elem) => (elem *= 10)),
+      x: startDate === endDate ? filteredTime : dt,
       type: "scatter",
       mode: "lines",
       marker: { color: "orange" },
@@ -114,8 +107,8 @@ function ShowGraph() {
       visible: filteredRHumidity[0] !== undefined ? "legendonly" : false,
     },
     {
-      y: filteredCloudCover.map((elem)=> elem *= 500),
-      x: startDate===endDate ? filteredTime : dt,
+      y: filteredCloudCover.map((elem) => (elem *= 500)),
+      x: startDate === endDate ? filteredTime : dt,
       type: "scatter",
       mode: "lines",
       marker: { color: "grey" },
@@ -161,7 +154,7 @@ function ShowGraph() {
           <div className="main__plot">
             <div style={{ display: "flex" }}>
               <div>
-                <span style={{color:'grey'}}>From: </span>
+                <span style={{ color: "grey" }}>From: </span>
                 <DatePicker
                   selected={new Date(startDate)}
                   onChange={handleSetDate}
@@ -172,7 +165,7 @@ function ShowGraph() {
                 />
               </div>
               <div>
-                <span style={{color:'grey'}}>To: </span>
+                <span style={{ color: "grey" }}>To: </span>
                 <DatePicker
                   selected={new Date(endDate)}
                   onChange={handleSetEndDate}
@@ -181,7 +174,14 @@ function ShowGraph() {
                   maxDate={new Date(dates[dates.length - 1])}
                 />
               </div>
-              <div style={{color:'grey', position:'absolute', right:'1rem', top:'15px'}}>
+              <div
+                style={{
+                  color: "grey",
+                  position: "absolute",
+                  right: "1rem",
+                  top: "15px",
+                }}
+              >
                 *Please select dates of same year
               </div>
             </div>

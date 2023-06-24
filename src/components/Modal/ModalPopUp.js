@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useReducer } from "react";
 import ShowModal from "./ShowModal";
 import "../../css/Modal/Modal.css";
 import { AiOutlineWarning } from "react-icons/ai";
+import api from "../../axios";
 import axios from "axios";
 import SubmitModal from "./SubmitModal";
 import { read } from "xlsx";
@@ -17,13 +18,18 @@ import "react-toastify/dist/ReactToastify.css";
 
 function ModalPopUp({ lat, lon }) {
   const navigate = useNavigate();
+
+  const controller = new AbortController(); //to cancel request
   const [state, dispatch] = useReducer(reducer, InitialState);
   const { setdata } = useContext(DataContext);
   const { user } = useContext(userContext);
-  // const time = dataEx[0] && dataEx.map((row) => row.time);
   const { dataEx } = useContext(DataContext);
-  const nextDayDate = dataEx.map((row) => row.date)[dataEx.map((row) => row.date).length-1];
-  const filteredTime =dataEx[0] && dataEx.filter((row) => row.date===(nextDayDate)).map((row)=>row.time);
+  const usersLastDate = dataEx.map((row) => row.date)[dataEx.map((row) => row.date).length-1];
+  // console.log('userslastdate',usersLastDate);
+    const tempDate = new Date(usersLastDate).setDate(new Date(usersLastDate).getDate() + 1);
+    const FuckDate = new Date(tempDate).toLocaleDateString('en-US')
+    // console.log('tempDate',tempDate);
+    // const filteredTime =dataEx[0] && dataEx.filter((row) => row.date===(usersLastDate)).map((row)=>row.time);
   
   //getting input address's lat and lon using forward geocoding and loading functionality
   useEffect(() => {
@@ -46,7 +52,7 @@ function ModalPopUp({ lat, lon }) {
   }, [lat, lon]);
 
   const NotifyCalc = async (email) => {
-    const send_calc_email = await axios.post("/send-calc-mail", { email });
+    await axios.post("/send-calc-mail", { email });
   };
 
   const handleFileChange = async (event) => {
@@ -135,6 +141,8 @@ function ModalPopUp({ lat, lon }) {
   };
   const closeSubmitModal = async() => {
     await axios.get('/close-calc');
+  //to cancel calculation by aborting the request to flask server
+    controller.abort(); 
     dispatch({ type: "SET_SUBMODAL", payload: false });
     dispatch({ type: "SET_SHOWMODAL", payload: false });
 
@@ -167,7 +175,6 @@ function ModalPopUp({ lat, lon }) {
   };
 
   const redirectToGraph = async() => {
-    await axios.get("/close-calc");
     navigate(`/dashboard/graph`);
   };
   const redirectToForecastResult = async() => {
@@ -176,24 +183,24 @@ function ModalPopUp({ lat, lon }) {
   };
 
   const handleInfoSubmit = async () => {
-    // console.log('nextDayDate',nextDayDate);
-    // console.log('Time',filteredTime);
     setdata([state.data, state.dataFormat]);
     dispatch({ type: "SET_SUBMODAL", payload: true });
     dispatch({ type: "SET_AFTERCALCMODAL", payload: false });
+    //setting calculation state in mongoDB
+    await axios.post("/calc-state", { isCalcDone: false });
 
     const formData = new FormData();
     formData.append("file", state.selectedFile);
     const result = await fetch(`http://127.0.0.1:5000/api/flask/processing`, {
       method: "POST",
-      // headers:{"Content-Type": "application/json"},
       body: formData,
+      signal: controller.signal // so that controller.abort() cancels request to this route only
     });
     console.log("File response: ", await result.json());
 
     //making request to /forecast to save data in mongoDB
-    const tempDate = new Date(nextDayDate).setDate(new Date(nextDayDate).getDate() + 1);
-    const saveData = await axios.post(`/forecast/${user._id}`,{NextDate:new Date(tempDate).toLocaleDateString('en-US'), Time:filteredTime});
+    // console.log('tempDate', tempDate)
+    const saveData = await api.post(`/forecast/${user._id}`,{NextDate:FuckDate});
     if (saveData.status === 200) {
       dispatch({ type: "SET_AFTERCALCMODAL", payload: true });
       dispatch({ type: "SET_SUBMODAL", payload: false });

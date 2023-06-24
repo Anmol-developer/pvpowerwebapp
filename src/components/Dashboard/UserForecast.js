@@ -31,6 +31,7 @@ function ShowGraph() {
           dispatch({
             type: "SET_STARTDATE",
             payload: new Date(
+            // payload: 
               ResponseData[ResponseData.length - 1].randomforest[
                 ResponseData[ResponseData.length - 1].randomforest.length - 1
               ].date //forecast date
@@ -40,10 +41,10 @@ function ShowGraph() {
             type: "SET_FILL",
             payload: ResponseData[ResponseData.length - 1],
           });
-          // dispatch({type:'SET_SVR',payload:[...ResponseData[ResponseData.length - 1].svr]});
           dispatch({
             type: "SET_DATADATE",
             payload: new Date(
+            // payload: 
               ResponseData[ResponseData.length - 1].date
             ).toLocaleDateString("en-US"),
           });
@@ -155,7 +156,7 @@ function ShowGraph() {
     },
   ];
   const layout = {
-    title: `PV Data for ${state.startDate}`,
+    title: `PV Data for ${new Date(state.startDate).toLocaleDateString('en-US')}`,
     yaxis: {
       title: `Predicted Data`,
     },
