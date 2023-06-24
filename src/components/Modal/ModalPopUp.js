@@ -27,7 +27,7 @@ function ModalPopUp({ lat, lon }) {
   const usersLastDate = dataEx.map((row) => row.date)[dataEx.map((row) => row.date).length-1];
   // console.log('userslastdate',usersLastDate);
     const tempDate = new Date(usersLastDate).setDate(new Date(usersLastDate).getDate() + 1);
-    const FuckDate = new Date(tempDate).toLocaleDateString('en-US')
+    const NextDate = new Date(tempDate).toLocaleDateString('en-US')
     // console.log('tempDate',tempDate);
     // const filteredTime =dataEx[0] && dataEx.filter((row) => row.date===(usersLastDate)).map((row)=>row.time);
   
@@ -199,8 +199,7 @@ function ModalPopUp({ lat, lon }) {
     console.log("File response: ", await result.json());
 
     //making request to /forecast to save data in mongoDB
-    // console.log('tempDate', tempDate)
-    const saveData = await api.post(`/forecast/${user._id}`,{NextDate:FuckDate});
+    const saveData = await api.post(`/forecast/${user._id}`,{NextDate});
     if (saveData.status === 200) {
       dispatch({ type: "SET_AFTERCALCMODAL", payload: true });
       dispatch({ type: "SET_SUBMODAL", payload: false });

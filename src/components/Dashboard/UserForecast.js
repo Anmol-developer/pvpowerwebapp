@@ -1,10 +1,11 @@
-import React, { useEffect, useState, useContext, useReducer } from "react";
+import React, { useEffect, useContext, useReducer } from "react";
 import Plot from "react-plotly.js";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import axios from "../../axios";
 import "../../css/Dashboard/UserForecast.css";
 import userContext from "../../context/UserContext";
+import DataContext from "../../context/Data";
 import { useLocation } from "react-router-dom";
 import Dropdown from "./Dropdown";
 import { initialState, reducer } from "../../reducer/ForecastReducer";
@@ -13,66 +14,68 @@ function ShowGraph() {
   const [state, dispatch] = useReducer(reducer, initialState);
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
-  
+  const {dataEx} = useContext(DataContext)
   let date = queryParams.get("date");
   const model = ["rf", "knn", "lgbm", "svr"];
   const { user } = useContext(userContext);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(`/forecast/data/${user._id}`);
-        const ResponseData = response.data;
-        if (ResponseData.length === 0) {
-          dispatch({ type: "SET_RANDOMFOREST", payload: [] });
-          return;
-        }
-        if (!date) {
-          dispatch({
-            type: "SET_STARTDATE",
-            payload: new Date(
-            // payload: 
-              ResponseData[ResponseData.length - 1].randomforest[
-                ResponseData[ResponseData.length - 1].randomforest.length - 1
-              ].date //forecast date
-            ).toLocaleDateString("en-US"),
-          });
-          dispatch({
-            type: "SET_FILL",
-            payload: ResponseData[ResponseData.length - 1],
-          });
-          dispatch({
-            type: "SET_DATADATE",
-            payload: new Date(
-            // payload: 
-              ResponseData[ResponseData.length - 1].date
-            ).toLocaleDateString("en-US"),
-          });
-        } else {
-          const data = ResponseData.filter(
-            (Data) =>
-              new Date(Data.date).toLocaleDateString("en-US") ===
-              new Date(date).toLocaleDateString("en-US")
-          );
-          dispatch({
-            type: "SET_STARTDATE",
-            payload: new Date(
-              data[data.length - 1].randomforest[
-                data[data.length - 1].randomforest.length - 1
-              ].date
-            ).toLocaleDateString("en-US"),
-          });
-          dispatch({ type: "SET_FILL", payload: data[data.length - 1] }); //sets the value of all model's result forecast
-        }
-      } catch (error) {
-        dispatch({ type: "SET_EMPTY" }); //sets all the data of each model to []
-        console.log(error);
-      }
-    };
-
     fetchData();
+    // console.log(dataEx.slice(-6));
   }, [state.CalcModel]);
 
+  const fetchData = async () => {
+    try {
+      const response = await axios.get(`/forecast/data/${user._id}`);
+      const ResponseData = response.data;
+      if (ResponseData.length === 0) {
+        dispatch({ type: "SET_RANDOMFOREST", payload: [] });
+        return;
+      }
+      if (!date) {
+        dispatch({
+          type: "SET_STARTDATE",
+          payload: new Date(
+            // payload:
+            ResponseData[ResponseData.length - 1].randomforest[
+              ResponseData[ResponseData.length - 1].randomforest.length - 1
+            ].date //forecast date
+          ).toLocaleDateString("en-US"),
+        });
+        dispatch({
+          type: "SET_FILL",
+          payload: ResponseData[ResponseData.length - 1],
+        });
+        dispatch({
+          type: "SET_DATADATE",
+          payload: new Date(
+            // payload:
+            ResponseData[ResponseData.length - 1].date
+          ).toLocaleDateString("en-US"),
+        });
+      } else {
+        const data = ResponseData.filter(
+          (Data) =>
+            new Date(Data.date).toLocaleDateString("en-US") ===
+            new Date(date).toLocaleDateString("en-US")
+        );
+        dispatch({
+          type: "SET_STARTDATE",
+          payload: new Date(
+            data[data.length - 1].randomforest[
+              data[data.length - 1].randomforest.length - 1
+            ].date
+          ).toLocaleDateString("en-US"),
+        });
+        dispatch({ type: "SET_FILL", payload: data[data.length - 1] }); //sets the value of all model's result forecast
+      }
+    } catch (error) {
+      dispatch({ type: "SET_EMPTY" }); //sets all the data of each model to []
+      console.log(error);
+    }
+  };
+
+  // const tempDataEx = dataEx.slice(-6);
   const predicted_RF = state.randomforest.map((row) => row.PredictedPV);
   const predicted_KNN = state.knn.map((row) => row.PredictedPV);
   const predicted_LGBM = state.lgbm.map((row) => row.PredictedPV);
@@ -99,12 +102,36 @@ function ShowGraph() {
   const filteredTime_RF = time_RF.filter((_, index) =>
     dates[index].startsWith(state.startDate)
   );
+  const filteredDateTime = filteredTime_RF.map((row)=> new Date(state.startDate).toLocaleDateString('en-US')+' '+row)
 
+  const dateToPlot=[]
+  for(let i=0; i<5; i++){
+    const tempDate = new Date(state.startDate).setDate(new Date(state.startDate).getDate() - i-1);
+    dateToPlot[i] = new Date(tempDate).toLocaleDateString('en-US') 
+  }
+  // console.log(dateToPlot);
+  const filteredPV = dataEx.filter((_,index)=>{
+    return new Date(dataEx[index].date).valueOf() >= new Date(dateToPlot[dateToPlot.length-1]).valueOf()
+  })
+  const filteredPVDate = filteredPV.map((row)=> new Date(row.date).toLocaleDateString('en-US')+' '+row.time)
+  // const filteredPVTime = filteredPV.map((row)=> row.time)
+  const filterPVData = filteredPV.map((row)=> row.pv)
+  const normalizedData = filterPVData.map((row)=> row %= 200)
+  // console.log(filteredPV);
   // Prepare the plot data
   const plotData = [
     {
+      y: normalizedData,
+      x: filteredPVDate,
+      type: "scatter",
+      mode: "lines",
+      name: "pv from user",
+      marker: { color: "green" },
+      visible:true
+    },
+    {
       y: filteredPredictedpv_RF,
-      x: filteredTime_RF,
+      x: filteredDateTime,
       type: "scatter",
       mode: "lines",
       name: "randomforest",
@@ -117,7 +144,7 @@ function ShowGraph() {
     },
     {
       y: filteredPredictedpv_KNN,
-      x: filteredTime_RF,
+      x: filteredDateTime,
       type: "scatter",
       mode: "lines",
       name: "KNN",
@@ -130,7 +157,7 @@ function ShowGraph() {
     },
     {
       y: filteredPredictedpv_LGBM,
-      x: filteredTime_RF,
+      x: filteredDateTime,
       type: "scatter",
       mode: "lines",
       name: "LGBM",
@@ -143,7 +170,7 @@ function ShowGraph() {
     },
     {
       y: filteredPredictedpv_SVR,
-      x: filteredTime_RF,
+      x: filteredDateTime,
       type: "scatter",
       mode: "lines",
       name: "SVR",
@@ -156,12 +183,14 @@ function ShowGraph() {
     },
   ];
   const layout = {
-    title: `PV Data for ${new Date(state.startDate).toLocaleDateString('en-US')}`,
+    title: `PV Data for ${new Date(state.startDate).toLocaleDateString(
+      "en-US"
+    )}`,
     yaxis: {
       title: `Predicted Data`,
     },
     xaxis: {
-      title: "Time",
+      title: "",
     },
   };
 
