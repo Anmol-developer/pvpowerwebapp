@@ -23,13 +23,7 @@ function ModalPopUp({ lat, lon }) {
   const [state, dispatch] = useReducer(reducer, InitialState);
   const { setdata } = useContext(DataContext);
   const { user } = useContext(userContext);
-  const { dataEx } = useContext(DataContext);
-  const usersLastDate = dataEx.map((row) => row.date)[dataEx.map((row) => row.date).length-1];
-  // console.log('userslastdate',usersLastDate);
-    const tempDate = new Date(usersLastDate).setDate(new Date(usersLastDate).getDate() + 1);
-    const NextDate = new Date(tempDate).toLocaleDateString('en-US')
-    // console.log('tempDate',tempDate);
-    // const filteredTime =dataEx[0] && dataEx.filter((row) => row.date===(usersLastDate)).map((row)=>row.time);
+  // const { dataEx } = useContext(DataContext);
   
   //getting input address's lat and lon using forward geocoding and loading functionality
   useEffect(() => {
@@ -85,7 +79,7 @@ function ModalPopUp({ lat, lon }) {
         date: `${String(dateObject.m).padStart(2, "0")}/${String(
           dateObject.d
         ).padStart(2, "0")}/${String(dateObject.y)}`,
-        time: dateObject.H + ":" + dateObject.M + ":" + dateObject.S,
+        time: dateObject.H + ":" + dateObject.M,
         pv: row[1],
         solarRadiation: row[2],
         Temperature: row[3],
@@ -189,6 +183,11 @@ function ModalPopUp({ lat, lon }) {
     //setting calculation state in mongoDB
     await axios.post("/calc-state", { isCalcDone: false });
 
+    //next date
+    const usersLastDate = state.data[state.data.length-1].date;
+    const tempDate = new Date(usersLastDate).setDate(new Date(usersLastDate).getDate() + 1);
+    const NextDate = new Date(tempDate).toLocaleDateString('en-US')
+
     const formData = new FormData();
     formData.append("file", state.selectedFile);
     const result = await fetch(`http://127.0.0.1:5000/api/flask/processing`, {
@@ -199,7 +198,7 @@ function ModalPopUp({ lat, lon }) {
     console.log("File response: ", await result.json());
 
     //making request to /forecast to save data in mongoDB
-    const saveData = await api.post(`/forecast/${user._id}`,{NextDate});
+    const saveData = await api.post(`/forecast/${user._id}?nextdate=${NextDate}`);
     if (saveData.status === 200) {
       dispatch({ type: "SET_AFTERCALCMODAL", payload: true });
       dispatch({ type: "SET_SUBMODAL", payload: false });

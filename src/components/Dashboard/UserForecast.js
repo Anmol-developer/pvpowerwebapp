@@ -114,10 +114,8 @@ function ShowGraph() {
     return new Date(dataEx[index].date).valueOf() >= new Date(dateToPlot[dateToPlot.length-1]).valueOf()
   })
   const filteredPVDate = filteredPV.map((row)=> new Date(row.date).toLocaleDateString('en-US')+' '+row.time)
-  // const filteredPVTime = filteredPV.map((row)=> row.time)
   const filterPVData = filteredPV.map((row)=> row.pv)
   const normalizedData = filterPVData.map((row)=> row %= 200)
-  // console.log(filteredPV);
   // Prepare the plot data
   const plotData = [
     {
@@ -125,9 +123,11 @@ function ShowGraph() {
       x: filteredPVDate,
       type: "scatter",
       mode: "lines",
-      name: "pv from user",
+      name: "User Data",
       marker: { color: "green" },
-      visible:true
+      visible:true,
+      fill:'tozeroy',
+      fillcolor:'rgba(0, 255, 0, 0.1)'
     },
     {
       y: filteredPredictedpv_RF,
@@ -141,6 +141,8 @@ function ShowGraph() {
         state.CalcModel.includes("randomforest") !== false
           ? true
           : false,
+      fill:'tozeroy',
+      fillcolor:'rgba(0, 0, 255, 0.1)'
     },
     {
       y: filteredPredictedpv_KNN,
@@ -148,12 +150,14 @@ function ShowGraph() {
       type: "scatter",
       mode: "lines",
       name: "KNN",
-      marker: { color: "green" },
+      marker: { color: "orange" },
       visible:
         filteredPredictedpv_KNN[0] !== undefined &&
         state.CalcModel.includes("knn") !== false
           ? true
           : false,
+      fill:'tozeroy',
+      fillcolor:'rgba(255, 165, 0,0.1)'
     },
     {
       y: filteredPredictedpv_LGBM,
@@ -161,7 +165,7 @@ function ShowGraph() {
       type: "scatter",
       mode: "lines",
       name: "LGBM",
-      marker: { color: "black" },
+      marker: { color: "violet" },
       visible:
         filteredPredictedpv_LGBM[0] !== undefined &&
         state.CalcModel.includes("lgbm") !== false
@@ -180,6 +184,8 @@ function ShowGraph() {
         state.CalcModel.includes("svr") !== false
           ? true
           : false,
+      fill:'tozeroy',
+      fillcolor:'rgba(143, 0, 255,0.2)'
     },
   ];
   const layout = {
@@ -188,9 +194,12 @@ function ShowGraph() {
     )}`,
     yaxis: {
       title: `Predicted Data`,
+      showgrid:false,
     },
     xaxis: {
-      title: "",
+      title: "Time (drag axis)",
+      showgrid:false,
+      showticklabels:false,
     },
   };
 

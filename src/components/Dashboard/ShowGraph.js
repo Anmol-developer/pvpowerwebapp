@@ -55,11 +55,15 @@ function ShowGraph() {
     {
       y: filteredPVValues,
       x: startDate === endDate ? filteredTime : dt,
-      type: "scatter",
+      type: "line",
       mode: "lines",
       name: "PV",
-      marker: { color: "blue" },
+      marker: { color: "blue",line: {
+        shape: "spline" // Apply spline interpolation for smoother curves
+      } },
       visible: filteredPVValues[0] !== undefined ? true : false,
+      fill: 'tozeroy', // Fill the area under the line graph
+  fillcolor: 'rgba(0, 0, 255, 0.1)' // Set the color and opacity of the filled area
     },
     {
       y: filteredsolarRadiation.map((elem) => (elem *= 5)),
@@ -67,8 +71,12 @@ function ShowGraph() {
       type: "scatter",
       mode: "lines",
       name: "Solar radiation",
-      marker: { color: "red" },
+      marker: { color: "red",line: {
+        shape: "spline" // Apply spline interpolation for smoother curves
+      } },
       visible: filteredsolarRadiation[0] !== undefined ? "legendonly" : false,
+      fill:'tozeroy',
+      fillcolor:'rgba(255, 0, 0, 0.1)'
     },
     {
       y: filteredTemperature.map((elem) => (elem *= 50)),
@@ -76,8 +84,12 @@ function ShowGraph() {
       type: "scatter",
       mode: "lines",
       name: "Temperature",
-      marker: { color: "green" },
+      marker: { color: "green",line: {
+        shape: "spline" // Apply spline interpolation for smoother curves
+      } },
       visible: filteredTemperature[0] !== undefined ? "legendonly" : false,
+      fill:'tozeroy',
+      fillcolor:'rgba(0, 255, 0, 0.1)'
     },
     {
       y: filteredwindSpeed.map((elem) => (elem *= 1200)),
@@ -85,35 +97,51 @@ function ShowGraph() {
       type: "scatter",
       mode: "lines",
       name: "Wind Speed",
-      marker: { color: "pink" },
+      marker: { color: "pink",line: {
+        shape: "spline" // Apply spline interpolation for smoother curves
+      } },
       visible: filteredwindSpeed[0] !== undefined ? "legendonly" : false,
+      fill:'tozeroy',
+      fillcolor:'rgba(255, 192, 203,0.3)'
     },
     {
       y: filteredRainfall.map((elem) => (elem *= 3000)),
       x: startDate === endDate ? filteredTime : dt,
       type: "scatter",
       mode: "lines",
-      marker: { color: "black" },
+      marker: { color: "violet",line: {
+        shape: "spline" // Apply spline interpolation for smoother curves
+      } },
       name: "rainfall",
       visible: filteredRainfall[0] !== undefined ? "legendonly" : false,
+      fill:'tozeroy',
+      fillcolor:'rgba(143, 0, 255,0.2)'
     },
     {
       y: filteredRHumidity.map((elem) => (elem *= 10)),
       x: startDate === endDate ? filteredTime : dt,
       type: "scatter",
       mode: "lines",
-      marker: { color: "orange" },
+      marker: { color: "orange",line: {
+        shape: "spline" // Apply spline interpolation for smoother curves
+      } },
       name: "relative humidity",
       visible: filteredRHumidity[0] !== undefined ? "legendonly" : false,
+      fill:'tozeroy',
+      fillcolor:'rgba(255, 165, 0,0.1)'
     },
     {
       y: filteredCloudCover.map((elem) => (elem *= 500)),
       x: startDate === endDate ? filteredTime : dt,
       type: "scatter",
       mode: "lines",
-      marker: { color: "grey" },
+      marker: { color: "grey",line: {
+        shape: "spline" // Apply spline interpolation for smoother curves
+      } },
       name: "Cloud Cover",
       visible: filteredCloudCover[0] !== undefined ? "legendonly" : false,
+      fill:'tozeroy',
+      fillcolor:'rgba(0, 0, 0,0.2)'
     },
   ];
 
@@ -122,11 +150,15 @@ function ShowGraph() {
     title: `Data from ${startDate} to ${endDate}`,
     yaxis: {
       title: "Normalized Data",
+      showgrid:false
     },
     xaxis: {
-      title: "",
-      // rangeslider:{}
+      title: "Time (drag axis from side)",
+      showgrid:false,
+      showline:false,
+      showticklabels: startDate===endDate? true:false,
     },
+    
   };
 
   const handleSetDate = (date) => {
