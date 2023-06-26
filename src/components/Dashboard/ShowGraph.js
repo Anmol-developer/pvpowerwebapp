@@ -5,14 +5,14 @@ import DataContext from "../../context/Data";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import userContext from "../../context/UserContext";
-import Slider from '@mui/material/Slider';
+import Slider from "@mui/material/Slider";
 // import 'react-slider/dist/index.css';
 
 function ShowGraph() {
   const { dataEx } = useContext(DataContext);
   const { user } = useContext(userContext);
   const [maxDay, setMaxDay] = useState(null);
-  const [Tvalue, setTValue] = useState([0,maxDay]);
+  const [Tvalue, setTValue] = useState([0, maxDay]);
   // Extract the data and time from the Excel sheet columns
   const dates = dataEx.map((row) => row.date);
   const [startDate, setStartDate] = useState(dates[0]);
@@ -25,7 +25,7 @@ function ShowGraph() {
     const diff = date2.getTime() - date1.getTime();
     const days = Math.floor(diff / (1000 * 24 * 3600));
     setMaxDay(days);
-    setTValue([0,days])
+    setTValue([0, days]);
   }, []);
 
   const time = dataEx[0] && dataEx.map((row) => row.time);
@@ -241,79 +241,97 @@ function ShowGraph() {
 
   const handleChange = (event, newValue) => {
     if (newValue[0] > Tvalue[0]) {
-      increaseStartDate(startDate,newValue);
-    } else if(newValue[0]<Tvalue[0]){
-      decreaseStartDate(startDate,newValue);
+      increaseStartDate(startDate, newValue);
+    } else if (newValue[0] < Tvalue[0]) {
+      decreaseStartDate(startDate, newValue);
     }
 
     if (newValue[1] > Tvalue[1]) {
-      increaseEndDate(endDate,newValue);
-    } else if(newValue[1]<Tvalue[1]){
-      decreaseEndDate(endDate,newValue);
+      increaseEndDate(endDate, newValue);
+    } else if (newValue[1] < Tvalue[1]) {
+      decreaseEndDate(endDate, newValue);
     }
     setTValue(newValue);
     console.log(startDate);
   };
 
-  const increaseEndDate=(date,newValue)=>{
+  const increaseEndDate = (date, newValue) => {
     const tdate = new Date(date);
-      const month = String(
-        new Date(tdate.getTime() + Math.abs(newValue[1]-Tvalue[1]) * 24 * 60 * 60 * 1000).getMonth() +
-        1
-      ).padStart(2, "0");
-      const year = new Date(
-        tdate.getTime() + Math.abs(newValue[1]-Tvalue[1]) * 24 * 60 * 60 * 1000
-      ).getFullYear();
-      const day = String(
-        new Date(tdate.getTime() + Math.abs(newValue[1]-Tvalue[1]) * 24 * 60 * 60 * 1000).getDate()
-      ).padStart(2, "0");
-      setEndDate(`${month}/${day}/${year}`);
-  }
+    const month = String(
+      new Date(
+        tdate.getTime() +
+          Math.abs(newValue[1] - Tvalue[1]) * 24 * 60 * 60 * 1000
+      ).getMonth() + 1
+    ).padStart(2, "0");
+    const year = new Date(
+      tdate.getTime() + Math.abs(newValue[1] - Tvalue[1]) * 24 * 60 * 60 * 1000
+    ).getFullYear();
+    const day = String(
+      new Date(
+        tdate.getTime() +
+          Math.abs(newValue[1] - Tvalue[1]) * 24 * 60 * 60 * 1000
+      ).getDate()
+    ).padStart(2, "0");
+    setEndDate(`${month}/${day}/${year}`);
+  };
 
-  const decreaseEndDate=(date,newValue)=>{
+  const decreaseEndDate = (date, newValue) => {
     const tdate = new Date(date);
-      const month = String(
-        new Date(tdate.getTime() - Math.abs(newValue[1]-Tvalue[1]) * 24 * 60 * 60 * 1000).getMonth() +
-        1
-      ).padStart(2, "0");
-      const year = new Date(
-        tdate.getTime() - Math.abs(newValue[1]-Tvalue[1]) * 24 * 60 * 60 * 1000
-      ).getFullYear();
-      const day = String(
-        new Date(tdate.getTime() - Math.abs(newValue[1]-Tvalue[1]) * 24 * 60 * 60 * 1000).getDate()
-      ).padStart(2, "0");
-      setEndDate(`${month}/${day}/${year}`);
-  }
+    const month = String(
+      new Date(
+        tdate.getTime() -
+          Math.abs(newValue[1] - Tvalue[1]) * 24 * 60 * 60 * 1000
+      ).getMonth() + 1
+    ).padStart(2, "0");
+    const year = new Date(
+      tdate.getTime() - Math.abs(newValue[1] - Tvalue[1]) * 24 * 60 * 60 * 1000
+    ).getFullYear();
+    const day = String(
+      new Date(
+        tdate.getTime() -
+          Math.abs(newValue[1] - Tvalue[1]) * 24 * 60 * 60 * 1000
+      ).getDate()
+    ).padStart(2, "0");
+    setEndDate(`${month}/${day}/${year}`);
+  };
 
-  const decreaseStartDate=(date,newValue)=>{
+  const decreaseStartDate = (date, newValue) => {
     const tdate = new Date(date);
-      const month = String(
-        new Date(tdate.getTime() - Math.abs(Tvalue[0]-newValue[0]) * 24 * 60 * 60 * 1000).getMonth() +
-        1
-      ).padStart(2, "0");
-      const year = new Date(
-        tdate.getTime() - Math.abs(Tvalue[0]-newValue[0]) * 24 * 60 * 60 * 1000
-      ).getFullYear();
-      const day = String(
-        new Date(tdate.getTime() - Math.abs(Tvalue[0]-newValue[0]) * 24 * 60 * 60 * 1000).getDate()
-      ).padStart(2, "0");
-      setStartDate(`${month}/${day}/${year}`);
-  }
+    const month = String(
+      new Date(
+        tdate.getTime() -
+          Math.abs(Tvalue[0] - newValue[0]) * 24 * 60 * 60 * 1000
+      ).getMonth() + 1
+    ).padStart(2, "0");
+    const year = new Date(
+      tdate.getTime() - Math.abs(Tvalue[0] - newValue[0]) * 24 * 60 * 60 * 1000
+    ).getFullYear();
+    const day = String(
+      new Date(
+        tdate.getTime() -
+          Math.abs(Tvalue[0] - newValue[0]) * 24 * 60 * 60 * 1000
+      ).getDate()
+    ).padStart(2, "0");
+    setStartDate(`${month}/${day}/${year}`);
+  };
 
-  const increaseStartDate=(date,newValue)=>{
+  const increaseStartDate = (date, newValue) => {
     const tdate = new Date(date);
-      const month = String(
-        new Date(tdate.getTime() + (newValue[0]-Tvalue[0]) * 24 * 60 * 60 * 1000).getMonth() +
-        1
-      ).padStart(2, "0");
-      const year = new Date(
-        tdate.getTime() + (newValue[0]-Tvalue[0]) * 24 * 60 * 60 * 1000
-      ).getFullYear();
-      const day = String(
-        new Date(tdate.getTime() + (newValue[0]-Tvalue[0]) * 24 * 60 * 60 * 1000).getDate()
-      ).padStart(2, "0");
-      setStartDate(`${month}/${day}/${year}`);
-  }
+    const month = String(
+      new Date(
+        tdate.getTime() + (newValue[0] - Tvalue[0]) * 24 * 60 * 60 * 1000
+      ).getMonth() + 1
+    ).padStart(2, "0");
+    const year = new Date(
+      tdate.getTime() + (newValue[0] - Tvalue[0]) * 24 * 60 * 60 * 1000
+    ).getFullYear();
+    const day = String(
+      new Date(
+        tdate.getTime() + (newValue[0] - Tvalue[0]) * 24 * 60 * 60 * 1000
+      ).getDate()
+    ).padStart(2, "0");
+    setStartDate(`${month}/${day}/${year}`);
+  };
 
   return (
     <>
@@ -324,37 +342,25 @@ function ShowGraph() {
         </div>
         {dataEx[0] ? (
           <div className="main__plot">
-            <div style={{ display: "flex" }}>
-              {/* <div>
-                <span style={{ color: "grey" }}>From: </span>
-                <DatePicker
-                  selected={new Date(startDate)}
-                  onChange={handleSetDate}
-                  dateFormat={"MM/dd/yyyy"}
-                  style={{ border: "1px solid red" }}
-                  minDate={new Date(dates[0])}
-                  maxDate={new Date(dates[dates.length - 1])}
-                />
-              </div> */}
-              <div>
-                <span>{dates[0]}</span>
-                <Slider
-                  value={Tvalue}
-                  min={0}
-                  max={maxDay}
-                  onChange={handleChange}
-                  valueLabelDisplay="auto"
-                />
-                <span>{dates[dates.length - 1]}</span>
-              </div>
-            </div>
-
             <Plot
               className="plot"
               data={plotData}
               config={{ responsive: true }}
               layout={layout}
             />
+
+            <div style={{ display: "flex", justifyContent:'center', alignItems:'center', marginTop:'20px' }}>
+              <p style={{ color: "grey", margin:'auto' }}>{startDate}</p>
+              <Slider
+                className="visualize__range"
+                value={Tvalue}
+                min={0}
+                max={maxDay}
+                onChange={handleChange}
+                style={{width:'73%', marginLeft:'20px', marginRight:'20px', color:'green'}}
+              />
+              <p style={{ color: "grey", margin:'auto' }}>{endDate}</p>
+            </div>
           </div>
         ) : (
           <div className="main__plot">
