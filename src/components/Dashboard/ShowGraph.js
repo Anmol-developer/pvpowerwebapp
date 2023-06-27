@@ -2,17 +2,15 @@ import React, { useContext, useState, useEffect } from "react";
 import Plot from "react-plotly.js";
 import "../../css/Dashboard/ShowGraph.css";
 import DataContext from "../../context/Data";
-import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import userContext from "../../context/UserContext";
 import Slider from "@mui/material/Slider";
-// import 'react-slider/dist/index.css';
 
 function ShowGraph() {
   const { dataEx } = useContext(DataContext);
   const { user } = useContext(userContext);
   const [maxDay, setMaxDay] = useState(null);
-  const [Tvalue, setTValue] = useState([0, maxDay]);
+  const [value, setValue] = useState([0, maxDay]);
   // Extract the data and time from the Excel sheet columns
   const dates = dataEx.map((row) => row.date);
   const [startDate, setStartDate] = useState(dates[0]);
@@ -20,12 +18,11 @@ function ShowGraph() {
 
   useEffect(() => {
     const date1 = new Date(dates[0]);
-    // const date2 = new Date(endDate);
     const date2 = new Date(dates[dates.length - 1]);
     const diff = date2.getTime() - date1.getTime();
     const days = Math.floor(diff / (1000 * 24 * 3600));
     setMaxDay(days);
-    setTValue([0, days]);
+    setValue([0, days]);
   }, []);
 
   const time = dataEx[0] && dataEx.map((row) => row.time);
@@ -36,6 +33,7 @@ function ShowGraph() {
   const RHumidity = dataEx.map((row) => row.RHumidity);
   const CloudCover = dataEx.map((row) => row.CloudCover);
   const Rainfall = dataEx.map((row) => row.Rainfall);
+  // dispatch({type:'SET_VALUES', payload:dataEx})
 
   // Filter the data for the selected date
   const filteredPVValues = pvValues.filter(
@@ -225,33 +223,19 @@ function ShowGraph() {
     },
   };
 
-  const handleSetDate = (date) => {
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-    const day = String(date.getDate()).padStart(2, "0");
-    const year = date.getFullYear();
-    setStartDate(`${month}/${day}/${year}`);
-  };
-
-  const handleSetEndDate = (date) => {
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-    const day = String(date.getDate()).padStart(2, "0");
-    const year = date.getFullYear();
-    setEndDate(`${month}/${day}/${year}`);
-  };
-
   const handleChange = (event, newValue) => {
-    if (newValue[0] > Tvalue[0]) {
+    if (newValue[0] > value[0]) {
       increaseStartDate(startDate, newValue);
-    } else if (newValue[0] < Tvalue[0]) {
+    } else if (newValue[0] < value[0]) {
       decreaseStartDate(startDate, newValue);
     }
 
-    if (newValue[1] > Tvalue[1]) {
+    if (newValue[1] > value[1]) {
       increaseEndDate(endDate, newValue);
-    } else if (newValue[1] < Tvalue[1]) {
+    } else if (newValue[1] < value[1]) {
       decreaseEndDate(endDate, newValue);
     }
-    setTValue(newValue);
+    setValue(newValue);
     console.log(startDate);
   };
 
@@ -260,16 +244,16 @@ function ShowGraph() {
     const month = String(
       new Date(
         tdate.getTime() +
-          Math.abs(newValue[1] - Tvalue[1]) * 24 * 60 * 60 * 1000
+          Math.abs(newValue[1] - value[1]) * 24 * 60 * 60 * 1000
       ).getMonth() + 1
     ).padStart(2, "0");
     const year = new Date(
-      tdate.getTime() + Math.abs(newValue[1] - Tvalue[1]) * 24 * 60 * 60 * 1000
+      tdate.getTime() + Math.abs(newValue[1] - value[1]) * 24 * 60 * 60 * 1000
     ).getFullYear();
     const day = String(
       new Date(
         tdate.getTime() +
-          Math.abs(newValue[1] - Tvalue[1]) * 24 * 60 * 60 * 1000
+          Math.abs(newValue[1] - value[1]) * 24 * 60 * 60 * 1000
       ).getDate()
     ).padStart(2, "0");
     setEndDate(`${month}/${day}/${year}`);
@@ -280,16 +264,16 @@ function ShowGraph() {
     const month = String(
       new Date(
         tdate.getTime() -
-          Math.abs(newValue[1] - Tvalue[1]) * 24 * 60 * 60 * 1000
+          Math.abs(newValue[1] - value[1]) * 24 * 60 * 60 * 1000
       ).getMonth() + 1
     ).padStart(2, "0");
     const year = new Date(
-      tdate.getTime() - Math.abs(newValue[1] - Tvalue[1]) * 24 * 60 * 60 * 1000
+      tdate.getTime() - Math.abs(newValue[1] - value[1]) * 24 * 60 * 60 * 1000
     ).getFullYear();
     const day = String(
       new Date(
         tdate.getTime() -
-          Math.abs(newValue[1] - Tvalue[1]) * 24 * 60 * 60 * 1000
+          Math.abs(newValue[1] - value[1]) * 24 * 60 * 60 * 1000
       ).getDate()
     ).padStart(2, "0");
     setEndDate(`${month}/${day}/${year}`);
@@ -300,16 +284,16 @@ function ShowGraph() {
     const month = String(
       new Date(
         tdate.getTime() -
-          Math.abs(Tvalue[0] - newValue[0]) * 24 * 60 * 60 * 1000
+          Math.abs(value[0] - newValue[0]) * 24 * 60 * 60 * 1000
       ).getMonth() + 1
     ).padStart(2, "0");
     const year = new Date(
-      tdate.getTime() - Math.abs(Tvalue[0] - newValue[0]) * 24 * 60 * 60 * 1000
+      tdate.getTime() - Math.abs(value[0] - newValue[0]) * 24 * 60 * 60 * 1000
     ).getFullYear();
     const day = String(
       new Date(
         tdate.getTime() -
-          Math.abs(Tvalue[0] - newValue[0]) * 24 * 60 * 60 * 1000
+          Math.abs(value[0] - newValue[0]) * 24 * 60 * 60 * 1000
       ).getDate()
     ).padStart(2, "0");
     setStartDate(`${month}/${day}/${year}`);
@@ -319,15 +303,15 @@ function ShowGraph() {
     const tdate = new Date(date);
     const month = String(
       new Date(
-        tdate.getTime() + (newValue[0] - Tvalue[0]) * 24 * 60 * 60 * 1000
+        tdate.getTime() + (newValue[0] - value[0]) * 24 * 60 * 60 * 1000
       ).getMonth() + 1
     ).padStart(2, "0");
     const year = new Date(
-      tdate.getTime() + (newValue[0] - Tvalue[0]) * 24 * 60 * 60 * 1000
+      tdate.getTime() + (newValue[0] - value[0]) * 24 * 60 * 60 * 1000
     ).getFullYear();
     const day = String(
       new Date(
-        tdate.getTime() + (newValue[0] - Tvalue[0]) * 24 * 60 * 60 * 1000
+        tdate.getTime() + (newValue[0] - value[0]) * 24 * 60 * 60 * 1000
       ).getDate()
     ).padStart(2, "0");
     setStartDate(`${month}/${day}/${year}`);
@@ -353,7 +337,7 @@ function ShowGraph() {
               <p style={{ color: "grey", margin:'auto' }}>{startDate}</p>
               <Slider
                 className="visualize__range"
-                value={Tvalue}
+                value={value}
                 min={0}
                 max={maxDay}
                 onChange={handleChange}
