@@ -45,6 +45,7 @@ function Hero() {
       </div>
       <Offer/>
       <WhyUs/>
+      <div style={{marginBottom:'50px'}}></div>
     </>
   );
 }
