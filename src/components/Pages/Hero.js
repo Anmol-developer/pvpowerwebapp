@@ -3,7 +3,9 @@ import imagex from "../../Images/pv.jpg";
 import "../../css/Pages/Hero.css";
 import { Link } from "react-router-dom";
 import axios from "../../axios";
-// import Services from "./Services";
+import WhyUs from './WhyUs'
+import Offer from './Offer'
+
 function Hero() {
   const [user, setUser] = useState(false);
 
@@ -22,7 +24,6 @@ function Hero() {
   return (
     <>
       <div className="hero__container">
-        {/* <div className="hero__image"></div> */}
         <div className="hero__text">
           <p className="hero__header">Power up your day with PV forecasts!</p>
           <p className="hero__desc">
@@ -42,6 +43,8 @@ function Hero() {
         </div>
         <img src={imagex} alt="a hero" className="hero__img" />
       </div>
+      <Offer/>
+      <WhyUs/>
     </>
   );
 }

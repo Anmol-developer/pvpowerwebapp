@@ -4,18 +4,7 @@
     flex-direction: row;
     margin-bottom: 100px;
 }
-/* .hero__image{
-    background-image: url('../../Images/PV\(2\).jpg');
-    background-size: cover;
-    height: 100%;
-    width: 100%;
-    position: absolute;
-    top: 70px;
-    left: 0;
-    z-index: -1;
-    background-position: top;
-    transform: scaleX(-1);
-} */
+
 .hero__img{
     width: 35%;
     max-width: 550px;

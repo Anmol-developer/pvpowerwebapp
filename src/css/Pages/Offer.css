@@ -1,0 +1,12 @@
+.offer__container{
+    /* border: 2px solid black; */
+    width: 100%;
+    margin-bottom: 30px;
+    display: flex;
+    padding: 4% 8%;
+    /* background-color: rgb(92, 92, 245); */
+}
+.offer__container>img{
+    width: 50%;
+    /* box-shadow: 15px 15px 15px blue; */
+}
