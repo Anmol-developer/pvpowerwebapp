@@ -47,7 +47,7 @@ function Offer() {
         <img src={Offer2} alt="offer1" style={{boxShadow:'15px 15px 15px grey'}} />
       </div>
 
-      <div className="offer__container" style={{backgroundColor:'rgb(59, 59, 245)'}}>
+      <div className="offer__container" style={{backgroundColor:'rgb(100, 100, 245)'}}>
         <div className="offer_txt">
           <p className="first-child" style={{ color: "white", fontSize: "40px" }}>
           Validate your Forecast

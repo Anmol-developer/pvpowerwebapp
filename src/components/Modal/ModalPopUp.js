@@ -90,6 +90,8 @@ function ModalPopUp({ lat, lon }) {
       };
     });
 
+    // console.log(extractedData);
+
     dispatch({ type: "SET_DATA", payload: extractedData });
     dispatch({ type: "SET_DISABLED", payload: false });
 
@@ -183,19 +185,23 @@ function ModalPopUp({ lat, lon }) {
     //setting calculation state in mongoDB
     await axios.post("/calc-state", { isCalcDone: false });
 
-    //next date
+    //uploading users data to mongodb
+    await api.post('/set-data', {data:state.data, _id:user._id})
+
+
+    //next day date
     const usersLastDate = state.data[state.data.length-1].date;
     const tempDate = new Date(usersLastDate).setDate(new Date(usersLastDate).getDate() + 1);
     const NextDate = new Date(tempDate).toLocaleDateString('en-US')
 
     const formData = new FormData();
     formData.append("file", state.selectedFile);
-    const result = await fetch(`http://127.0.0.1:5000/api/flask/processing`, {
+    await fetch(`http://127.0.0.1:5000/api/flask/processing`, {
       method: "POST",
       body: formData,
       signal: controller.signal // so that controller.abort() cancels request to this route only
     });
-    console.log("File response: ", await result.json());
+    // console.log("File response: ", await result.json());
 
     //making request to /forecast to save data in mongoDB
     const saveData = await api.post(`/forecast/${user._id}?nextdate=${NextDate}`);

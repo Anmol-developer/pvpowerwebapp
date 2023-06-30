@@ -15,14 +15,17 @@ function ShowGraph() {
   const dates = dataEx.map((row) => row.date);
   const [startDate, setStartDate] = useState(dates[0]);
   const [endDate, setEndDate] = useState(dates[dates.length - 1]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    setLoading(true)
     const date1 = new Date(dates[0]);
     const date2 = new Date(dates[dates.length - 1]);
     const diff = date2.getTime() - date1.getTime();
     const days = Math.floor(diff / (1000 * 24 * 3600));
     setMaxDay(days);
     setValue([0, days]);
+    setLoading(false)
   }, []);
 
   const time = dataEx[0] && dataEx.map((row) => row.time);
@@ -317,7 +320,20 @@ function ShowGraph() {
     setStartDate(`${month}/${day}/${year}`);
   };
 
-  return (
+  if(loading){
+    return (
+      <div className="plot__container">
+        <div className="main__header">
+          <p className="dheader__title">DASHBOARD &gt; Visualize</p>
+          <p className="dheader__greet">welcome {user.username}</p>
+        </div>
+          <div className="main__plot">
+            <p>Loading</p>
+          </div>
+      </div>
+    )
+  }
+  else return (
     <>
       <div className="plot__container">
         <div className="main__header">
