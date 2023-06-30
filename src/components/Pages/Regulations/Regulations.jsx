@@ -8,7 +8,7 @@ import FOR from "../../../Docs/FOR.pdf";
 import axios from '../../../axios'
 
 function Regulations() {
-  const [user, setUser] = useState(false)
+  const [user, setUser] = useState(null)
 
   useEffect(()=>{
     getUser();
@@ -72,13 +72,16 @@ function Regulations() {
     }
   };
 
-  if(!user){ 
-    return(
-    <div className="regulations__container">
-      <h1>Unauthorized</h1>
-    </div>
-  )}
-   else return (
+  if(user===null){
+    return (
+      <div>Loading Please wait...</div>
+    )
+  }else if(user === false){
+    return (
+      <div>unauthorized</div>
+    )
+  }
+  else return (
     <div className="regulations__container">
       <h1>Regulations</h1>
       <p style={{marginTop:'20px', color:'grey'}}>
