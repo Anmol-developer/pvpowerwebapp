@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import axios from "../../axios";
 import WhyUs from './WhyUs'
 import Offer from './Offer'
+import TrustedBy from "./TrustedBy";
 
 function Hero() {
   const [user, setUser] = useState(false);
@@ -45,7 +46,9 @@ function Hero() {
       </div>
       <Offer/>
       <WhyUs/>
-      <div style={{marginBottom:'50px'}}></div>
+      <div style={{marginBottom:'100px'}}></div>
+      <TrustedBy/>
+      <div style={{marginBottom:'100px'}}></div>
     </>
   );
 }

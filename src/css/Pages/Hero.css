@@ -2,7 +2,8 @@
     display: flex;
     padding: 8px;
     flex-direction: row;
-    margin-bottom: 100px;
+    margin-bottom: 20px;
+    min-height: 90dvh;
 }
 
 .hero__img{

@@ -2,6 +2,7 @@ import React from "react";
 import "../../css/Pages/About.css";
 import target from "../../Images/target.svg";
 import WhyUs from "./WhyUs";
+import TrustedBy from "./TrustedBy";
 
 function About() {
   return (
@@ -48,6 +49,9 @@ function About() {
           </div>
         </div>
       </div>
+      <div style={{marginBottom:'150px'}}></div>
+      <TrustedBy/>
+      <div style={{marginBottom:'50px'}}></div>
     </div>
   );
 }
