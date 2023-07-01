@@ -18,18 +18,22 @@ function Login() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const result = await fetch("/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ email, password }),
-    });
-    if (result.status === 200) {
+    const result = await axios.post("/login", { email, password })
+    if (result.data.length !== 0) {
       window.location.href = 'http://localhost:3000/'
       // navigate(`/`);
     } else {
       navigate("/login");
+      toast.warn('Incorrect credentials!', {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: 0,
+        theme: "light",
+        });
     }
   };
 

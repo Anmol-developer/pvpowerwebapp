@@ -186,7 +186,7 @@ function ModalPopUp({ lat, lon }) {
     await axios.post("/calc-state", { isCalcDone: false });
 
     //uploading users data to mongodb
-    await api.post('/set-data', {data:state.data, _id:user._id})
+    // await api.post('/set-data', {data:state.data, _id:user._id})
 
 
     //next day date

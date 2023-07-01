@@ -7,8 +7,8 @@ import Offer3 from "../../Images/validate.png";
 function Offer() {
   return (
     <>
-    <div className="offer-p" >
-      <p style={{fontSize:'23px', color:'purple'}}>FEATURES</p>
+    <div className="offer-p">
+      <p style={{fontSize:'23px', color:'purple', borderBottom:'1px solid purple', marginBottom:'50px'}}>FEATURES</p>
     </div>
       <div className="offer__container" style={{backgroundColor:'rgb(238, 237, 237)'}}>
         <div className="offer_txt">
