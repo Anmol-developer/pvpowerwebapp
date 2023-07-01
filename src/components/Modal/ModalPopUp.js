@@ -185,10 +185,6 @@ function ModalPopUp({ lat, lon }) {
     //setting calculation state in mongoDB
     await axios.post("/calc-state", { isCalcDone: false });
 
-    //uploading users data to mongodb
-    // await api.post('/set-data', {data:state.data, _id:user._id})
-
-
     //next day date
     const usersLastDate = state.data[state.data.length-1].date;
     const tempDate = new Date(usersLastDate).setDate(new Date(usersLastDate).getDate() + 1);
@@ -201,10 +197,7 @@ function ModalPopUp({ lat, lon }) {
       body: formData,
       signal: controller.signal // so that controller.abort() cancels request to this route only
     });
-    // console.log("File response: ", await result.json());
-
-    //making request to /forecast to save data in mongoDB
-    // const saveData = await api.post(`/forecast/${user._id}?nextdate=${NextDate}`);
+    
     if (result.status === 200) {
       dispatch({ type: "SET_AFTERCALCMODAL", payload: true });
       dispatch({ type: "SET_SUBMODAL", payload: false });
