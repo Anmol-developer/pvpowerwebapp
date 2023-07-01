@@ -196,7 +196,7 @@ function ModalPopUp({ lat, lon }) {
 
     const formData = new FormData();
     formData.append("file", state.selectedFile);
-    await fetch(`http://127.0.0.1:5000/api/flask/processing`, {
+    const result = await fetch(`http://127.0.0.1:5000/api/flask/processing?nextdate=${NextDate}&_id=${user._id}`, {
       method: "POST",
       body: formData,
       signal: controller.signal // so that controller.abort() cancels request to this route only
@@ -204,8 +204,8 @@ function ModalPopUp({ lat, lon }) {
     // console.log("File response: ", await result.json());
 
     //making request to /forecast to save data in mongoDB
-    const saveData = await api.post(`/forecast/${user._id}?nextdate=${NextDate}`);
-    if (saveData.status === 200) {
+    // const saveData = await api.post(`/forecast/${user._id}?nextdate=${NextDate}`);
+    if (result.status === 200) {
       dispatch({ type: "SET_AFTERCALCMODAL", payload: true });
       dispatch({ type: "SET_SUBMODAL", payload: false });
       NotifyCalc(user.email);

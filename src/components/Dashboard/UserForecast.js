@@ -85,7 +85,7 @@ function ShowGraph() {
     const date = row.date;
     return new Date(date).toLocaleDateString("en-US");
   });
-
+  
   const filteredPredictedpv_RF = predicted_RF.filter((_, index) =>
     dates[index].startsWith(state.startDate)
   );
@@ -103,7 +103,7 @@ function ShowGraph() {
     dates[index].startsWith(state.startDate)
   );
   const filteredDateTime = filteredTime_RF.map((row)=> new Date(state.startDate).toLocaleDateString('en-US')+' '+row)
-
+  
   const dateToPlot=[]
   for(let i=0; i<5; i++){
     const tempDate = new Date(state.startDate).setDate(new Date(state.startDate).getDate() - i-1);
@@ -288,12 +288,12 @@ function ShowGraph() {
             </div>
           </div>
           {state.randomforest.length !== 0 ? (
-            <Plot
-              className="plot"
-              data={plotData}
-              config={{ responsive: true }}
-              layout={layout}
-            />
+              <Plot
+                className="plot"
+                data={plotData}
+                config={{ responsive: true }}
+                layout={layout}
+              />
           ) : (
             <p className="no-data-available">No Data Available</p>
           )}
