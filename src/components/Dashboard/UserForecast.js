@@ -8,22 +8,29 @@ import userContext from "../../context/UserContext";
 import DataContext from "../../context/Data";
 import { useLocation } from "react-router-dom";
 import Dropdown from "./Dropdown";
+// import Slider from "@mui/material/Slider";
 import { initialState, reducer } from "../../reducer/ForecastReducer";
+
+function getDaysBetweenDates(date1,date2){
+  const diff = new Date(date1).getTime()-new Date(date2).getTime()
+  const days = Math.floor(diff / (1000 * 24 * 3600));
+  return days;
+}
 
 function ShowGraph() {
   const [state, dispatch] = useReducer(reducer, initialState);
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
-  const {dataEx} = useContext(DataContext)
+  const { dataEx } = useContext(DataContext);
   let date = queryParams.get("date");
   const model = ["rf", "knn", "lgbm", "svr"];
   const { user } = useContext(userContext);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    setLoading(true)
+    setLoading(true);
     fetchData();
-    setLoading(false)
+    setLoading(false);
   }, [state.CalcModel]);
 
   const fetchData = async () => {
@@ -76,7 +83,6 @@ function ShowGraph() {
       console.log(error);
     }
   };
-
   // const tempDataEx = dataEx.slice(-6);
   const predicted_RF = state.randomforest.map((row) => row.PredictedPV);
   const predicted_KNN = state.knn.map((row) => row.PredictedPV);
@@ -87,7 +93,13 @@ function ShowGraph() {
     const date = row.date;
     return new Date(date).toLocaleDateString("en-US");
   });
-  
+
+  // useEffect(()=>{
+  //   const days = getDaysBetweenDates(state.startDate,state.endDate);
+  //   setMaxDay(days)
+  //   setValue([0,days])
+  // })
+
   const filteredPredictedpv_RF = predicted_RF.filter((_, index) =>
     dates[index].startsWith(state.startDate)
   );
@@ -104,20 +116,29 @@ function ShowGraph() {
   const filteredTime_RF = time_RF.filter((_, index) =>
     dates[index].startsWith(state.startDate)
   );
-  const filteredDateTime = filteredTime_RF.map((row)=> new Date(state.startDate).toLocaleDateString('en-US')+' '+row)
-  
-  const dateToPlot=[]
-  for(let i=0; i<5; i++){
-    const tempDate = new Date(state.startDate).setDate(new Date(state.startDate).getDate() - i-1);
-    dateToPlot[i] = new Date(tempDate).toLocaleDateString('en-US') 
+  const filteredDateTime = filteredTime_RF.map(
+    (row) => new Date(state.startDate).toLocaleDateString("en-US") + " " + row
+  );
+
+  const dateToPlot = [];
+  for (let i = 0; i < 5; i++) {
+    const tempDate = new Date(state.startDate).setDate(
+      new Date(state.startDate).getDate() - i - 1
+    );
+    dateToPlot[i] = new Date(tempDate).toLocaleDateString("en-US");
   }
   // console.log(dateToPlot);
-  const filteredPV = dataEx.filter((_,index)=>{
-    return new Date(dataEx[index].date).valueOf() >= new Date(dateToPlot[dateToPlot.length-1]).valueOf()
-  })
-  const filteredPVDate = filteredPV.map((row)=> new Date(row.date).toLocaleDateString('en-US')+' '+row.time)
-  const filterPVData = filteredPV.map((row)=> row.pv)
-  const normalizedData = filterPVData.map((row)=> row %= 200)
+  const filteredPV = dataEx.filter((_, index) => {
+    return (
+      new Date(dataEx[index].date).valueOf() >=
+      new Date(dateToPlot[dateToPlot.length - 1]).valueOf()
+    );
+  });
+  const filteredPVDate = filteredPV.map(
+    (row) => new Date(row.date).toLocaleDateString("en-US") + " " + row.time
+  );
+  const filterPVData = filteredPV.map((row) => row.pv);
+  const normalizedData = filterPVData.map((row) => (row %= 200));
   // Prepare the plot data
   const plotData = [
     {
@@ -127,9 +148,9 @@ function ShowGraph() {
       mode: "lines",
       name: "User Data",
       marker: { color: "green" },
-      visible:true,
-      fill:'tozeroy',
-      fillcolor:'rgba(0, 255, 0, 0.1)'
+      visible: true,
+      fill: "tozeroy",
+      fillcolor: "rgba(0, 255, 0, 0.1)",
     },
     {
       y: filteredPredictedpv_RF,
@@ -143,8 +164,8 @@ function ShowGraph() {
         state.CalcModel.includes("randomforest") !== false
           ? true
           : false,
-      fill:'tozeroy',
-      fillcolor:'rgba(0, 0, 255, 0.1)'
+      fill: "tozeroy",
+      fillcolor: "rgba(0, 0, 255, 0.1)",
     },
     {
       y: filteredPredictedpv_KNN,
@@ -158,8 +179,8 @@ function ShowGraph() {
         state.CalcModel.includes("knn") !== false
           ? true
           : false,
-      fill:'tozeroy',
-      fillcolor:'rgba(255, 165, 0,0.1)'
+      fill: "tozeroy",
+      fillcolor: "rgba(255, 165, 0,0.1)",
     },
     {
       y: filteredPredictedpv_LGBM,
@@ -186,8 +207,8 @@ function ShowGraph() {
         state.CalcModel.includes("svr") !== false
           ? true
           : false,
-      fill:'tozeroy',
-      fillcolor:'rgba(143, 0, 255,0.2)'
+      fill: "tozeroy",
+      fillcolor: "rgba(143, 0, 255,0.2)",
     },
   ];
   const layout = {
@@ -196,12 +217,12 @@ function ShowGraph() {
     )}`,
     yaxis: {
       title: `Predicted Data`,
-      showgrid:false,
+      showgrid: false,
     },
     xaxis: {
       title: "Time (drag axis)",
-      showgrid:false,
-      showticklabels:false,
+      showgrid: false,
+      showticklabels: false,
     },
   };
 
@@ -242,6 +263,100 @@ function ShowGraph() {
     }
   };
 
+  // const handleChange=(event,newValue)=>{
+  //   if (newValue[0] > value[0]) {
+  //     increaseStartDate(state.startDate, newValue);
+  //   } else if (newValue[0] < value[0]) {
+  //     decreaseStartDate(state.startDate, newValue);
+  //   }
+
+  //   if (newValue[1] > value[1]) {
+  //     increaseEndDate(state.endDate, newValue);
+  //   } else if (newValue[1] < value[1]) {
+  //     decreaseEndDate(state.endDate, newValue);
+  //   }
+  //   setValue(newValue);
+  //   console.log(state.startDate);
+  // }
+
+  // const increaseEndDate = (date, newValue) => {
+  //   const tdate = new Date(date);
+  //   const month = String(
+  //     new Date(
+  //       tdate.getTime() +
+  //         Math.abs(newValue[1] - value[1]) * 24 * 60 * 60 * 1000
+  //     ).getMonth() + 1
+  //   ).padStart(2, "0");
+  //   const year = new Date(
+  //     tdate.getTime() + Math.abs(newValue[1] - value[1]) * 24 * 60 * 60 * 1000
+  //   ).getFullYear();
+  //   const day = String(
+  //     new Date(
+  //       tdate.getTime() +
+  //         Math.abs(newValue[1] - value[1]) * 24 * 60 * 60 * 1000
+  //     ).getDate()
+  //   ).padStart(2, "0");
+  //   dispatch({ type: "SET_STARTDATE", payload: `${month}/${day}/${year}` });
+  // };
+
+  // const decreaseEndDate = (date, newValue) => {
+  //   const tdate = new Date(date);
+  //   const month = String(
+  //     new Date(
+  //       tdate.getTime() -
+  //         Math.abs(newValue[1] - value[1]) * 24 * 60 * 60 * 1000
+  //     ).getMonth() + 1
+  //   ).padStart(2, "0");
+  //   const year = new Date(
+  //     tdate.getTime() - Math.abs(newValue[1] - value[1]) * 24 * 60 * 60 * 1000
+  //   ).getFullYear();
+  //   const day = String(
+  //     new Date(
+  //       tdate.getTime() -
+  //         Math.abs(newValue[1] - value[1]) * 24 * 60 * 60 * 1000
+  //     ).getDate()
+  //   ).padStart(2, "0");
+  //   setEndDate(`${month}/${day}/${year}`);
+  // };
+
+  // const decreaseStartDate = (date, newValue) => {
+  //   const tdate = new Date(date);
+  //   const month = String(
+  //     new Date(
+  //       tdate.getTime() -
+  //         Math.abs(value[0] - newValue[0]) * 24 * 60 * 60 * 1000
+  //     ).getMonth() + 1
+  //   ).padStart(2, "0");
+  //   const year = new Date(
+  //     tdate.getTime() - Math.abs(value[0] - newValue[0]) * 24 * 60 * 60 * 1000
+  //   ).getFullYear();
+  //   const day = String(
+  //     new Date(
+  //       tdate.getTime() -
+  //         Math.abs(value[0] - newValue[0]) * 24 * 60 * 60 * 1000
+  //     ).getDate()
+  //   ).padStart(2, "0");
+  //   dispatch({ type: "SET_STARTDATE", payload: `${month}/${day}/${year}` });
+  // };
+
+  // const increaseStartDate = (date, newValue) => {
+  //   const tdate = new Date(date);
+  //   const month = String(
+  //     new Date(
+  //       tdate.getTime() + (newValue[0] - value[0]) * 24 * 60 * 60 * 1000
+  //     ).getMonth() + 1
+  //   ).padStart(2, "0");
+  //   const year = new Date(
+  //     tdate.getTime() + (newValue[0] - value[0]) * 24 * 60 * 60 * 1000
+  //   ).getFullYear();
+  //   const day = String(
+  //     new Date(
+  //       tdate.getTime() + (newValue[0] - value[0]) * 24 * 60 * 60 * 1000
+  //     ).getDate()
+  //   ).padStart(2, "0");
+  //   dispatch({ type: "SET_STARTDATE", payload: `${month}/${day}/${year}` });
+  // };
+
   if (loading) {
     return (
       <>
@@ -257,24 +372,6 @@ function ShowGraph() {
             </p>
           </div>
           <div className="main__plot">Loading....</div>
-        </div>
-      </>
-    );
-  } else if (state.randomforest.length===0) {
-    return (
-      <>
-        <div className="plot__container">
-          <div className="main__header">
-            <p className="dheader__title">DASHBOARD &gt; Forecast</p>
-            <p className="dheader__greet">welcome {user.username}</p>
-            <p className="dheader__date">
-              Date:{" "}
-              {date
-                ? new Date(date).toLocaleDateString("en-US")
-                : new Date().toLocaleDateString("en-US")}
-            </p>
-          </div>
-          <div className="main__plot">No Data to show</div>
         </div>
       </>
     );
@@ -308,12 +405,38 @@ function ShowGraph() {
             </div>
           </div>
           {state.randomforest.length !== 0 ? (
+            <>
               <Plot
                 className="plot"
                 data={plotData}
                 config={{ responsive: true }}
                 layout={layout}
               />
+              {/* <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  marginTop: "20px",
+                }}
+              >
+                <p style={{ color: "grey", margin: "auto" }}>{new Date(state.startDate).toLocaleDateString('en-US')}</p>
+                <Slider
+                  className="visualize__range"
+                  value={value}
+                  min={0}
+                  max={maxDay}
+                  onChange={handleChange}
+                  style={{
+                    width: "73%",
+                    marginLeft: "20px",
+                    marginRight: "20px",
+                    color: "green",
+                  }}
+                />
+                <p style={{ color: "grey", margin: "auto" }}>{new Date(endDate).toLocaleDateString('en-US')}</p>
+              </div> */}
+            </>
           ) : (
             <p className="no-data-available">No Data Available</p>
           )}

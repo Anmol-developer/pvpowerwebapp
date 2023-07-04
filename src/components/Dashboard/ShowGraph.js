@@ -10,7 +10,7 @@ function ShowGraph() {
   const { dataEx } = useContext(DataContext);
   const { user } = useContext(userContext);
   const [maxDay, setMaxDay] = useState(null);
-  const [value, setValue] = useState([0, maxDay]);
+  const [value, setValue] = useState([0, 0]);
   // Extract the data and time from the Excel sheet columns
   const dates = dataEx.map((row) => row.date);
   const [startDate, setStartDate] = useState(dates[0]);
