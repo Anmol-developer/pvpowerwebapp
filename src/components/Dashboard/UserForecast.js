@@ -1,4 +1,4 @@
-import React, { useEffect, useContext, useReducer } from "react";
+import React, { useEffect, useContext, useReducer, useState } from "react";
 import Plot from "react-plotly.js";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -18,10 +18,12 @@ function ShowGraph() {
   let date = queryParams.get("date");
   const model = ["rf", "knn", "lgbm", "svr"];
   const { user } = useContext(userContext);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    setLoading(true)
     fetchData();
-    // console.log(dataEx.slice(-6));
+    setLoading(false)
   }, [state.CalcModel]);
 
   const fetchData = async () => {
@@ -240,7 +242,7 @@ function ShowGraph() {
     }
   };
 
-  if (!state.startDate) {
+  if (loading) {
     return (
       <>
         <div className="plot__container">
@@ -255,6 +257,24 @@ function ShowGraph() {
             </p>
           </div>
           <div className="main__plot">Loading....</div>
+        </div>
+      </>
+    );
+  } else if (state.randomforest.length===0) {
+    return (
+      <>
+        <div className="plot__container">
+          <div className="main__header">
+            <p className="dheader__title">DASHBOARD &gt; Forecast</p>
+            <p className="dheader__greet">welcome {user.username}</p>
+            <p className="dheader__date">
+              Date:{" "}
+              {date
+                ? new Date(date).toLocaleDateString("en-US")
+                : new Date().toLocaleDateString("en-US")}
+            </p>
+          </div>
+          <div className="main__plot">No Data to show</div>
         </div>
       </>
     );

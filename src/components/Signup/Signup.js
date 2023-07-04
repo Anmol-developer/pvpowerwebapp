@@ -87,16 +87,6 @@ function Signup() {
         const data = await result.json();
         // console.log(data);
         if (data) {
-          toast.success("Sign up success!", {
-            position: "top-center",
-            autoClose: 5000,
-            hideProgressBar: true,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: 0,
-            theme: "light",
-          });
           window.location.reload()
           navigate(`/regulations`);
           dispatch({ type: "SET_SHOWVERMODAL", payload: false });
