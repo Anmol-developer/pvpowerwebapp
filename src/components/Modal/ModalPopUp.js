@@ -199,6 +199,7 @@ function ModalPopUp({ lat, lon }) {
     });
     
     if (result.status === 200) {
+      await axios.post("/calc-state", { isCalcDone: true });
       dispatch({ type: "SET_AFTERCALCMODAL", payload: true });
       dispatch({ type: "SET_SUBMODAL", payload: false });
       NotifyCalc(user.email);
